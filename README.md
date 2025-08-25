@@ -115,9 +115,3 @@ Open this link in a browser to access the app.
 
 ```
 
----
-
-👉 This README explains **what the project is, how to run it, what venv is, and that you must use `main.py`**.  
-
-Do you want me to also add a **section on database setup** (Flask-Migrate commands for creating the SQLite DB from `models.py`) so your group knows how to initialise tables?
-```
