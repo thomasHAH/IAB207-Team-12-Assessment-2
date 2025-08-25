@@ -1,13 +1,10 @@
-Got it ✅ — I’ll draft you a **README.md** that explains everything clearly, like you’d expect on a student GitHub repo. You can drop this straight into your repo root.
 
----
+# README.md
 
-# 📘 README.md
 
-````markdown
 # IAB207 Team 12 – Assessment 2  
 
-## 📖 Overview
+### 📖 Overview
 This repository contains our solution for **IAB207 Assessment 2**.  
 It is a web application built using **Flask**, a lightweight Python web framework. The app provides the starting point for developing an Event Management System with features such as user accounts, events, bookings, and comments.  
 
@@ -34,7 +31,7 @@ The project is based on the QUT starter code provided for Assessment 2 and has b
 ```bash
 git clone https://github.com/thomasHAH/IAB207-Team-12-Assessment-2.git
 cd IAB207-Team-12-Assessment-2
-````
+
 
 ### 2. Create and Activate Virtual Environment
 
@@ -46,13 +43,6 @@ It keeps our dependencies separate from the system Python so every team member u
 ```bash
 python -m venv venv
 venv\Scripts\activate
-```
-
-#### Mac/Linux (bash/zsh)
-
-```bash
-python3 -m venv venv
-source venv/bin/activate
 ```
 
 When active, your terminal prompt will show `(venv)` at the start.
@@ -81,7 +71,7 @@ Open this link in a browser to access the app.
 
 ---
 
-## 🚀 How It Works
+## How It Works
 
 * The app runs on a **Flask development server** (by default at `localhost:5000`).
 * **main.py** creates the app using the factory function in `website/__init__.py`.
@@ -92,7 +82,7 @@ Open this link in a browser to access the app.
 
 ---
 
-## 👩‍💻 Development Workflow
+## Development Workflow
 
 1. Always **pull** the latest code before starting:
 
@@ -115,7 +105,7 @@ Open this link in a browser to access the app.
 
 ---
 
-## 📝 Notes
+## Notes
 
 * Only run the app with `python main.py`.
 * Do **not** run individual files (e.g., `models.py`) — they use relative imports and must be run via the package.
