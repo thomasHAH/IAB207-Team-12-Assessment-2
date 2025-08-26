@@ -4,15 +4,15 @@
 
 # IAB207 Team 12 – Assessment 2  
 
-### 📖 Overview
+## Overview
 This repository contains our solution for **IAB207 Assessment 2**.  
 It is a web application built using **Flask**, a lightweight Python web framework. The app provides the starting point for developing an Event Management System with features such as user accounts, events, bookings, and comments.  
 
-The project is based on the QUT starter code provided for Assessment 2 and has been extended by our team.
+The project is based on the QUT starter code provided for Assessment 2 and will be extended by our team.
 
 ---
 
-## ⚙️ Project Structure
+## Project Structure
 - **main.py** → Entry point for the application. Run this to start the Flask server.  
 - **website/** → Main application package.  
   - `__init__.py` → Creates and configures the Flask app.  
@@ -25,13 +25,13 @@ The project is based on the QUT starter code provided for Assessment 2 and has b
 
 ---
 
-## 🖥️ Running the Application
+## Running the Application
 
 ### 1. Clone the Repository
 ```bash
 git clone https://github.com/thomasHAH/IAB207-Team-12-Assessment-2.git
 cd IAB207-Team-12-Assessment-2
-
+```
 
 ### 2. Create and Activate Virtual Environment
 
@@ -113,5 +113,5 @@ Open this link in a browser to access the app.
 
 ---
 
-```
+
 
