@@ -1,0 +1,149 @@
+
+/* This is the styling CSS I'm using throughout all the html files */
+/* tried to make it as easy as possible to utilise so im not constantly adding css to every single file (like i was before but then i changed my mind) */
+
+/* -- hero banner -- */
+/* like the main image throughout the website */
+.hero-banner{
+  position: relative;
+
+  /* Location is here and just a bunch of other stuff */
+  background: url('../images/pool-clear-image.jpg') center/cover no-repeat; 
+  min-height: 60vh;                 
+  display: flex;
+  align-items: center;
+}
+.hero-banner::before{
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--overlay);
+  z-index: 0;
+}
+.hero-banner .container{
+  position: relative;
+  z-index: 1;
+}
+
+/* Glassy card over photo (used on login etc.) and now more stuff uses it!*/
+.hero-banner .card{
+  background: var(--card-glass);
+
+  /* sort of like liquid glass!*/
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border: 1px solid rgba(255,255,255,0.6);
+}
+
+/* ensure form controls follow the body font in all browsers -> pre sure this is redundent */
+.form-control, .form-select, .btn { font-family: inherit; }
+
+/* placeholder text too (some browsers style it differently) */
+#searchInput::placeholder { font-family: inherit; }
+
+/* From Google fonts - test */
+h1, h2, h3, h4, h5, h6 {
+font-family: 'Poppins', sans-serif;
+}
+
+/* set Poppins as the base font */
+body { font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+    
+
+/* Example responsive height - need to test*/ 
+@media (max-width: 992px){ .hero-banner{ min-height: 40vh; } }
+@media (max-width: 576px){ .hero-banner{ min-height: 35vh; } }
+
+/* redundant */
+.login-page .hero-banner{ min-height: 60vh; } 
+
+/* CSS, this button was designed by another person and is referenced in my Report! Very thankful for the free button design!!*/ 
+.button-59 {
+  align-items: center;
+  background-color: #fff;
+  border: 2px solid #000;
+  box-sizing: border-box;
+  color: #000;
+  cursor: pointer;
+  display: inline-flex;
+  fill: #000;
+  font-family: Inter,;
+  font-size: 16px;
+  font-weight: 600;
+  height: 48px;
+  justify-content: center;
+  letter-spacing: -.8px;
+  line-height: 24px;
+  min-width: 140px;
+  outline: 0;
+  padding: 0 17px;
+  text-align: center;
+  text-decoration: none;
+  transition: all .3s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-59:focus {
+  color: #171e29;
+}
+
+.button-59:hover {
+  border-color: #06f;
+  color: #06f;
+  fill: #06f;
+}
+
+.button-59:active {
+  border-color: #06f;
+  color: #06f;
+  fill: #06f;
+}
+
+@media (min-width: 768px) {
+  .button-59 {
+    min-width: 170px;
+  }
+}
+
+
+
+/* Custom CSS for a form input inspired by button-59*/
+.input-59 {
+  /* Common styling with the button */
+  background-color: #fff;
+  border: 2px solid #000;
+  color: #000;
+  
+  /* This line blow is so glitchy all the time */
+  font-family: Inter, ;
+  font-size: 16px;
+  font-weight: 600;
+  height: 48px;
+  letter-spacing: -.8px;
+  outline: 0;
+  transition: all .3s;
+  box-sizing: border-box;
+
+  /* Specific styling for an input field*/
+  width: 100%;
+  padding: 12px 17px;
+  line-height: 24px;
+}
+
+/* It looked weird when it was grey ish */
+.input-59::placeholder {
+  color: black;
+}
+
+
+
+
+
+
+
+
+
+
+
