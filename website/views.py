@@ -1,7 +1,9 @@
-from flask import Blueprint
+from flask import Blueprint, render_template
 
 main_bp = Blueprint('main', __name__)
 
 @main_bp.route('/')
 def index():
-    return '<h1>Starter code for assignment 3<h1>'
+    # Instead of returning plain text, render the home.html page
+    return render_template('home.html')
+    

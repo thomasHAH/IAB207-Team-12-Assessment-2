@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+<!--This template inherits the base.html layout so it will automatically
+get the shared navbar, footer, css and stuff
+-->
+
+<!--This sets the page title that shows in the browser tab-->
+{% block title %}Login - PoolBNB{% endblock %}
+
+
+{% block content %}
+<!-- hero-banner class = background styling, center the login card vertically/horizontally -->
+<main class="d-flex align-items-center justify-content-center py-5 hero-banner">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-sm-10 col-md-8 col-lg-5">
+        <!-- responsive column: shrinks on mobile, centers on desktop -->
+        <div class="card shadow-sm">
+          <div class="card-body p-4">
+            <!-- Heading style white-->
+            <h2 class="h4 mb-4 text-center">Login</h2>
+
+            <!-- Login form -->
+            <!--method="POST" means it will send user data back to the /login route -->
+            <form method="POST">
+                <!--security check to prevent cross-site attacks-->
+              {{ form.hidden_tag() }}
+
+              <!--Username input field-->
+              <div class="mb-3">
+                {{ form.user_name.label(class="form-label") }}
+                <!-- css styling -->
+                {{ form.user_name(class="input-59") }}
+                <!--Show errors if validation fails-->
+                {% for error in form.user_name.errors %}
+                  <div class="text-danger small">{{ error }}</div>
+                {% endfor %}
+              </div>
+
+              <!--Password input field -->
+              <div class="mb-3">
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="input-59") }}
+                <!--Show errors if validation fails-->
+                {% for error in form.password.errors %}
+                  <div class="text-danger small">{{ error }}</div>
+                {% endfor %}
+              </div>
+
+              <!-- Submit -->
+              <div class="d-grid">
+                {{ form.submit(class="button-59") }}
+              <!-- button-59 is CSS style for buttons -->
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Secondary link -->
+         <!--secondary link: takes user to register page if they don’t have an account -->
+        <p class="text-center mt-3 small text-white">
+          New user? <a href="{{ url_for('auth.register') }}" class="link-light">Create an account</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

@@ -34,8 +34,15 @@ def create_app():
     from .models import User
     @login_manager.user_loader
     def load_user(user_id):
+      #This function tells Flask-Login how to find a user in the database.
+      #When someone is logged in, Flask-Login stores their user ID in a cookie.
+      #On the next page load, Flask-Login uses this function:
+      # - Takes the ID from the cookie
+      # - Looks up the User in the database
+      # - Returns the User so we can use current_user
        return db.session.scalar(db.select(User).where(User.id==user_id))
 
+   #Register here means attaching a blueprint to the flask app
     from . import views
     app.register_blueprint(views.main_bp)
 

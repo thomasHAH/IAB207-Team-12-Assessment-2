@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Home - PoolBNB{% endblock %}
+
+{% block content %}
+<main class="hero-banner d-flex align-items-center">
+  <div class="container text-center text-white">
+    <h1 class="display-4 fw-bold">Welcome to PoolBNB</h1>
+    <p class="lead">Discover, book, and share amazing poolside events.</p>
+    <div class="mt-4">
+      <a href="{{ url_for('auth.register') }}" class="button-59">Get Started</a>
+      <a href="{{ url_for('auth.login') }}" class="button-59">Login</a>
+    </div>
+  </div>
+</main>
+{% endblock %}
+
