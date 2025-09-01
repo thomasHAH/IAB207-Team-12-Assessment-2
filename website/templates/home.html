@@ -5,13 +5,25 @@
 {% block content %}
 <main class="hero-banner d-flex align-items-center">
   <div class="container text-center text-white">
-    <h1 class="display-4 fw-bold">Welcome to PoolBNB</h1>
-    <p class="lead">Discover, book, and share amazing poolside events.</p>
-    <div class="mt-4">
-      <a href="{{ url_for('auth.register') }}" class="button-59">Get Started</a>
-      <a href="{{ url_for('auth.login') }}" class="button-59">Login</a>
-    </div>
+    
+    {% if email %}
+      <!-- If logged in -->
+      <h1 class="display-4 fw-bold">Welcome back, {{ email }}!</h1>
+      <p class="lead">Glad to see you again — check out the latest events.</p>
+      <div class="mt-4">
+        <a href="{{ url_for('main.index') }}" class="button-59">Browse Events</a>
+        <a href="{{ url_for('auth.logout') }}" class="button-59">Logout</a>
+      </div>
+    {% else %}
+      <!-- If not logged in -->
+      <h1 class="display-4 fw-bold">Welcome to PoolBNB</h1>
+      <p class="lead">Discover, book, and share amazing poolside events.</p>
+      <div class="mt-4">
+        <a href="{{ url_for('auth.register') }}" class="button-59">Get Started</a>
+        <a href="{{ url_for('auth.login') }}" class="button-59">Login</a>
+      </div>
+    {% endif %}
+    
   </div>
 </main>
 {% endblock %}
-

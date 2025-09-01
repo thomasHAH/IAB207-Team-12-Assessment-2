@@ -1,9 +1,13 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, session
 
 main_bp = Blueprint('main', __name__)
 
 @main_bp.route('/')
 def index():
-    # Instead of returning plain text, render the home.html page
-    return render_template('home.html')
-    
+    # Check if an email is stored in session (set in auth.py after login)
+    if 'email' in session:
+        #Pass the email into the template so it can display a welcome message
+        return render_template('home.html', email=session['email'])
+    else:
+        #No one logged in yet
+        return render_template('home.html')

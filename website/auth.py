@@ -1,6 +1,6 @@
 
 #Import necessary flask and library modules
-from flask import Blueprint, flash, render_template, request, url_for, redirect
+from flask import Blueprint, flash, render_template, request, url_for, redirect, session
 #Password hashing and verification (bcrypt = strong hashing algorithm)
 from flask_bcrypt import generate_password_hash, check_password_hash
 #Flask-login utilities to manage user session/login state
@@ -51,7 +51,8 @@ def login():
         #If no errors, log the user in
         if error is None:
             login_user(user) #Flask-login is going to set a session cookie so the user stays logged in
-            
+            login_user(user)  
+            session['email'] = user.email  # store email in session
             #WILL NEED TO TEST IF THIS IS WORKING LATER
             #This is complicated
             #Check if the user was trying to access a protected page before login
@@ -107,4 +108,20 @@ def register():
 
     #If GET request or validation failed, show the registration form again
     return render_template('register.html', form=register_form, heading='Register')
+
+
+
+# ------------------------ LOGOUT ------------------------
+@auth_bp.route('/logout')
+@login_required  # only allow logged-in users to log out
+def logout():
+    # remove email from session so navbar updates
+    session.pop('email', None)
+
+    # log user out (Flask-Login)
+    logout_user()
+
+    flash("You have been logged out.", "info")
+    return redirect(url_for('main.index'))
+
 #------------------------------------------------------------------------------------------------------------------------
