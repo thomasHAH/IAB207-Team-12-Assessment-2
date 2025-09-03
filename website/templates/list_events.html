@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="d-flex align-items-center justify-content-center py-5 hero-banner">
+    <div class="container mt-4" style="color:white;">
+        <h2>Upcoming Events</h2>
+
+        {% if events %}
+            <ul class="list-group">
+                {% for event in events %}
+                <li class="list-group-item">
+                    <h5>{{ event.title }}</h5>
+                    {% if event.description %}
+                    <p>{{ event.description }}</p>
+                    {% endif %}
+                    <p><strong>Date:</strong> {{ event.date.strftime('%Y-%m-%d %H:%M') }}</p>
+                    <p><strong>Capacity:</strong> {{ event.capacity }}</p>
+                    <p><strong>Features:</strong> {{ event.features }}</p>
+                    <p><small>Created by user ID: {{ event.created_by }}</small></p>
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <div class="alert alert-info">No events found. Be the first to <a href="{{ url_for('events.create_event') }}">create one</a>!</div>
+        {% endif %}
+    </div>
+</main>
+{% endblock %}

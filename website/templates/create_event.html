@@ -1,0 +1,36 @@
+<!-- Need code comments here-->
+
+{% extends "base.html" %}
+{% block content %}
+<main class="d-flex align-items-center justify-content-center py-5 hero-banner">
+    <div class="container mt-4" style="color:white;">
+        <h2>Create New Event</h2>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+
+            <div class="mb-3">
+                {{ form.title.label }}
+                {{ form.title(class="input-59") }}
+            </div>
+            <div class="mb-3">
+                {{ form.description.label }}
+                {{ form.description(class="input-59") }}
+            </div>
+            <div class="mb-3">
+                {{ form.capacity.label }}
+                {{ form.capacity(class="input-59") }}
+            </div>
+            <div class="mb-3">
+                {{ form.features.label }}
+                {{ form.features(class="input-59") }}
+            </div>
+            <div class="mb-3">
+                {{ form.date.label }}
+                {{ form.date(class="input-59") }}
+            </div>
+
+            {{ form.submit(class="button-59") }}
+        </form>
+    </div>
+</main>
+{% endblock %}

@@ -1,3 +1,4 @@
+#commented
 
 #Import necessary flask and library modules
 from flask import Blueprint, flash, render_template, request, url_for, redirect, session
@@ -110,18 +111,18 @@ def register():
     return render_template('register.html', form=register_form, heading='Register')
 
 
-
-# ------------------------ LOGOUT ------------------------
+#Logout function
 @auth_bp.route('/logout')
-@login_required  # only allow logged-in users to log out
+@login_required  #only allow logged-in users to log out from utils.py
 def logout():
-    # remove email from session so navbar updates
+    #remove email from session so navbar updates
     session.pop('email', None)
 
-    # log user out (Flask-Login)
+    #log user out (Flask-Login)
     logout_user()
 
     flash("You have been logged out.", "info")
+    #redirect back to home screen
     return redirect(url_for('main.index'))
 
 #------------------------------------------------------------------------------------------------------------------------

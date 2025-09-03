@@ -1,3 +1,5 @@
+<!--need Comments here-->
+
 <!DOCTYPE html>
 
 <!--
@@ -47,12 +49,18 @@ their own content.
 
                     {% if session.get('email') %}
                         <!-- Show if logged in -->
-                        <li class="nav-item"><a class="nav-link" href="#">Welcome, {{ session['email'] }}</a></li>
+                        <!--<li class="nav-item"><a class="nav-link" href="#">Welcome, {{ session['email'] }}</a></li>-->
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('events.create_event') }}">Create Event</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('events.list_events') }}">Events</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a></li>
+                        
+
+
                     {% else %}
                         <!-- Show if not logged in -->
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Login</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.register') }}">Register</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('events.list_events') }}">Events</a></li>
                     {% endif %}
                 </ul>
             </div>

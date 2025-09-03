@@ -1,6 +1,8 @@
+#Need comments here
+
 from flask_wtf import FlaskForm
-from wtforms.fields import TextAreaField, SubmitField, StringField, PasswordField
-from wtforms.validators import InputRequired, Length, Email, EqualTo
+from wtforms.fields import TextAreaField, SubmitField, StringField, PasswordField, DateTimeField, IntegerField
+from wtforms.validators import InputRequired, Length, Email, EqualTo, DataRequired, NumberRange
 
 #Uni provided code below loginform and registerform
 # creates the login information
@@ -20,3 +22,12 @@ class RegisterForm(FlaskForm):
 
     # submit button
     submit = SubmitField("Register")
+
+#NEW CODE
+class EventForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    description = TextAreaField('Description')
+    capacity = IntegerField('Capacity', validators=[NumberRange(min=1, message="Capacity must be positive")])
+    features = IntegerField('Features')  # might make this a SelectMultipleField
+    date = DateTimeField('Date (YYYY-MM-DD HH:MM)', format='%Y-%m-%d %H:%M', validators=[DataRequired()])
+    submit = SubmitField('Create Event')
