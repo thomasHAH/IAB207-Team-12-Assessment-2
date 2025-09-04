@@ -1,4 +1,4 @@
-#Need comments here regarding registering
+#commented
 
 # import flask - from 'package' import 'Class'
 from flask import Flask 
@@ -51,7 +51,12 @@ def create_app():
     from . import auth
     app.register_blueprint(auth.auth_bp)
     
+    #Importing the whole events.py module from the current package
+    #This will load everything define inside events.py including the blueprint
+    #and route functions
     from . import events
+    #Registering the events blueprints with the flask app
+    #this attaches all routes defined under events_bp like /create, /list to tha main app
     app.register_blueprint(events.events_bp)
     
     

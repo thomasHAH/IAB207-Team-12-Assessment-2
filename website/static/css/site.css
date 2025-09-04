@@ -6,10 +6,10 @@
 /* like the main image throughout the website */
 .hero-banner{
   position: relative;
-
+  margin-top: -17px; /* pulls hero up under the navbar */
   /* Location is here and just a bunch of other stuff */
   background: url('../images/pool-clear-image.jpg') center/cover no-repeat; 
-  min-height: 60vh;                 
+  min-height: 95vh;                 
   display: flex;
   align-items: center;
 }
@@ -30,10 +30,22 @@
   background: var(--card-glass);
 
   /* sort of like liquid glass!*/
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(2px);
   border: 1px solid rgba(255,255,255,0.6);
 }
+
+/* Force navbar links to black */
+.navbar .nav-link {
+    color: black !important;
+}
+
+/* Optional: make them bold */
+.navbar .nav-link:hover {
+    color: #333 !important; /* slightly darker on hover */
+    font-weight: 500;
+}
+
 
 /* ensure form controls follow the body font in all browsers -> pre sure this is redundent */
 .form-control, .form-select, .btn { font-family: inherit; }

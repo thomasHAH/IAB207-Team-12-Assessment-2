@@ -1,36 +1,86 @@
-<!-- Need code comments here-->
+<!--commented - should be wrapped up-->
+<!--ONE THING TO DO IS ADD INSTRUCTIONAL PLACEHOLDER TEXT-->
 
+
+<!--extending base layout so navbar, footer and stuff are all included-->
 {% extends "base.html" %}
+<!--define the content block that is replacing the placeholder-->
 {% block content %}
+<!-- 
+This is the main wrapper section
+- using the hero banner for background styling
+- centre the content
+- py-5 the vertical paddings
+- may update this later down the track
+-->
 <main class="d-flex align-items-center justify-content-center py-5 hero-banner">
-    <div class="container mt-4" style="color:white;">
-        <h2>Create New Event</h2>
-        <form method="POST">
-            {{ form.hidden_tag() }}
+  <div class="container">
+    <div class="row justify-content-center">
+      <!--Responsive column so it adjusts on different screen sizes-->
+      <div class="col-sm-10 col-md-8 col-lg-6">
+        <!--glassy card container with shadow-->
+        <!--small drop shadow for depth-->
+        <!--using white for consistent styling-->
+        <div class="card shadow-sm" style="color:white;">
+          <div class="card-body p-4">
+            <!--Page heading inside the glass card - consistent--> 
+            <h2 class="h4 mb-4 text-center">Create New Event</h2>
 
-            <div class="mb-3">
-                {{ form.title.label }}
-                {{ form.title(class="input-59") }}
-            </div>
-            <div class="mb-3">
-                {{ form.description.label }}
-                {{ form.description(class="input-59") }}
-            </div>
-            <div class="mb-3">
-                {{ form.capacity.label }}
-                {{ form.capacity(class="input-59") }}
-            </div>
-            <div class="mb-3">
-                {{ form.features.label }}
-                {{ form.features(class="input-59") }}
-            </div>
-            <div class="mb-3">
-                {{ form.date.label }}
-                {{ form.date(class="input-59") }}
-            </div>
+            <!--user input is submitted to the server-->
+            <!--Event creation form + added file upload support-->
+            <form method="POST" enctype="multipart/form-data">
+              <!--csrf protection-->
+              {{ form.hidden_tag() }}
 
-            {{ form.submit(class="button-59") }}
-        </form>
+              <!--Title input field -->
+              <div class="mb-3">
+                {{ form.title.label(class="form-label") }}
+                <!--using my own personalised styling-->
+                <!--width is perfect-->
+                {{ form.title(class="input-59 w-100") }}
+              </div>
+
+              <!--description input field-->
+              <div class="mb-3">
+                {{ form.description.label(class="form-label") }}
+                {{ form.description(class="input-59 w-100") }}
+              </div>
+
+              <!--capacity input field-->
+              <div class="mb-3">
+                {{ form.capacity.label(class="form-label") }}
+                {{ form.capacity(class="input-59 w-100") }}
+              </div>
+
+              <!--features input field-->
+              <div class="mb-3">
+                {{ form.features.label(class="form-label") }}
+                {{ form.features(class="input-59 w-100") }}
+              </div>
+
+              <!--date field-->
+              <div class="mb-3">
+                {{ form.date.label(class="form-label") }}
+                {{ form.date(class="input-59 w-100") }}
+              </div>
+
+              <!--image upload input field -->
+              <div class="mb-3">
+                {{ form.image.label(class="form-label") }}
+                {{ form.image(class="form-control") }}
+              </div>
+
+              <!--Submit button-->
+              <!--using my button-->
+              <div class="d-grid">
+                {{ form.submit(class="button-59") }}
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </main>
+<!--end of block and back to BASE.HTML-->
 {% endblock %}

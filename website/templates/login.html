@@ -1,4 +1,5 @@
 <!--Commented-->
+<!--SHOULD ADD INSTRUCTIONAL PLACEHOLDERS IN INPUT FIELDS-->
 
 {% extends "base.html" %}
 <!--This template inherits the base.html layout so it will automatically
@@ -19,7 +20,7 @@ get the shared navbar, footer, css and stuff
         <div class="card shadow-sm">
           <div class="card-body p-4">
             <!-- Heading style white-->
-            <h2 class="h4 mb-4 text-center">Login</h2>
+            <h2 class="h4 mb-4 text-center" style="color:white;">Login</h2>
 
             <!-- Login form -->
             <!--method="POST" means it will send user data back to the /login route -->
@@ -28,7 +29,7 @@ get the shared navbar, footer, css and stuff
               {{ form.hidden_tag() }}
 
               <!--Username input field-->
-              <div class="mb-3">
+              <div class="mb-3" style="color:white;">
                 {{ form.user_name.label(class="form-label") }}
                 <!-- css styling -->
                 {{ form.user_name(class="input-59") }}
@@ -39,7 +40,7 @@ get the shared navbar, footer, css and stuff
               </div>
 
               <!--Password input field -->
-              <div class="mb-3">
+              <div class="mb-3" style="color:white;">
                 {{ form.password.label(class="form-label") }}
                 {{ form.password(class="input-59") }}
                 <!--Show errors if validation fails-->

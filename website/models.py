@@ -18,6 +18,9 @@ class Event(db.Model):
     features = db.Column(db.Integer)
     created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
     date = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    #NEW: store image filename/path
+    image_file = db.Column(db.String(255), nullable=True, default='default.jpg')
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)

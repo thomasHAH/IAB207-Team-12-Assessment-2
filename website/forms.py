@@ -1,33 +1,54 @@
-#Need comments here
+#Commented
 
+#Importing Flaskform base class and all the different field types from
+#WTForms - all necessary!
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from wtforms.fields import TextAreaField, SubmitField, StringField, PasswordField, DateTimeField, IntegerField
 from wtforms.validators import InputRequired, Length, Email, EqualTo, DataRequired, NumberRange
 
-#Uni provided code below loginform and registerform
-# creates the login information
+
+# ---------------Uni provided code for login and registration----------------------------------
+# Form for user login
 class LoginForm(FlaskForm):
+    #Username field which must have input
     user_name=StringField("User Name", validators=[InputRequired('Enter user name')])
+    #Password field input required as well
     password=PasswordField("Password", validators=[InputRequired('Enter user password')])
+    #Submit button now
     submit = SubmitField("Login")
 
- # this is the registration form
+ #this is the registration form
 class RegisterForm(FlaskForm):
+    #Username field with input required
     user_name=StringField("User Name", validators=[InputRequired()])
+    #Must have valid email format
     email = StringField("Email Address", validators=[Email("Please enter a valid email")])
-    # linking two fields - password should be equal to data entered in confirm
+    #linking two fields - password should be equal to data entered in confirm
     password=PasswordField("Password", validators=[InputRequired(),
                   EqualTo('confirm', message="Passwords should match")])
+    #used to check both passwords match
     confirm = PasswordField("Confirm Password")
 
     # submit button
     submit = SubmitField("Register")
+#---------------------------------------------------------------------------------------------
 
-#NEW CODE
+#-------------------------NEW CODE-------------------------------------------------------------------------------
+#This is a form for creatinv a new event
 class EventForm(FlaskForm):
+    #Title of the event, required
     title = StringField('Title', validators=[DataRequired()])
+    #optional event description
     description = TextAreaField('Description')
+    #Capacity must be an integer and greater than 0 - MAY CHANGE THIS
     capacity = IntegerField('Capacity', validators=[NumberRange(min=1, message="Capacity must be positive")])
-    features = IntegerField('Features')  # might make this a SelectMultipleField
+    #Features (currently stored as integer, could later be expanded to checkboxes/select field)
+    features = IntegerField('Features')  #might make this a SelectMultipleField
+    #date/time of the event (required, must match the format given) - could make this easier
     date = DateTimeField('Date (YYYY-MM-DD HH:MM)', format='%Y-%m-%d %H:%M', validators=[DataRequired()])
+    #Only allows images
+    image = FileField('Event Image', validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'Images only!')])
+    #SUBMIT BUTTONN
     submit = SubmitField('Create Event')
+#-----------------------------------------------------------------------------------------------------------------

@@ -1,28 +1,73 @@
+<!--commented-->
+
+<!--extends the base template so we get stuff that isnt in the placeholder here as well-->
 {% extends "base.html" %}
 
+<!--this content block will replace placeholder-->
 {% block content %}
-<main class="d-flex align-items-center justify-content-center py-5 hero-banner">
-    <div class="container mt-4" style="color:white;">
-        <h2>Upcoming Events</h2>
 
-        {% if events %}
-            <ul class="list-group">
+<!--main wrapper section:
+- still using hero-banner as the consistent style across pages
+- centres content area
+- py-5 used for vertical spacing
+-->
+
+<main class="d-flex align-items-center justify-content-center py-5 hero-banner">
+  <div class="container">
+    <div class="row justify-content-center">
+      <!-- responsive column adaptable to other screen size-->
+      <div class="col-sm-10 col-md-8 col-lg-6">
+
+        <!-- glassy card wrapper (same style as login and other stuff) -->
+        <div class="card shadow-sm" style="color:white;" >
+          <div class="card-body p-4">
+            
+            <!--Page heading-->
+            <h2 class="h4 mb-4 text-center">Upcoming Events</h2>
+
+            <!--Check if there are any events in the list passed from flask -->
+            {% if events %}
+              <!--bootstrap list group to display events -->
+              <ul class="list-group">
+                <!--loop through each event object from database -->
                 {% for event in events %}
-                <li class="list-group-item">
-                    <h5>{{ event.title }}</h5>
-                    {% if event.description %}
-                    <p>{{ event.description }}</p>
-                    {% endif %}
-                    <p><strong>Date:</strong> {{ event.date.strftime('%Y-%m-%d %H:%M') }}</p>
-                    <p><strong>Capacity:</strong> {{ event.capacity }}</p>
-                    <p><strong>Features:</strong> {{ event.features }}</p>
-                    <p><small>Created by user ID: {{ event.created_by }}</small></p>
+                <li class="list-group-item bg-transparent text-white border-light">
+                  <!--event title-->
+                  <h5>{{ event.title }}</h5>
+
+                  <!--only show description if it exists-->
+                  {% if event.description %}
+                  <p>{{ event.description }}</p>
+                  {% endif %}
+
+                  <!--only show image if it has been uploaded - may need altering-->
+                  {% if event.image_file %}
+                  <img src="{{ url_for('static', filename='uploads/' ~ event.image_file) }}" 
+                  alt="{{ event.title }}" class="img-fluid mb-3">
+                  {% endif %}
+
+                  <!-- event details -->
+                  <p><strong>Date:</strong> {{ event.date.strftime('%Y-%m-%d %H:%M') }}</p>
+                  <p><strong>Capacity:</strong> {{ event.capacity }}</p>
+                  <p><strong>Features:</strong> {{ event.features }}</p>
+                  <p><small>Created by user name: {{ event.created_by }}</small></p>
                 </li>
                 {% endfor %}
-            </ul>
-        {% else %}
-            <div class="alert alert-info">No events found. Be the first to <a href="{{ url_for('events.create_event') }}">create one</a>!</div>
-        {% endif %}
+              </ul>
+            {% else %}
+              <!-- message if no events and links to create event page will redirect user to login if they are not logged in -->
+              <div class="alert alert-info">
+                No events found. Be the first to <a href="{{ url_for('events.create_event') }}">create one</a>!
+              </div>
+            {% endif %}
+
+          </div>
+        </div>
+
+      </div>
     </div>
+  </div>
 </main>
+
+<!--end of content block-->
 {% endblock %}
