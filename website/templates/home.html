@@ -10,25 +10,122 @@
 
 <!--content block stuff - homepage specific content subject to change-->
 {% block content %}
+
+<!-- JOE NOTE: just testing hte differece in the styling -->
+<header class="hero-banner">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-7">
+        <!-- Text content -->
+        {% if email %}
+        <h1 class="display-4 fw-bold" style="font-size: 64px; color: white">Welcome back, {{name}}!</h1>
+        <p class="lead" style="font-family: 'Poppins', sans-serif; color: white">Glad to see you again - check out the
+          latest events!</p>
+
+        {% else %}
+        <!-- If not logged in -->
+        <h1 class="display-4 fw-bold" style="font-size: 64px; color: white">Welcome to PoolBNB</h1>
+        <p class="lead">Discover, book, and share amazing poolside events.</p>
+
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</header>
+
+
 <!--using hero banner for consistent style-->
 <!--centres the content inside-->
-<main class="hero-banner d-flex align-items-center">
-  <div class="container text-center text-white">
-    <!--if user is logged in will show personalised email-->
-    {% if email %}
-      <!-- If logged in -->
-      <h1 class="display-4">Welcome back, {{ email }}!</h1>
-      <p class="lead">Glad to see you again - check out the latest events!</p>
-    
-    <!--default display for users not logged in-->
-    {% else %}
-      <!-- If not logged in -->
-      <h1 class="display-4 fw-bold">Welcome to PoolBNB</h1>
-      <p class="lead">Discover, book, and share amazing poolside events.</p>
-      
-    {% endif %}
-    
-  </div>
+<main class="d-flex align-items-center">
+  <div class="container-fluid my-5">
+
+    <!-- This will be the most recent events that get displayed here -->
+    <div class="row">
+      <!-- Page break to seperate title from the landing page events -->
+      <div class="d-flex align-items-center justify-content-center mt-5 mb-4">
+        <div class="flex-grow-1 border-top"></div>
+        <h2 class="px-3 text-dark">Browse Recently Added Events</h2>
+        <div class="flex-grow-1 border-top"></div>
+      </div>
+
+      <!-- This is a card section for most recent 5 events -->
+      <div class="container my-5">
+        <div class="container justify-content-center align-items-center my-5">
+          <div class="row g-4 ">
+            {% for event in events %}
+            <div class="col-md-4 col-sm-6">
+              <div class="card event-card h-100 overflow-hidden shadow-sml">
+
+                <!-- Handle if the image dosn't exist -->
+                {% if not event.image_file %}
+                <img src="{{event.image_file}}" class="card-img-top" alt="{{ event.title}}">
+                {% else %}
+                <img src="static/uploads/default.jpg" class="card-img-top" alt="{{ event.title}}">
+                {% endif %}
+
+                <!-- Handle the body of the text -->
+                <div class="card-body">
+                  <h5 class="card-title">{{event.title}}</h5>
+                  <p class="card-text">{{event.description}}</p>
+                  <div class="row g-4">
+                    <p class="card-text col">Status: {{event.status}}</p>
+                    <p class="card-text col"><i class="bi bi-calendar-fill">{{event.date.strftime('%Y-%m-%d')}}</i></p>
+                  </div>
+                  <a href="" class="btn btn-primary btn-shadow">Find Tickets</a>
+                  <!-- NOTE this will need to have a link to the event book-->
+                </div>
+              </div>
+            </div>
+            {% else %}4
+            <!-- An error display if the database has no events in it-->
+            <h5 class="text-center">No events available <i class="bi bi-emoji-frown"></i></h5>
+            <p>Thats fine, be the first to
+              <link>create one!</link>
+            </p>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <!-- This will be every event in the database that will be limited to like ten -->
+      <div class="row">
+        <!-- Page break to seperate title from the landing page events -->
+        <div class="d-flex align-items-center justify-content-center mt-5 mb-4">
+          <!-- Bar in front of the title -->
+          <div class="flex-grow-1 border-top"></div>
+
+          <!-- TItle of the page -->
+          <h2 class="px-3 text-dark">Browse Events By Category</h2>
+
+          <!-- Drop down next to the title -->
+          <div class="btn-group">
+            <button class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Select Category</button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="#">Menu item</a></li>
+              <li><a class="dropdown-item" href="#">Menu item</a></li>
+              <li><a class="dropdown-item" href="#">Menu item</a></li>
+            </ul>
+          </div>
+
+          <!-- Bar next to the title -->
+          <div class="flex-grow-1 border-top"></div>
+        </div>
+
+        <!-- This is a card section by location -->
+        <!-- This will need to looped to display all the acurate amount of events-->
+        <div class="col-12 col-md-3">
+          <div class="card" style="width: 18rem;">
+            <img src="Image/Brisbane.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Brisbane</h5>
+              <p class="card-text">Find Events In Brisbane</p>
+              <a href="event.html" class="btn btn-primary">Find Tickets</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
 </main>
 <!-- back to base-->
 {% endblock %}

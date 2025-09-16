@@ -53,7 +53,10 @@ def login():
         if error is None:
             login_user(user) #Flask-login is going to set a session cookie so the user stays logged in
             login_user(user)  
+
             session['email'] = user.email  # store email in session
+            session['name'] = user.name # store the user name in the session
+
             #WILL NEED TO TEST IF THIS IS WORKING LATER
             #This is complicated
             #Check if the user was trying to access a protected page before login
@@ -64,7 +67,7 @@ def login():
                 return redirect(url_for('main.index')) #go to the homepage
             return redirect(nextp) #otherwise go to the page they originally wanted
         else:
-             #Flash shows a small message in the UI 
+            #Flash shows a small message in the UI 
             flash(error)
     #If GET request or login failed, show the login form again
     return render_template('login.html', form=login_form, heading='Login')
@@ -115,9 +118,9 @@ def register():
 @auth_bp.route('/logout')
 @login_required  #only allow logged-in users to log out from utils.py
 def logout():
-    #remove email from session so navbar updates
+    #remove email and username from session so navbar updates
     session.pop('email', None)
-
+    session.pop('name', None)
     #log user out (Flask-Login)
     logout_user()
 

@@ -44,6 +44,9 @@ def create_event():
         new_event = Event(
             title=form.title.data,
             description=form.description.data,
+            location=form.location.data,
+            status=form.status.data,
+            cost=form.cost.data,
             capacity=form.capacity.data,
             features=form.features.data,
             date=form.date.data,
@@ -56,7 +59,10 @@ def create_event():
         #flash message
         flash('Event created successfully!', 'success')
         #redirect user to the list of events page
-        return redirect(url_for('events.list_events')) 
+        return redirect(url_for('events.list_events'))
+    else:
+        #Check if the form submitted if not then throw error
+        print(form.errors)
     #if get requrest or form not valid, render the create event form
     return render_template('create_event.html', form=form)
 

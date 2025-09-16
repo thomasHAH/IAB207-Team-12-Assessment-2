@@ -23,8 +23,9 @@ This is the main wrapper section
         <!--using white for consistent styling-->
         <div class="card shadow-sm" style="color:white;">
           <div class="card-body p-4">
-            <!--Page heading inside the glass card - consistent--> 
+            <!--Page heading inside the glass card - consistent-->
             <h2 class="h4 mb-4 text-center">Create New Event</h2>
+            <p class="mb-0 opacity-75 text-center">Upload an image, set times, add multiple ticket types, and save.</p>
 
             <!--user input is submitted to the server-->
             <!--Event creation form + added file upload support-->
@@ -37,35 +38,74 @@ This is the main wrapper section
                 {{ form.title.label(class="form-label") }}
                 <!--using my own personalised styling-->
                 <!--width is perfect-->
-                {{ form.title(class="input-59 w-100") }}
+                {{ form.title(class="form-control", type="text") }}
               </div>
 
               <!--description input field-->
               <div class="mb-3">
                 {{ form.description.label(class="form-label") }}
-                {{ form.description(class="input-59 w-100") }}
+                {{ form.description(class="form-control", type="text") }}
               </div>
 
-              <!--capacity input field-->
+              <!-- location input field-->
               <div class="mb-3">
-                {{ form.capacity.label(class="form-label") }}
-                {{ form.capacity(class="input-59 w-100") }}
+                <i class="bi bi-geo-alt-fill"></i>
+                {{ form.location.label(class="form-label") }}
+                {{ form.location(class="form-control", type="text") }}
               </div>
 
-              <!--features input field-->
-              <div class="mb-3">
-                {{ form.features.label(class="form-label") }}
-                {{ form.features(class="input-59 w-100") }}
+              <!--capacity and cost input field-->
+              <div class="row mb-3">
+                <!-- Cost field-->
+                <div class="col-md-6">
+                  <i class="bi bi-cash-stack"></i>
+                  {{ form.cost.label(class="form-label") }}
+                  {{ form.cost(class="form-control", step="0.01") }}
+                </div>
+                <!-- Capacity field-->
+                <div class="col-md-6">
+                  <i class="bi bi-people-fill"></i>
+                  {{ form.capacity.label(class="form-label") }}
+                  {{ form.capacity(class="form-control", type="number") }}
+                </div>
               </div>
 
-              <!--date field-->
-              <div class="mb-3">
-                {{ form.date.label(class="form-label") }}
-                {{ form.date(class="input-59 w-100") }}
+              <!--features and status input field-->
+              <div class="row mb-3">
+                <!-- Features field -->
+                <div class="col-md-6">
+                  {{ form.features.label(class="form-label") }}
+                  {{ form.features(class="form-control") }}
+                </div>
+
+                <!-- status input field -->
+                <div class="col-md-6">
+                  {{ form.status.label(class="form-label") }}
+                  {{ form.status(class="form-control") }}
+                </div>
+              </div>
+
+
+              <!-- Time and Date feilds-->
+              <div class="row mb-3">
+                <!--date field-->
+                <div class="col-md-6">
+                  <i class="bi bi-calendar-fill"></i>
+                  {{ form.date.label(class="form-label") }}
+                  {{ form.date(class="form-control", type="date") }}
+                </div>
+
+                <!-- time field-->
+                <div class="col-md-6">
+                  <i class="bi bi-clock-fill"></i>
+                  {{ form.time.label(class="form-label") }}
+                  {{ form.time(class="form-control", type="time") }}
+                </div>
               </div>
 
               <!--image upload input field -->
               <div class="mb-3">
+                <i class="bi bi-image-fill"></i>
                 {{ form.image.label(class="form-label") }}
                 {{ form.image(class="form-control") }}
               </div>
