@@ -1,0 +1,84 @@
+
+<!--Commented-->
+
+{% extends "base.html" %}
+{% block content %}
+
+<!--Main wrapper for the event details page-->
+<!--using hero-tall2 to get the good auto size for growing size of events-->
+<main class="d-flex align-items-center justify-content-center py-5 hero-banner hero-tall2">
+  <div class="container">
+    <!--Using that glassy style card for displaying the event-->
+    <div class="card shadow-sm" style="color:white;">
+      <div class="card-body p-4">
+        
+        <!--Event details section-->
+        <!--These values come from the event object passed in from the Flask route-->
+        <h2>{{ event.title }}</h2>
+        <p>{{ event.description }}</p>
+        <p><strong>Date:</strong> {{ event.date.strftime('%Y-%m-%d %H:%M') }}</p>
+        <p><strong>Capacity:</strong> {{ event.capacity }}</p>
+        <p><strong>Features:</strong> {{ event.features }}</p>
+
+        <!--Only show the event image if one was uploaded-->
+        {% if event.image_file %}
+          <img src="{{ url_for('static', filename='uploads/' ~ event.image_file) }}" 
+               alt="{{ event.title }}" class="img-fluid mb-3">
+        <!-- now shows default image if one wasn't uploaded hope this works-->
+        {% else %}
+            <img src="{{ url_for('static', filename='uploads/default.jpg') }}" class="card-img-top" alt="{{ event.title }}">
+        {% endif %}
+
+        <hr>
+
+        <!--Comment form section-->
+        <!--Only display the form if the user is logged in-->
+        <!--In templates can’t use decorators. Instead, we conditionally 
+        render content based on the user’s authentication status-->
+        <!--Jinja2 template syntax-->
+        {% if current_user.is_authenticated %}
+          <h4>Add a Comment</h4>
+          <form method="POST">
+            {{ form.hidden_tag() }} <!--csrf token for security-->
+            <div class="mb-3">
+              {{ form.text.label(class="form-label") }}
+              {{ form.text(class="form-control") }}
+              <!--display any validation errors for the comment text - theres no validation atm-->
+              {% for error in form.text.errors %}
+                <div class="text-danger small">{{ error }}</div>
+              {% endfor %}
+            </div>
+             <!--the submit button - using bs for now may change it later-->
+            {{ form.submit(class="btn btn-primary") }}
+          </form>
+        {% else %}
+         <!--If not logged in, show a message linking to the login page-->
+          <p><a href="{{ url_for('auth.login') }}">Log in</a> to write a comment.</p>
+        {% endif %}
+
+        <hr>
+
+        <!--display existing comments for this event-->
+        <h4>Comments</h4>
+        {% if comments %}
+          <ul class="list-group">
+            {% for comment in comments %}
+              <li class="list-group-item bg-transparent text-white border-light">
+                <!--show the comment text-->
+                <p>{{ comment.text }}</p>
+                <!--show author name and timestamp-->
+                <small>By {{ comment.author.name }} on {{ comment.date_created.strftime('%Y-%m-%d %H:%M') }}</small>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+         <!--If there are no comments-->
+         <!--maybe show transparent image here?-->
+          <p>No comments yet. Be the first to comment!</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</main>
+
+{% endblock %}

@@ -7,8 +7,9 @@ from werkzeug.utils import secure_filename
 import os
 from flask import current_app
 from . import db  #import the database instance from init.py
-from .models import Event #import the event model
-from .forms import EventForm #import the eventform form class
+#adding comment import NEW
+from .models import Event, Comment #import the event model
+from .forms import EventForm, CommentForm #import the eventform form class
 
 #creating new blueprint for event-related routes
 #events is teh blueprint. init.py has access to it
@@ -73,3 +74,54 @@ def list_events():
     events = Event.query.order_by(Event.date.asc()).all()
     #render the template passing in the events
     return render_template('list_events.html', events=events)
+
+
+#NEW IMPLEMENTED CODE------------------------------------------------
+
+#This route handles viewing a single event page.
+#The <int:event_id> part in the URL makes it dynamic, so if a user visits /events/3,
+#Flask passes event_id=3 into the function.
+#When links are created with url_for('events.view_event', event_id=event.id),
+#Flask replaces <int:event_id> with the actual event's ID from the database.
+#The function then uses that ID to look up the specific event and display its details.
+
+#This is the route to view a single event page (both get to view and then POST to submit a comment) 
+    #User clicks event link -> URL /events/3 -> Flask passes event_id=3 -> Database query fetches 
+    #event #3 -> Render template with that event.
+@events_bp.route('/<int:event_id>', methods=['GET', 'POST'])
+def view_event(event_id):
+    #We look up the event by its ID, or show a 404 error if not found
+    event = Event.query.get_or_404(event_id)
+    
+    #Create a new instance of the CommentForm so the user can submit comments
+    #grabs this from the forms.py
+    form = CommentForm()
+
+    #Handle comment submission when the form is posted
+    if form.validate_on_submit():
+        #Ensure only logged-in users can comment
+        if current_user.is_authenticated:  #only logged in users can comment
+            new_comment = Comment(
+                text=form.text.data,
+                user_id=current_user.id, #link comment to the current user
+                event_id=event.id        #link comment to the current event
+            )
+            #add the new comment to the database and save
+            db.session.add(new_comment)
+            db.session.commit()
+            
+            #show success message and redirect (PRG pattern)
+            #should tweak these flash messages a lil to make sure they don't break the styling
+            flash("Your comment has been posted!", "success")
+            return redirect(url_for('events.view_event', event_id=event.id))
+        else:
+            #If the user is not logged in, show an error and redirect to login page
+            flash("You must be logged in to comment.", "danger")
+            return redirect(url_for('auth.login'))
+
+    #For get requests or if the form is invalid, fetch existing comments for this event
+    #Ordered newest-first by date_created
+    comments = Comment.query.filter_by(event_id=event.id).order_by(Comment.date_created.desc()).all()
+    
+    #render the event detail page with event info, comment form, and existing comments
+    return render_template('view_event.html', event=event, form=form, comments=comments)

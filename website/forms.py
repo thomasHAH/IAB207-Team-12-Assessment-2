@@ -57,4 +57,13 @@ class EventForm(FlaskForm):
     image = FileField('Event Image', validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'Images only!')])
     #SUBMIT BUTTONN
     submit = SubmitField('Create Event')
+    
+    
+#Adding comments to events - NEW
+#Form class for creating and submitting comments
+class CommentForm(FlaskForm):
+    #A text area field where the user writes their comment
+    #DataRequired ensures the field cannot be left empty
+    text = TextAreaField("Write a comment", validators=[DataRequired()])
+    submit = SubmitField("Post Comment")
 #-----------------------------------------------------------------------------------------------------------------

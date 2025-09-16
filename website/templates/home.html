@@ -53,15 +53,17 @@
         <div class="container justify-content-center align-items-center my-5">
           <div class="row g-4 ">
             {% for event in events %}
-            <div class="col-md-4 col-sm-6">
+            <div class="col-md-4 col-sm-6 ">
               <div class="card event-card h-100 overflow-hidden shadow-sml">
 
                 <!-- Handle if the image dosn't exist -->
-                {% if not event.image_file %}
-                <img src="{{event.image_file}}" class="card-img-top" alt="{{ event.title}}">
+                 <!--this was broken before reverse if/else statement-->
+                {% if event.image_file %}
+                  <img src="{{ url_for('static', filename='uploads/' ~ event.image_file) }}" class="card-img-top" alt="{{ event.title }}">
                 {% else %}
-                <img src="static/uploads/default.jpg" class="card-img-top" alt="{{ event.title}}">
+                  <img src="{{ url_for('static', filename='uploads/default.jpg') }}" class="card-img-top" alt="{{ event.title }}">
                 {% endif %}
+
 
                 <!-- Handle the body of the text -->
                 <div class="card-body">
@@ -71,8 +73,8 @@
                     <p class="card-text col">Status: {{event.status}}</p>
                     <p class="card-text col"><i class="bi bi-calendar-fill">{{event.date.strftime('%Y-%m-%d')}}</i></p>
                   </div>
-                  <a href="" class="btn btn-primary btn-shadow">Find Tickets</a>
-                  <!-- NOTE this will need to have a link to the event book-->
+                  <a href="{{ url_for('events.view_event', event_id=event.id) }}" class="btn btn-primary btn-shadow">Find Tickets</a>
+                  <!--ADded link to event-->
                 </div>
               </div>
             </div>

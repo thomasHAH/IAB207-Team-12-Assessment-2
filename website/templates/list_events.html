@@ -12,7 +12,7 @@
 - py-5 used for vertical spacing
 -->
 
-<main class="d-flex align-items-center justify-content-center py-5 hero-banner">
+<main class="d-flex align-items-center justify-content-center py-5 hero-banner hero-tall2">
   <div class="container">
     <div class="row justify-content-center">
       <!-- responsive column adaptable to other screen size-->
@@ -31,27 +31,29 @@
               <ul class="list-group">
                 <!--loop through each event object from database -->
                 {% for event in events %}
-                <li class="list-group-item bg-transparent text-white border-light">
-                  <!--event title-->
-                  <h5>{{ event.title }}</h5>
+                <a href="{{ url_for('events.view_event', event_id=event.id) }}" class="text-decoration-none text-reset">
+                  <li class="list-group-item bg-transparent text-white border-light">
+                    <!--event title - removed old link that was here-->
+                    <h5>{{ event.title}} </h5>
 
-                  <!--only show description if it exists-->
-                  {% if event.description %}
-                  <p>{{ event.description }}</p>
-                  {% endif %}
+                    <!--only show description if it exists-->
+                    {% if event.description %}
+                    <p>{{ event.description }}</p>
+                    {% endif %}
 
-                  <!--only show image if it has been uploaded - may need altering-->
-                  {% if event.image_file %}
-                  <img src="{{ url_for('static', filename='uploads/' ~ event.image_file) }}" 
-                  alt="{{ event.title }}" class="img-fluid mb-3">
-                  {% endif %}
+                    <!--only show image if it has been uploaded - may need altering-->
+                    {% if event.image_file %}
+                    <img src="{{ url_for('static', filename='uploads/' ~ event.image_file) }}" 
+                    alt="{{ event.title }}" class="img-fluid mb-3">
+                    {% endif %}
 
-                  <!-- event details -->
-                  <p><strong>Date:</strong> {{ event.date.strftime('%Y-%m-%d %H:%M') }}</p>
-                  <p><strong>Capacity:</strong> {{ event.capacity }}</p>
-                  <p><strong>Features:</strong> {{ event.features }}</p>
-                  <p><small>Created by user name: {{ event.created_by }}</small></p>
-                </li>
+                    <!-- event details -->
+                    <p><strong>Date:</strong> {{ event.date.strftime('%Y-%m-%d %H:%M') }}</p>
+                    <p><strong>Capacity:</strong> {{ event.capacity }}</p>
+                    <p><strong>Features:</strong> {{ event.features }}</p>
+                    <p><small>Created by user name: {{ event.created_by }}</small></p>
+                  </li>
+                </a>
                 {% endfor %}
               </ul>
             {% else %}

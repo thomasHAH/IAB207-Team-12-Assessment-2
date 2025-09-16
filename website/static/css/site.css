@@ -25,6 +25,17 @@
   z-index: 1;
 }
 
+/*Login and rest of the pages*/
+.hero-tall {
+    height: 90vh;
+}
+
+/*This is for showing events and stuff - needed so screen grows*/
+.hero-tall2 {
+    height: 90vh;
+    height: auto;
+}
+
 /* Glassy card over photo (used on login etc.) and now more stuff uses it!*/
 .hero-banner .card{
   background: var(--card-glass);
