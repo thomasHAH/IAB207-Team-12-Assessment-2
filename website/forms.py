@@ -45,10 +45,10 @@ class EventForm(FlaskForm):
     cost = DecimalField('Cost of Tickets', places=2, default=0.0)
     #Capacity must be an integer and greater than 0 - MAY CHANGE THIS
     capacity = IntegerField('Capacity of Event', validators=[NumberRange(min=1, message="Capacity must be positive")], default=1)
-    #Features (currently stored as integer, could later be expanded to checkboxes/select field)
-    features = IntegerField('Features')  #might make this a SelectMultipleField
+    #Features stored similar to the event status as a selected feild that way there is multiple options
+    features = SelectField('Pool Feature', choices=[('heated', 'Heated'), ('indoor', 'Indoor'), ('slide', 'Slide'), ('saltwater', 'Saltwater'), ('outdoor', 'Outdoor'), ('regular', 'Regular')], validators=[DataRequired()], default='regular')
     #Status of the event (NOTE should be Open, Inactive, Closed, Cancelled)
-    status = SelectField('Event Status', choices=[('open', 'Open'), ('inactive', 'Inactive'), ('closed', 'Closed'), ('cancelled', 'Cancelled') ] , validators=[DataRequired()], default='open')
+    status = SelectField('Event Status', choices=[('open', 'Open'), ('inactive', 'Inactive'), ('closed', 'Closed'), ('cancelled', 'Cancelled')], validators=[DataRequired()], default='open')
     #Date of the event (required, must match the format given) - could make this easier
     date = DateField('Date', format='%Y-%m-%d', validators=[DataRequired()])
     #Time of the event (required, and needs to match the format)

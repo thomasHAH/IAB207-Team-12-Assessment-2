@@ -82,3 +82,15 @@ class Order(db.Model):
     event_id = db.Column(db.Integer, db.ForeignKey('event.id'))
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
+# Booking Model
+class Booking(db.Model):
+    id = db.Column(db.Integer, primary_key=True) # Primary key for the table
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id')) # User foriegn key
+    event_id = db.Column(db.Integer, db.ForeignKey('event.id')) # Event foreign key
+    price = db.Column(db.Float, default=0.0) # NOTE this is set to a float as there could be cents in the price
+    date = db.Column(db.DateTime, default=datetime.utcnow) # NOTE this is just storing when the booking was made
+    quantity = db.Column(db.Integer, default=1) # NOTE this is stored as integer as there shouldn't ever be hald a event ticket
+
+    #New
+    # Added this just to check the simple task of the list
+    # Explained why I decided to set the table columns next to each of the keys

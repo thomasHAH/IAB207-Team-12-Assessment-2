@@ -125,3 +125,26 @@ def view_event(event_id):
     
     #render the event detail page with event info, comment form, and existing comments
     return render_template('view_event.html', event=event, form=form, comments=comments)
+
+
+# This route handles the sorting of the features on the index page
+# It will pass the feature into the url that will be read and sorted 
+# This is the home route and it will get all the events that are stored
+@events_bp.route('/')
+def home():
+    # First five most recent events 
+    recent_events = Event.query.order_by(Event.date.desc()).limit(5).all()
+    
+    # Handle getting the drop down filter
+    feature = None
+
+    # Check if the feature exists in the url
+    if feature:
+        # From the event data filter by the feature for and return all that match
+        events = Event.query.filter_by(features=feature).order_by(Event.date.asc()).all()
+    else:
+        # If ...
+        pass
+
+    # Return the recent events and the events data which is all the events and return just a selected event which can be used to show with the home template
+    return render_template('home.html', recent_events=recent_events, selected_feature=feature, events=events)
