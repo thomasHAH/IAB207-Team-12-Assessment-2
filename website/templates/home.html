@@ -57,11 +57,13 @@
               <div class="card event-card h-100 overflow-hidden shadow-sml">
 
                 <!-- Handle if the image dosn't exist -->
-                 <!--this was broken before reverse if/else statement-->
+                <!--this was broken before reverse if/else statement-->
                 {% if event.image_file %}
-                  <img src="{{ url_for('static', filename='uploads/' ~ event.image_file) }}" class="card-img-top" alt="{{ event.title }}">
+                <img src="{{ url_for('static', filename='uploads/' ~ event.image_file) }}" class="card-img-top"
+                  alt="{{ event.title }}">
                 {% else %}
-                  <img src="{{ url_for('static', filename='uploads/default.jpg') }}" class="card-img-top" alt="{{ event.title }}">
+                <img src="{{ url_for('static', filename='uploads/default.jpg') }}" class="card-img-top"
+                  alt="{{ event.title }}">
                 {% endif %}
 
 
@@ -73,12 +75,13 @@
                     <p class="card-text col">Status: {{event.status}}</p>
                     <p class="card-text col"><i class="bi bi-calendar-fill">{{event.date.strftime('%Y-%m-%d')}}</i></p>
                   </div>
-                  <a href="{{ url_for('events.view_event', event_id=event.id) }}" class="btn btn-primary btn-shadow">Find Tickets</a>
+                  <a href="{{ url_for('events.view_event', event_id=event.id) }}"
+                    class="btn btn-primary btn-shadow">Find Tickets</a>
                   <!--ADded link to event-->
                 </div>
               </div>
             </div>
-            {% else %}4
+            {% else %}
             <!-- An error display if the database has no events in it-->
             <h5 class="text-center">No events available <i class="bi bi-emoji-frown"></i></h5>
             <p>Thats fine, be the first to
@@ -97,15 +100,19 @@
           <div class="flex-grow-1 border-top"></div>
 
           <!-- TItle of the page -->
-          <h2 class="px-3 text-dark">Browse Events By Category</h2>
+          <h2 class="px-3 text-dark">Browse Events By Features</h2>
 
           <!-- Drop down next to the title -->
           <div class="btn-group">
-            <button class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Select Category</button>
+            <button class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Select A
+              Feature</button>
             <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="#">Menu item</a></li>
-              <li><a class="dropdown-item" href="#">Menu item</a></li>
-              <li><a class="dropdown-item" href="#">Menu item</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('events', feature='Heated') }}">Heated</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('events', feature='Indoor') }}">Indoor</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('events', feature='Outdoor') }}">Outdoor</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('events', feature='Slide') }}">Slide</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('events', feature='Saltwater') }}">Saltwater</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('events', feature='Regular') }}">Regular</a></li>
             </ul>
           </div>
 
@@ -113,21 +120,51 @@
           <div class="flex-grow-1 border-top"></div>
         </div>
 
-        <!-- This is a card section by location -->
-        <!-- This will need to looped to display all the acurate amount of events-->
-        <div class="col-12 col-md-3">
-          <div class="card" style="width: 18rem;">
-            <img src="Image/Brisbane.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">Brisbane</h5>
-              <p class="card-text">Find Events In Brisbane</p>
-              <a href="event.html" class="btn btn-primary">Find Tickets</a>
+        <!-- This is a card section for the assorted featured  -->
+        <div class="container my-5">
+          <div class="container justify-content-center align-items-center my-5">
+            <div class="row g-4 ">
+              {% for event in events %}
+              <div class="col-md-4 col-sm-6 ">
+                <div class="card event-card h-100 overflow-hidden shadow-sml">
+
+                  <!-- Handle if the image dosn't exist -->
+                  <!--this was broken before reverse if/else statement-->
+                  {% if event.image_file %}
+                  <img src="{{ url_for('static', filename='uploads/' ~ event.image_file) }}" class="card-img-top"
+                    alt="{{ event.title }}">
+                  {% else %}
+                  <img src="{{ url_for('static', filename='uploads/default.jpg') }}" class="card-img-top"
+                    alt="{{ event.title }}">
+                  {% endif %}
+
+
+                  <!-- Handle the body of the text -->
+                  <div class="card-body">
+                    <h5 class="card-title">{{event.title}}</h5>
+                    <p class="card-text">{{event.description}}</p>
+                    <div class="row g-4">
+                      <p class="card-text col">Status: {{event.status}}</p>
+                      <p class="card-text col"><i class="bi bi-calendar-fill">{{event.date.strftime('%Y-%m-%d')}}</i>
+                      </p>
+                    </div>
+                    <a href="{{ url_for('events.view_event', event_id=event.id) }}"
+                      class="btn btn-primary btn-shadow">Find Tickets</a>
+                    <!--ADded link to event-->
+                  </div>
+                </div>
+              </div>
+              {% else %}
+              <!-- An error display if the database has no events in it-->
+              <h5 class="text-center">No events available <i class="bi bi-emoji-frown"></i></h5>
+              <p>Thats fine, be the first to
+                <link>create one!</link>
+              </p>
+              {% endfor %}
             </div>
           </div>
         </div>
       </div>
-    </div>
-
 </main>
 <!-- back to base-->
 {% endblock %}
