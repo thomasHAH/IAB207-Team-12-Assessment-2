@@ -42,9 +42,9 @@ def create_app():
       # - Takes the ID from the cookie
       # - Looks up the User in the database
       # - Returns the User so we can use current_user
-       return db.session.scalar(db.select(User).where(User.id==user_id))
+      return db.session.scalar(db.select(User).where(User.id==user_id))
 
-   #Register here means attaching a blueprint to the flask app
+    #Register here means attaching a blueprint to the flask app
     from . import views
     app.register_blueprint(views.main_bp)
 

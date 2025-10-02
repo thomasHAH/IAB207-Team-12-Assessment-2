@@ -1,7 +1,7 @@
 #commented
 
 #import the necessary modules and functions from Flask and Flask-Login
-from flask import Blueprint, render_template, redirect, url_for, flash
+from flask import Blueprint, render_template, redirect, request, url_for, flash
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 import os
@@ -136,14 +136,15 @@ def home():
     recent_events = Event.query.order_by(Event.date.desc()).limit(5).all()
     
     # Handle getting the drop down filter
-    feature = None
+    feature = request.args.get("feature")
 
     # Check if the feature exists in the url
     if feature:
         # From the event data filter by the feature for and return all that match
         events = Event.query.filter_by(features=feature).order_by(Event.date.asc()).all()
     else:
-        # If ...
+        # If there is no feature just get all the events
+        events = Event.query.order_by(Event.date.asc()).all()
         pass
 
     # Return the recent events and the events data which is all the events and return just a selected event which can be used to show with the home template

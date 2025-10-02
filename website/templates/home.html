@@ -107,12 +107,12 @@
             <button class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Select A
               Feature</button>
             <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="{{ url_for('events', feature='Heated') }}">Heated</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('events', feature='Indoor') }}">Indoor</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('events', feature='Outdoor') }}">Outdoor</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('events', feature='Slide') }}">Slide</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('events', feature='Saltwater') }}">Saltwater</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('events', feature='Regular') }}">Regular</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('events.home', feature='Heated') }}">Heated</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('events.home', feature='Indoor') }}">Indoor</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('events.home', feature='Outdoor') }}">Outdoor</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('events.home', feature='Slide') }}">Slide</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('events.home', feature='Saltwater') }}">Saltwater</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('events.home', feature='Regular') }}">Regular</a></li>
             </ul>
           </div>
 

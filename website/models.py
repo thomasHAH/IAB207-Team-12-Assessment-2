@@ -29,7 +29,7 @@ class Event(db.Model):
     capacity = db.Column(db.Integer, nullable=False)
     cost = db.Column(db.Float, default=0.0)
     status = db.Column(db.String(30), nullable=False)
-    features = db.Column(db.Integer)
+    features = db.Column(db.Text, default='regular')
     created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
     #Before it executed immediately when the model is loaded, not each time a new row is created
     date = db.Column(db.DateTime, default=datetime.utcnow)  
