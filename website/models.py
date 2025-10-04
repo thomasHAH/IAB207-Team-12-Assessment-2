@@ -1,4 +1,4 @@
-#Need comments here
+#Commented
 
 from . import db
 from datetime import datetime, time
@@ -10,6 +10,9 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(150), nullable=False)
     name = db.Column(db.String(150), nullable=False)
+    
+    #A user can have many bookings
+    bookings = db.relationship('Booking', backref='user', lazy=True)
 
     #NEW
     #Relationship: a user can have many comments
@@ -18,6 +21,10 @@ class User(db.Model, UserMixin):
     # - The 'backref' makes it so each Comment automatically gets an 'author' attribute
     #   (so we can do comment.author to get the User who wrote it).
     # - lazy=True means comments are loaded only when accessed (not upfront)
+    
+    #users can "review" many events, and events can be "reviewed" by many
+    #users but the link happens through the Comment model rather than being a
+    #direct many-to-many.
     comments = db.relationship('Comment', backref='author', lazy=True)
     
 # Event Model
@@ -31,12 +38,18 @@ class Event(db.Model):
     status = db.Column(db.String(30), nullable=False)
     features = db.Column(db.Text, default='regular')
     created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
+    #relationship so we can access the creator directly as an object
+    creator = db.relationship('User', backref='events_created', lazy=True)
+    
     #Before it executed immediately when the model is loaded, not each time a new row is created
     date = db.Column(db.DateTime, default=datetime.utcnow)  
-    time = db.Column(db.Time, default=lambda: datetime.utcnow().time())
+    #removed time, not really needed
     
     #NEW: store image filename/path
     image_file = db.Column(db.String(255), nullable=True, default='default.jpg')
+    
+    #An event can have many bookings
+    bookings = db.relationship('Booking', backref='event', lazy=True)
     
     #NEW
     #Relationship: an event can have many comments
@@ -74,7 +87,7 @@ class Comment(db.Model):
     # -> Links the comment to the Event with id=3,
     #and with backref='event', comment.event will return that Event object.
 
-
+#This is new
 # Order Model
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -82,7 +95,8 @@ class Order(db.Model):
     event_id = db.Column(db.Integer, db.ForeignKey('event.id'))
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
-# Booking Model
+#Booking model utilised for tickets to the event
+#Booking Model
 class Booking(db.Model):
     id = db.Column(db.Integer, primary_key=True) # Primary key for the table
     user_id = db.Column(db.Integer, db.ForeignKey('user.id')) # User foriegn key

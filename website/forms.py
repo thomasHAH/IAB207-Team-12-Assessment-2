@@ -51,8 +51,7 @@ class EventForm(FlaskForm):
     status = SelectField('Event Status', choices=[('open', 'Open'), ('inactive', 'Inactive'), ('closed', 'Closed'), ('cancelled', 'Cancelled')], validators=[DataRequired()], default='open')
     #Date of the event (required, must match the format given) - could make this easier
     date = DateField('Date', format='%Y-%m-%d', validators=[DataRequired()])
-    #Time of the event (required, and needs to match the format)
-    time = TimeField('Time', format='%H:%M', validators=[DataRequired()])
+    
     #Only allows images
     image = FileField('Event Image', validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'Images only!')])
     #SUBMIT BUTTONN
@@ -66,4 +65,23 @@ class CommentForm(FlaskForm):
     #DataRequired ensures the field cannot be left empty
     text = TextAreaField("Write a comment", validators=[DataRequired()])
     submit = SubmitField("Post Comment")
+       
+#NEW 02/10/25
+#This form is used whenever a logged-in user wants to book 
+#tickets for an event. It provides a simple interface
+#Form for booking tickets to an event
+class BookingForm(FlaskForm):
+    #IntegerField lets the user enter a number (how many tickets they want)
+    #Label shown in the form: "Quantity of Tickets For The Pool Event"
+    #Validators:
+    # - DataRequired(): field cannot be left empty
+    # - NumberRange(min=1): must be at least 1 (prevents 0 or negative ticket requests)
+    quantity = IntegerField(
+        "Quantity of Tickets For The Pool Event",
+        validators=[DataRequired(), NumberRange(min=1)]
+    )
+
+    #submit button the user clicks to confirm booking
+    #the button text will appear as "Book Now"
+    submit = SubmitField("Book Now")
 #-----------------------------------------------------------------------------------------------------------------

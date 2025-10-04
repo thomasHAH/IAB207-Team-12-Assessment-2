@@ -51,7 +51,8 @@
                     <p><strong>Date:</strong> {{ event.date.strftime('%Y-%m-%d %H:%M') }}</p>
                     <p><strong>Capacity:</strong> {{ event.capacity }}</p>
                     <p><strong>Features:</strong> {{ event.features }}</p>
-                    <p><small>Created by user name: {{ event.created_by }}</small></p>
+                    <!-- changed this to id (maybe it should be username? idk if it matters)-->
+                    <p><small>Created by user id: {{ event.created_by }}</small></p>
                   </li>
                 </a>
                 {% endfor %}

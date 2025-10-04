@@ -1,5 +1,5 @@
 
-<!--Commented-->
+<!--commented-->
 
 {% extends "base.html" %}
 {% block content %}
@@ -16,10 +16,28 @@
         <!--These values come from the event object passed in from the Flask route-->
         <h2>{{ event.title }}</h2>
         <p>{{ event.description }}</p>
-        <p><strong>Date:</strong> {{ event.date.strftime('%Y-%m-%d %H:%M') }}</p>
+        <!--Event details section extended-->
+        <!-- added alot more details as before it was kinda empty-->
+        <p><strong>Date:</strong> {{ event.date.strftime('%Y-%m-%d') }}</p>
+        <p><strong>Location:</strong> {{ event.location }}</p>
+        <p><strong>Status:</strong> {{ event.status }}</p>
+        <p><strong>Cost:</strong> ${{ "%.2f"|format(event.cost) }}</p>
         <p><strong>Capacity:</strong> {{ event.capacity }}</p>
         <p><strong>Features:</strong> {{ event.features }}</p>
-
+        
+        <!-- changing it from id to name-->
+        <p><strong>Created By:</strong>
+          {% if event.creator %}
+            {{ event.creator.name }}
+          {% else %}
+            Unknown
+          {% endif %}
+        </p>
+        
+        <p><strong>Tickets Left:</strong> {{ tickets_left }}</p>
+       
+          
+        </p>
         <!--Only show the event image if one was uploaded-->
         {% if event.image_file %}
           <img src="{{ url_for('static', filename='uploads/' ~ event.image_file) }}" 
@@ -30,6 +48,54 @@
         {% endif %}
 
         <hr>
+
+        <!-- NEW CODE 03/10/25 -->
+        <!-- BOOKING FORM -->
+        <!-- check if used is logged in, only loggedin users can book tickets-->
+        {% if current_user.is_authenticated %}
+        <!--if the logged in user is also the creator of the event they can't book-->
+        {% if event.created_by == current_user.id %}
+          <div class="alert alert-warning mt-3">
+            You created this event, so you can't book tickets for it.
+          </div>
+
+        <!--if there are no tickets left then its sold out-->
+        {% elif tickets_left <= 0 %}
+          <div class="alert alert-danger mt-3">
+            This event is <strong>SOLD OUT</strong>. No tickets available.
+          </div>
+        {% else %}
+
+        <!--otherwise we show the booking form-->
+          <h4>Book Tickets</h4>
+          <form method="POST" action="{{ url_for('events.book_event', event_id=event.id) }}">
+            <!--CSRF protection token hidden field -->
+            {{ booking_form.hidden_tag() }}
+
+            <!--input field for number of tickets -->
+            <div class="mb-3">
+              {{ booking_form.quantity.label(class="form-label") }} <!--label for ticket quantity -->
+              {{ booking_form.quantity(class="form-control") }} <!--input box for ticket quantity -->
+
+              <!--loop through and display any validation errors for the quantity field -->
+              {% for error in booking_form.quantity.errors %}
+                <div class="text-danger small">{{ error }}</div>
+              {% endfor %}
+            </div>
+
+            <!--submit button styled with Bootstrap -->
+            {{ booking_form.submit(class="btn btn-primary") }}
+          </form>
+          <!--display how many tickets are still available -->
+          <p class="mt-2 h5">Tickets left: {{ tickets_left }}</p>
+        {% endif %}
+      {% else %}
+      <!--if the user is not logged in -> semd prompt getting them to log in -->
+        <p><a href="{{ url_for('auth.login') }}">Log in</a> to book tickets.</p>
+      {% endif %}
+
+      <hr> <!--divider for separating sections -->
+
 
         <!--Comment form section-->
         <!--Only display the form if the user is logged in-->
@@ -67,7 +133,7 @@
                 <!--show the comment text-->
                 <p>{{ comment.text }}</p>
                 <!--show author name and timestamp-->
-                <small>By {{ comment.author.name }} on {{ comment.date_created.strftime('%Y-%m-%d %H:%M') }}</small>
+                <small>By {{ comment.author.name }} on {{ comment.date_created.strftime('%Y-%m-%d') }}</small> <!--removed time-->
               </li>
             {% endfor %}
           </ul>

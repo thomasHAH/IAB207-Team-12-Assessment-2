@@ -25,7 +25,7 @@ This is the main wrapper section
           <div class="card-body p-4">
             <!--Page heading inside the glass card - consistent-->
             <h2 class="h4 mb-4 text-center">Create New Event</h2>
-            <p class="mb-0 opacity-75 text-center">Upload an image, set times, add multiple ticket types, and save.</p>
+            <p class="mb-0 opacity-75 text-center">Upload an image, set dates, add multiple ticket types, and save.</p>
 
             <!--user input is submitted to the server-->
             <!--Event creation form + added file upload support-->
@@ -93,13 +93,6 @@ This is the main wrapper section
                   <i class="bi bi-calendar-fill"></i>
                   {{ form.date.label(class="form-label") }}
                   {{ form.date(class="form-control", type="date") }}
-                </div>
-
-                <!-- time field-->
-                <div class="col-md-6">
-                  <i class="bi bi-clock-fill"></i>
-                  {{ form.time.label(class="form-label") }}
-                  {{ form.time(class="form-control", type="time") }}
                 </div>
               </div>
 
