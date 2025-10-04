@@ -259,3 +259,86 @@ def book_event(event_id):
     return render_template('book_event.html', event=event, form=form)
 
 #should make sure we email the user their booking details or something like that.
+
+#NEW CODE 04/10/25
+#Allows the event owner (and only the owner) to edit an existing event.
+# The form is pre-filled with the current event details and updates are saved
+# to the database once submitted
+    
+#OWNER-ONLY: Edit an existing event
+@events_bp.route('/<int:event_id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_event(event_id):
+
+    #We get the event by its ID or return a 404 error if not found
+    event = Event.query.get_or_404(event_id)
+
+    #Security check, we want to make sure only the event creator can edit their event
+    if event.created_by != current_user.id:
+        flash("You are not authorised to edit this event.", "danger")
+        return redirect(url_for('events.view_event', event_id=event.id))
+
+    #create the form instance for editing
+    form = EventForm()
+
+    #if this is a GET request (first time loading), pre-fill the form fields
+    #with the event’s current data
+    #this is gonna help the user see the existing values when editing
+    if request.method == 'GET':
+        form.title.data = event.title
+        form.description.data = event.description
+        form.location.data = event.location
+        form.cost.data = event.cost
+        form.capacity.data = event.capacity
+        form.features.data = event.features
+        form.status.data = event.status
+        #Extract the date portion
+        form.date.data = event.date.date() if event.date else None
+
+    #when form is submitted and valid, update the event details
+    if form.validate_on_submit():
+        # Keep the old image unless a new one is uploaded
+        filename = event.image_file
+        if form.image.data:
+            #secure the uploaded filename and save it to the uploads folder
+            filename = secure_filename(form.image.data.filename)
+            filepath = os.path.join(current_app.root_path, 'static/uploads', filename)
+            form.image.data.save(filepath)
+
+        #We will now update event details from the form inputs
+        event.title = form.title.data
+        event.description = form.description.data
+        event.location = form.location.data
+        event.cost = form.cost.data
+        event.capacity = form.capacity.data
+        event.features = form.features.data
+        event.status = form.status.data
+        event.date = form.date.data
+        event.image_file = filename
+
+        #and now gotta save the new changes to the database
+        db.session.commit()
+
+        #flash a confirmation message and redirect to the event details page
+        flash('Event updated successfully!', 'success')
+        return redirect(url_for('events.view_event', event_id=event.id))
+
+    #If not submitted or invalid, render the edit form page
+    #editing=true helps the template display the correct heading and button text
+    #render edit_event.html
+    return render_template('edit_event.html', form=form, editing=True, event=event)
+
+#NEW NEW CODE 04/10/25
+#Show all bookings for the currently logged-in user
+
+#Displays all bookings made by the currently logged-in user.
+#Each booking includes event details, quantity, total cost, and booking date.
+@events_bp.route('/my_bookings')
+@login_required
+def my_bookings():
+    
+    #query all bookings that belong to the current user
+    bookings = Booking.query.filter_by(user_id=current_user.id).order_by(Booking.date.desc()).all()
+
+    #render the template and pass bookings
+    return render_template('my_bookings.html', bookings=bookings)

@@ -38,7 +38,7 @@
 
                     <!--only show description if it exists-->
                     {% if event.description %}
-                    <p>{{ event.description }}</p>
+                    <p class="mb-2">{{ event.description }}</p>
                     {% endif %}
 
                     <!--only show image if it has been uploaded - may need altering-->
@@ -48,11 +48,19 @@
                     {% endif %}
 
                     <!-- event details -->
-                    <p><strong>Date:</strong> {{ event.date.strftime('%Y-%m-%d %H:%M') }}</p>
+                    <p><strong>Date:</strong> {{ event.date.strftime('%Y-%m-%d') }}</p>
                     <p><strong>Capacity:</strong> {{ event.capacity }}</p>
                     <p><strong>Features:</strong> {{ event.features }}</p>
-                    <!-- changed this to id (maybe it should be username? idk if it matters)-->
-                    <p><small>Created by user id: {{ event.created_by }}</small></p>
+                    <p><strong>Status: </strong> {{ event.status }}</p>
+                    
+                    <!-- changing it from id to name-->
+                    <p><strong>Created By:</strong>
+                      {% if event.creator %}
+                        {{ event.creator.name }}
+                      {% else %}
+                        Unknown
+                      {% endif %}
+                    </p>
                   </li>
                 </a>
                 {% endfor %}

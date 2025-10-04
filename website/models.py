@@ -38,6 +38,7 @@ class Event(db.Model):
     status = db.Column(db.String(30), nullable=False)
     features = db.Column(db.Text, default='regular')
     created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
+    
     #relationship so we can access the creator directly as an object
     creator = db.relationship('User', backref='events_created', lazy=True)
     
@@ -105,6 +106,22 @@ class Booking(db.Model):
     date = db.Column(db.DateTime, default=datetime.utcnow) # NOTE this is just storing when the booking was made
     quantity = db.Column(db.Integer, default=1) # NOTE this is stored as integer as there shouldn't ever be hald a event ticket
 
+    #NEW RELATIONSHIP
+    
+    #This creates a direct relationship between the Booking and Event models.
+    #It allows us to access the event linked to a booking easily: for example:
+    # - booking.event.title -> gets the title of the event for that booking
+    # - booking.event.date -> gets the event date
+    #
+    #The 'backref' part adds a reverse reference so we can also do:
+    # - event.bookings -> gets a list of all bookings for that event
+    #
+    #This relationship is required for the "My Bookings" page to display
+    #event details (title, date, description, etc.) for each booking record.
+    #event = db.relationship('Event', backref='bookings')
+    
+    
+    
     #New
     # Added this just to check the simple task of the list
     # Explained why I decided to set the table columns next to each of the keys

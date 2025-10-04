@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- 
+main hero section for the user's booking history page.
+Uses Bootstrap flexbox utilities to center the card vertically and horisontally.
+`hero-banner hero-tall2` provides consistent background styling across the site.
+-->
+<main class="d-flex align-items-center justify-content-center py-5 hero-banner hero-tall2" style="min-height: 100vh;">
+  <div class="container">
+    
+    <!--card container for displaying bookings -->
+    <!-- may edit this later-->
+    <!-- 'shadow-sm' adds subtle depth, and white text ensures readability over dark backgrounds -->
+    <div class="card shadow-sm" style="color:white;">
+      <div class="card-body p-4">
+        
+        <!--page title -->
+        <!--provides a centered heading at the top of the bookings page -->
+        <h2 class="text-center mb-4">My Bookings</h2>
+
+        <!-- 
+        Conditional rendering:
+        If the 'bookings' variable (passed in from Flask) contains any records,
+        we loop through and display each one.
+        Otherwise, we show a fallback message saying there are no bookings yet.
+        -->
+        {% if bookings %}
+          <!--container for the list of booking cards -->
+          <div class="list-group">
+            
+            <!--loop through each booking record -->
+            {% for booking in bookings %}
+              
+              <!--individual booking item -->
+              <!--styled with transparent background, white text, light border, and rounded edges -->
+              <div class="list-group-item bg-transparent text-white border-light mb-3 rounded">
+                
+                <!--display the event title (linked via relationship in Booking model) -->
+                <h5>{{ booking.event.title }}</h5>
+                
+                <!--show a short preview of the event description (first 100 characters) -->
+                <p>{{ booking.event.description[:100] }}...</p>
+
+                <!--show the event date -->
+                <p><strong>Date:</strong> {{ booking.event.date.strftime('%Y-%m-%d') }}</p>
+
+                <!--number of tickets booked -->
+                <p><strong>Tickets Booked:</strong> {{ booking.quantity }}</p>
+
+                <!--total cost of this specific booking -->
+                <p><strong>Total Price:</strong> ${{ "%.2f"|format(booking.price) }}</p>
+
+                <!--when the booking was made -->
+                <p><strong>Booking Date:</strong> {{ booking.date.strftime('%Y-%m-%d') }}</p>
+
+                <!--button to view the related event page -->
+                <!--uses Flask's url_for() to dynamically generate the correct event link -->
+                <a href="{{ url_for('events.view_event', event_id=booking.event.id) }}" class="btn btn-primary btn-sm">
+                  View Event
+                </a>
+
+              </div>
+            {% endfor %}
+          </div>
+
+        {% else %}
+          <!--if user has no bookings yet, show this message centered -->
+          <p class="text-center mt-3">You haven't made any bookings yet.</p>
+        {% endif %}
+
+        <!-- 
+        Back Button:
+        Lets the user navigate back to the main events listing page.
+        Centered horizontally with top margin spacing.
+        -->
+        <div class="text-center mt-4">
+          <a href="{{ url_for('events.list_events') }}" class="btn btn-secondary">Back to Events</a>
+        </div>
+
+      </div> 
+    </div>   
+  </div>     
+</main>      
+
+{% endblock %}

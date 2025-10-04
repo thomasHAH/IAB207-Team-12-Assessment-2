@@ -38,6 +38,8 @@
        
           
         </p>
+       
+
         <!--Only show the event image if one was uploaded-->
         {% if event.image_file %}
           <img src="{{ url_for('static', filename='uploads/' ~ event.image_file) }}" 
@@ -48,7 +50,17 @@
         {% endif %}
 
         <hr>
+        <!--only show edit button if the logged-in user is the event owner -->
+        {% if current_user.is_authenticated and event.created_by == current_user.id %}
+          <div class="text-center mb-4">
+            <!--edit Event Button -->
+            <a href="{{ url_for('events.edit_event', event_id=event.id) }}" class="btn btn-primary">
+              Edit Event
+            </a>
+                    
+        {% endif %}
 
+        <hr>
         <!-- NEW CODE 03/10/25 -->
         <!-- BOOKING FORM -->
         <!-- check if used is logged in, only loggedin users can book tickets-->
