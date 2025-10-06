@@ -1,6 +1,8 @@
 <!--commented - should be wrapped up-->
 <!--ONE THING TO DO IS ADD INSTRUCTIONAL PLACEHOLDER TEXT-->
 
+<!--this is pretty much the same as create_event but now editing,
+probably could have set this up more efficiently-->
 
 <!--extending base layout so navbar, footer and stuff are all included-->
 {% extends "base.html" %}
@@ -24,8 +26,8 @@ This is the main wrapper section
         <div class="card shadow-sm" style="color:white;">
           <div class="card-body p-4">
             <!--Page heading inside the glass card - consistent-->
-            <h2 class="h4 mb-4 text-center">Create New Event</h2>
-            <p class="mb-0 opacity-75 text-center">Upload an image, set dates, add multiple ticket types, and save.</p>
+            <!--this is new title for editing the event-->
+            <h2 class="h4 mb-4 text-center">Make changes to your Event</h2>
 
             <!--user input is submitted to the server-->
             <!--Event creation form + added file upload support-->
@@ -105,8 +107,9 @@ This is the main wrapper section
 
               <!--Submit button-->
               <!--using my button-->
+              <!--changed from submit to save changes-->
               <div class="d-grid">
-                {{ form.submit(class="button-59") }}
+                {{ form.submit(class="button-59", value="Save Changes") }}
               </div>
             </form>
           </div>

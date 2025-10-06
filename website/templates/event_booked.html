@@ -1,0 +1,66 @@
+<!--commented-->
+
+<!--
+This template is shown after a user successfully books tickets for an event. It displays
+a booking confirmation with order details (ID, quantity, price, date), along with associated event'same
+details (title, description, date, location, features and image). The template uses variables passed in
+from flask ('booking', 'event', 'current_user') to render the dynamic conetnet. 
+-->
+
+{% extends "base.html" %} <!--inherit the base layout-->
+{% block content %} <!-- start inserting content into the "content" block defined in base.html-->
+
+<!--main container for the booking confirmation-->
+<main class="d-flex align-items-center justify-content-center py-5 hero-banner hero-tall2">
+  <div class="container">
+    <div class="card shadow-sm" style="color:white;"> <!--styled bootstrap card-->
+      <div class="card-body p-4 text-center"> <!--card content is centred-->
+
+        <!--confirmation heading-->
+        <h2>Booking Confirmed</h2>
+        <!--display the user's name dynamically using current_user, (i think this is working)-->
+        <p>Thank you {{ current_user.name }}! You have successfully booked your tickets.</p>
+
+        <!-- Booking summary-->
+        <!--these details come from the Booking model instance created in book_event route -->
+        <p><strong>Order ID:</strong> {{ booking.id }}</p> <!-- unique booking id from db-->
+        <p><strong>Tickets Booked:</strong> {{ booking.quantity }}</p> <!--number of tickets purchased-->
+        <p><strong>Total Price:</strong> ${{ "%.2f"|format(booking.price) }}</p> <!-- price formatted to 2 decimals-->
+        <p><strong>Booking Date:</strong> {{ booking.date.strftime('%Y-%m-%d') }}</p> <!-- date booking was created-->
+
+       
+        <hr> <!--divider line -->
+
+        <!-- Event details -->
+        <!-- Displaying info about the event the user just booked -->
+        <h4>Event Details</h4>
+        <h5>{{ event.title }}</h5> <!--event title-->
+        <p>{{ event.description }}</p> <!-- event description -->
+        <p><strong>Date:</strong> {{ event.date.strftime('%Y-%m-%d') }}</p> <!-- removed time and now just date-->
+        <p><strong>Location:</strong> {{ event.location }}</p> <!-- event location-->
+        <p><strong>Features:</strong> {{ event.features }}</p> <!-- features-->
+
+        <!-- show event image -->
+        <!-- if the event creator uploaded an image, display it-->
+        {% if event.image_file %}
+          <img src="{{ url_for('static', filename='uploads/' ~ event.image_file) }}" 
+               alt="{{ event.title }}" class="img-fluid mb-3">
+        {% else %}
+          <!-- else fall back to a default placeholder image -->
+          <img src="{{ url_for('static', filename='uploads/default.jpg') }}" 
+               class="card-img-top" alt="{{ event.title }}">
+        {% endif %}
+
+        <hr> <!--divider line -->
+
+
+        <!-- navigation: back to events list-->
+        <!--button takes the user back to the events listing page -->
+        <a href="{{ url_for('events.list_events') }}" class="btn btn-primary">Back to Events</a>
+        
+      </div>
+    </div>
+  </div>
+</main>
+
+{% endblock %}
