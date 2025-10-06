@@ -132,7 +132,7 @@ def view_event(event_id):
 # This is the home route and it will get all the events that are stored
 @events_bp.route('/')
 def home():
-    # First five most recent events 
+    # First five most recent events
     recent_events = Event.query.order_by(Event.date.desc()).limit(5).all()
     
     # Handle getting the drop down filter
