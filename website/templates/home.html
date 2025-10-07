@@ -132,7 +132,7 @@ and dynmacially lists upcoming events or search results from the database
             {% else %}
             <!--message displayed if no events match the search-->
             <!--option for link to create their own-->
-            <h5 class="text-center">No matching events found <i class="bi bi-emoji-frown"></i></h5>
+            <h5 class="text-center">No matching events found</h5>
             <p class="text-center">Try another feature or <a href="{{ url_for('events.create_event') }}">create your own!</a></p>
             {% endfor %}
           </div>
