@@ -5,6 +5,8 @@ from flask import Blueprint, render_template, redirect, request, url_for, flash
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 import os
+from sqlalchemy import or_, func
+from datetime import datetime
 from flask import current_app
 from . import db  #import the database instance from init.py
 #adding comment import NEW
@@ -152,29 +154,67 @@ def view_event(event_id):
     #without them, Jinja2 throws UndefinedError since it can’t find values for the placeholders used in view_event.html
     return render_template('view_event.html', event=event, form=form,  booking_form=booking_form, comments=comments, tickets_left=tickets_left)
 
+#NEW 07/10/25
 
-# This route handles the sorting of the features on the index page
-# It will pass the feature into the url that will be read and sorted 
-# This is the home route and it will get all the events that are stored
-@events_bp.route('/')
-def home():
-    # First five most recent events
-    recent_events = Event.query.order_by(Event.date.desc()).limit(5).all()
+#This route handles displaying all events on the homepage and supports search functionality.
+
+    #Users can:
+    # - View all upcoming events (future dates only).
+    # - Search for events by typing a keyword (e.g., 'indoor', 'heated', etc.) that matches
+    #   an event's title, description, location, or features.
+
+    #TECHNICAL NOTE:
+    #originally, this functionality was bound to the root route ('/'), which conflicted
+    #with the dynamic route '/<int:event_id>' used for viewing individual events.
+    #Because Flask matched '/1' (or any integer) before the generic '/', search queries
+    #like '/?q=Indoor' didn’t properly reach the intended function, the request was
+    #effectively ignored or misrouted.  
     
-    # Handle getting the drop down filter
-    feature = request.args.get("feature")
+    #By explicitly defining this route as '/home', Flask now correctly handles search 
+    #queries and can filter results using case-insensitive matching (ILIKE) against 
+    #multiple fields.
+    
+@events_bp.route('/home')
+def home():
+    
+    #we don't need a FlaskForm here because the search uses a simple GET request
+    #the user's input (?q=indoor) is passed directly through the URL query string
+    #flask reads it with request.args.get('q'), no backend form validation or CSRF needed.
+    
+    #extract the search query (?q=indoor) from the URL, or set to empty if none provided
+    query = request.args.get('q', '').strip()
 
-    # Check if the feature exists in the url
-    if feature:
-        # From the event data filter by the feature for and return all that match
-        events = Event.query.filter_by(features=feature).order_by(Event.date.asc()).all()
+    #base query that orders events by ascending date (earliest first)
+    base_query = Event.query.order_by(Event.date.asc())
+
+    #If a search term exists, perform a case-insensitive search across fields that could be used
+    if query:
+        search = f"%{query}%" #adds wildcard matching for flexible partial matches
+        events = base_query.filter(
+            or_(
+                Event.features.ilike(search), #match by feature (e.g., indoor etc)
+                Event.title.ilike(search), #match by title like Tom's Pool
+                Event.description.ilike(search), #match by description
+                Event.location.ilike(search) #match by location
+            )
+        ).all()
+        #debugging output for development, shows matched events in the terminal
+        #had issues before
+        print(f"[DEBUG] Searching for '{query}' → Found {len(events)} events")
+        for e in events:
+            print(f"Matched: {e.title} ({e.features})")
     else:
-        # If there is no feature just get all the events
-        events = Event.query.order_by(Event.date.asc()).all()
-        pass
+        #if no search term is provided, only show upcoming events (future dates)
+        #yhis ensures users see events that haven’t occurred yet, ordered by nearest date
+        events = base_query.filter(Event.date >= datetime.utcnow()).order_by(Event.date.asc()).all()
+        
+    #render the home.html template with the filtered or full list of events
+    return render_template('home.html', events=events, search_term=query)
 
-    # Return the recent events and the events data which is all the events and return just a selected event which can be used to show with the home template
-    return render_template('home.html', recent_events=recent_events, selected_feature=feature, events=events)
+
+
+
+
 
 
 
