@@ -1,170 +1,138 @@
 <!--commented-->
-
-
-<!--extends the base template so we-->
-
 {% extends "base.html" %}
-
-<!--overide the title block in base.html-->
 {% block title %}Home - PoolBNB{% endblock %}
 
-<!--content block stuff - homepage specific content subject to change-->
 {% block content %}
 
-<!-- JOE NOTE: just testing hte differece in the styling -->
+<!--This is thge main homepage template
+IT extends base.html to maintain concistsent navigation, layout and styling stuff!
+
+The main purpose is to display a hero banner with the welcome message, personalised when user is logged in
+
+It provides a search bar and quick feature filters
+and dynmacially lists upcoming events or search results from the database
+
+  - Receives event data and an optional search term from events.py -> home() route.
+  - When users type a feature (e.g. indoor) or click a quick filter, flask passes it as ?q=indoor.
+  - The page then displays only matching events, or all upcoming events if no search term exists.
+-->
+
+<!-- Hero section WAVE BANNER -->
+
 <header class="hero-banner">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-7">
-        <!-- Text content -->
+  <video class="bg-video" autoplay muted loop playsinline preload="auto">
+    <source src="{{ url_for('static', filename='images/PoolVideo.mp4') }}" type="video/mp4">
+  </video>
+
+
+  <div class="container text-center">
+
+
+        <!--personalised greeting for logged-in users-->
         {% if email %}
-        <h1 class="display-4 fw-bold" style="font-size: 64px; color: white">Welcome back, {{name}}!</h1>
-        <p class="lead" style="font-family: 'Poppins', sans-serif; color: white">Glad to see you again - check out the
-          latest events!</p>
-
+        <h1 class="display-4 fw-bold text-white">Welcome back, {{ name }}!</h1>
+        <p class="lead text-white-50">Glad to see you again — check out the latest events!</p>
+        <!--else its just a generic hero text for visitors not logged in-->
         {% else %}
-        <!-- If not logged in -->
-        <h1 class="display-4 fw-bold" style="font-size: 64px; color: white">Welcome to PoolBNB</h1>
-        <p class="lead">Discover, book, and share amazing poolside events.</p>
-
+        <h1 class="display-4 fw-bold text-white">Welcome to PoolBNB</h1>
+        <p class="lead text-white-50">Discover, book, and share amazing poolside events.</p>
         {% endif %}
+
+        <!--new area to have the search bar on HERO banner and all other details on top of the wave image!-->
+        
+                  <div class="mt-4 hero-search">
+          <form method="GET" action="{{ url_for('events.home') }}" class="d-flex justify-content-center">
+            <input type="text" name="q" placeholder="Search by feature (e.g. Heated, Indoor, Outdoor)"
+                   value="{{ search_term }}" class="form-control w-50">
+            <button type="submit" class="btn btn-primary ms-2">Search</button>
+          </form>
+
+          <div class="mt-3">
+          <a href="{{ url_for('events.home', q='Heated') }}#results" class="btn btn-outline-light btn-sm">Heated</a>
+          <a href="{{ url_for('events.home', q='Indoor') }}#results" class="btn btn-outline-light btn-sm">Indoor</a>
+          <a href="{{ url_for('events.home', q='Outdoor') }}#results" class="btn btn-outline-light btn-sm">Outdoor</a>
+          <a href="{{ url_for('events.home', q='Slide') }}#results" class="btn btn-outline-light btn-sm">Slide</a>
+          <a href="{{ url_for('events.home', q='Saltwater') }}#results" class="btn btn-outline-light btn-sm">Saltwater</a>
+          <a href="{{ url_for('events.home', q='Regular') }}#results" class="btn btn-outline-light btn-sm">Regular</a>
+        </div>
+        </div>
+
+          </div>
       </div>
     </div>
   </div>
 </header>
 
-
-<!--using hero banner for consistent style-->
-<!--centres the content inside-->
-<main class="d-flex align-items-center">
+<!--main content sectopm-->
+<main class="d-flex align-items-center" id="results">
   <div class="container-fluid my-5">
 
-    <!-- This will be the most recent events that get displayed here -->
+    <!--search results/all events-->
     <div class="row">
-      <!-- Page break to seperate title from the landing page events -->
+      <!--section heading: adjusts dynamically depending on whether a search term exists-->
       <div class="d-flex align-items-center justify-content-center mt-5 mb-4">
         <div class="flex-grow-1 border-top"></div>
-        <h2 class="px-3 text-dark">Browse Recently Added Events</h2>
+        {% if search_term %}
+        <!--display current search term if a user searched-->
+        <h2 class="px-3 text-dark">Showing results for "{{ search_term }}"</h2>
+        {% else %}
+        <!--default title for homepage when no search applied-->
+        <h2 class="px-3 text-dark">Upcoming Events</h2>
+        {% endif %}
         <div class="flex-grow-1 border-top"></div>
       </div>
 
-      <!-- This is a card section for most recent 5 events -->
+      <!--Event cards grid section-->
       <div class="container my-5">
         <div class="container justify-content-center align-items-center my-5">
-          <div class="row g-4 ">
+          <div class="row g-4">
+            <!-- individual event card -->
             {% for event in events %}
-            <div class="col-md-4 col-sm-6 ">
+            <div class="col-md-4 col-sm-6">
               <div class="card event-card h-100 overflow-hidden shadow-sml">
 
-                <!-- Handle if the image dosn't exist -->
-                <!--this was broken before reverse if/else statement-->
+                <!--handle missing image -->
                 {% if event.image_file %}
-                <img src="{{ url_for('static', filename='uploads/' ~ event.image_file) }}" class="card-img-top"
-                  alt="{{ event.title }}">
+                <img src="{{ url_for('static', filename='uploads/' ~ event.image_file) }}" class="card-img-top" alt="{{ event.title }}">
                 {% else %}
-                <img src="{{ url_for('static', filename='uploads/default.jpg') }}" class="card-img-top"
-                  alt="{{ event.title }}">
+                <!--default image-->
+                <img src="{{ url_for('static', filename='uploads/default.jpg') }}" class="card-img-top" alt="{{ event.title }}">
                 {% endif %}
 
-
-                <!-- Handle the body of the text -->
+                <!--Event content block-->
                 <div class="card-body">
-                  <h5 class="card-title">{{event.title}}</h5>
-                  <p class="card-text">{{event.description}}</p>
+                  <h5 class="card-title">{{ event.title }}</h5>
+                  <p class="card-text">{{ event.description }}</p>
                   <div class="row g-4">
-                    <p class="card-text col">Status: {{event.status}}</p>
-                    <p class="card-text col"><i class="bi bi-calendar-fill">{{event.date.strftime('%Y-%m-%d')}}</i></p>
+                    <!--Small event info (status + date) 
+                    COULD ADD MORE DATA HERE (idk if we just keep it simple)-->
+                    <p class="card-text col">Status: {{ event.status }}</p>
+                    <p class="card-text col">
+                      <!--removed time-->
+                      <i class="bi bi-calendar-fill">{{ event.date.strftime('%Y-%m-%d') }}</i>
+                    </p>
                   </div>
-                  <a href="{{ url_for('events.view_event', event_id=event.id) }}"
-                    class="btn btn-primary btn-shadow">Find Tickets</a>
-                  <!--ADded link to event-->
+                  <!--Link to event details page-->
+                  <a href="{{ url_for('events.view_event', event_id=event.id) }}" class="btn btn-primary btn-shadow">Find Tickets</a>
                 </div>
               </div>
             </div>
             {% else %}
-            <!-- An error display if the database has no events in it-->
-            <h5 class="text-center">No events available <i class="bi bi-emoji-frown"></i></h5>
-            <p>Thats fine, be the first to
-              <link>create one!</link>
-            </p>
+            <!--message displayed if no events match the search-->
+            <!--option for link to create their own-->
+            <h5 class="text-center">No matching events found</h5>
+            <p class="text-center">Try another feature or <a href="{{ url_for('events.create_event') }}">create your own!</a></p>
             {% endfor %}
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- This will be every event in the database that will be limited to like ten -->
-      <div class="row">
-        <!-- Page break to seperate title from the landing page events -->
-        <div class="d-flex align-items-center justify-content-center mt-5 mb-4">
-          <!-- Bar in front of the title -->
-          <div class="flex-grow-1 border-top"></div>
+   
+    <!--REMOVED all the recent events - as assignment just wants us to have upcoming events-->
+    
 
-          <!-- TItle of the page -->
-          <h2 class="px-3 text-dark">Browse Events By Features</h2>
-
-          <!-- Drop down next to the title -->
-          <div class="btn-group">
-            <button class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Select A
-              Feature</button>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="{{ url_for('events.home', feature='Heated') }}">Heated</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('events.home', feature='Indoor') }}">Indoor</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('events.home', feature='Outdoor') }}">Outdoor</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('events.home', feature='Slide') }}">Slide</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('events.home', feature='Saltwater') }}">Saltwater</a></li>
-              <li><a class="dropdown-item" href="{{ url_for('events.home', feature='Regular') }}">Regular</a></li>
-            </ul>
-          </div>
-
-          <!-- Bar next to the title -->
-          <div class="flex-grow-1 border-top"></div>
-        </div>
-
-        <!-- This is a card section for the assorted featured  -->
-        <div class="container my-5">
-          <div class="container justify-content-center align-items-center my-5">
-            <div class="row g-4 ">
-              {% for event in events %}
-              <div class="col-md-4 col-sm-6 ">
-                <div class="card event-card h-100 overflow-hidden shadow-sml">
-
-                  <!-- Handle if the image dosn't exist -->
-                  <!--this was broken before reverse if/else statement-->
-                  {% if event.image_file %}
-                  <img src="{{ url_for('static', filename='uploads/' ~ event.image_file) }}" class="card-img-top"
-                    alt="{{ event.title }}">
-                  {% else %}
-                  <img src="{{ url_for('static', filename='uploads/default.jpg') }}" class="card-img-top"
-                    alt="{{ event.title }}">
-                  {% endif %}
-
-
-                  <!-- Handle the body of the text -->
-                  <div class="card-body">
-                    <h5 class="card-title">{{event.title}}</h5>
-                    <p class="card-text">{{event.description}}</p>
-                    <div class="row g-4">
-                      <p class="card-text col">Status: {{event.status}}</p>
-                      <p class="card-text col"><i class="bi bi-calendar-fill">{{event.date.strftime('%Y-%m-%d')}}</i>
-                      </p>
-                    </div>
-                    <a href="{{ url_for('events.view_event', event_id=event.id) }}"
-                      class="btn btn-primary btn-shadow">Find Tickets</a>
-                    <!--ADded link to event-->
-                  </div>
-                </div>
-              </div>
-              {% else %}
-              <!-- An error display if the database has no events in it-->
-              <h5 class="text-center">No events available <i class="bi bi-emoji-frown"></i></h5>
-              <p>Thats fine, be the first to
-                <link>create one!</link>
-              </p>
-              {% endfor %}
-            </div>
-          </div>
-        </div>
-      </div>
+  </div>
 </main>
-<!-- back to base-->
+
 {% endblock %}
