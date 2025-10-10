@@ -5,7 +5,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from wtforms.fields import TextAreaField, SubmitField, StringField, PasswordField, DateField, TimeField, IntegerField, DecimalField, SelectField
-from wtforms.validators import InputRequired, Length, Email, EqualTo, DataRequired, NumberRange
+from wtforms.validators import InputRequired, Length, Email, EqualTo, DataRequired, NumberRange, Regexp
 
 
 # ---------------Uni provided code for login and registration----------------------------------
@@ -14,7 +14,7 @@ class LoginForm(FlaskForm):
     #Username field which must have input
     user_name=StringField("User Name", validators=[InputRequired('Enter user name')])
     #Password field input required as well
-    password=PasswordField("Password", validators=[InputRequired('Enter user password')])
+    password=PasswordField("Password", validators=[InputRequired('Enter user password')])    
     #Submit button now
     submit = SubmitField("Login")
 
@@ -24,6 +24,10 @@ class RegisterForm(FlaskForm):
     user_name=StringField("User Name", validators=[InputRequired()])
     #Must have valid email format
     email = StringField("Email Address", validators=[Email("Please enter a valid email")])
+    #Contact Number required
+    contact_number = StringField("Contact Number", validators=[InputRequired(), Regexp(r'^\+?\d{10,15}$', message="Please enter a valid contact number (10-15 digits, optional +)")])
+    #Street Address required
+    street_address = StringField("Street Address", validators=[InputRequired(), Length(min=5, max=200, message="Please enter your street address")])
     #linking two fields - password should be equal to data entered in confirm
     password=PasswordField("Password", validators=[InputRequired(), EqualTo('confirm', message="Passwords should match")])
     #used to check both passwords match
@@ -33,7 +37,7 @@ class RegisterForm(FlaskForm):
 #---------------------------------------------------------------------------------------------
 
 #-------------------------NEW CODE-------------------------------------------------------------------------------
-#This is a form for creatinv a new event
+#This is a form for creating a new event
 class EventForm(FlaskForm):
     #Title of the event, required
     title = StringField('Enter Your Event Name', validators=[DataRequired()])
@@ -45,7 +49,7 @@ class EventForm(FlaskForm):
     cost = DecimalField('Cost of Tickets', places=2, default=0.0)
     #Capacity must be an integer and greater than 0 - MAY CHANGE THIS
     capacity = IntegerField('Capacity of Event', validators=[NumberRange(min=1, message="Capacity must be positive")], default=1)
-    #Features stored similar to the event status as a selected feild that way there is multiple options
+    #Features stored similar to the event status as a selected field that way there is multiple options
     features = SelectField('Pool Feature', choices=[('heated', 'Heated'), ('indoor', 'Indoor'), ('slide', 'Slide'), ('saltwater', 'Saltwater'), ('outdoor', 'Outdoor'), ('regular', 'Regular')], validators=[DataRequired()], default='regular')
     #Status of the event (NOTE should be Open, Inactive, Closed, Cancelled)
     status = SelectField('Event Status', choices=[('open', 'Open'), ('inactive', 'Inactive'), ('closed', 'Closed'), ('cancelled', 'Cancelled')], validators=[DataRequired()], default='open')
@@ -54,7 +58,7 @@ class EventForm(FlaskForm):
     
     #Only allows images
     image = FileField('Event Image', validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'Images only!')])
-    #SUBMIT BUTTONN
+    #SUBMIT BUTTON
     submit = SubmitField('Create Event')
     
     
