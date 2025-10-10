@@ -17,67 +17,55 @@ and dynmacially lists upcoming events or search results from the database
   - The page then displays only matching events, or all upcoming events if no search term exists.
 -->
 
-<!-- Hero section -->
+<!-- Hero section WAVE BANNER -->
+
 <header class="hero-banner">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-7">
+  <video class="bg-video" autoplay muted loop playsinline preload="auto">
+    <source src="{{ url_for('static', filename='images/PoolVideo.mp4') }}" type="video/mp4">
+  </video>
+
+
+  <div class="container text-center">
+
+
         <!--personalised greeting for logged-in users-->
         {% if email %}
-        <h1 class="display-4 fw-bold" style="font-size: 64px; color: white">Welcome back, {{ name }}!</h1>
-        <p class="lead" style="font-family: 'Poppins', sans-serif; color: white">
-          Glad to see you again — check out the latest events!
-        </p>
+        <h1 class="display-4 fw-bold text-white">Welcome back, {{ name }}!</h1>
+        <p class="lead text-white-50">Glad to see you again — check out the latest events!</p>
         <!--else its just a generic hero text for visitors not logged in-->
         {% else %}
-        <h1 class="display-4 fw-bold" style="font-size: 64px; color: white">Welcome to PoolBNB</h1>
-        <p class="lead" style="color:white">Discover, book, and share amazing poolside events.</p>
+        <h1 class="display-4 fw-bold text-white">Welcome to PoolBNB</h1>
+        <p class="lead text-white-50">Discover, book, and share amazing poolside events.</p>
         {% endif %}
+
+        <!--new area to have the search bar on HERO banner and all other details on top of the wave image!-->
+        
+                  <div class="mt-4 hero-search">
+          <form method="GET" action="{{ url_for('events.home') }}" class="d-flex justify-content-center">
+            <input type="text" name="q" placeholder="Search by feature (e.g. Heated, Indoor, Outdoor)"
+                   value="{{ search_term }}" class="form-control w-50">
+            <button type="submit" class="btn btn-primary ms-2">Search</button>
+          </form>
+
+          <div class="mt-3">
+          <a href="{{ url_for('events.home', q='Heated') }}#results" class="btn btn-outline-light btn-sm">Heated</a>
+          <a href="{{ url_for('events.home', q='Indoor') }}#results" class="btn btn-outline-light btn-sm">Indoor</a>
+          <a href="{{ url_for('events.home', q='Outdoor') }}#results" class="btn btn-outline-light btn-sm">Outdoor</a>
+          <a href="{{ url_for('events.home', q='Slide') }}#results" class="btn btn-outline-light btn-sm">Slide</a>
+          <a href="{{ url_for('events.home', q='Saltwater') }}#results" class="btn btn-outline-light btn-sm">Saltwater</a>
+          <a href="{{ url_for('events.home', q='Regular') }}#results" class="btn btn-outline-light btn-sm">Regular</a>
+        </div>
+        </div>
+
+          </div>
       </div>
     </div>
   </div>
 </header>
 
 <!--main content sectopm-->
-<main class="d-flex align-items-center">
+<main class="d-flex align-items-center" id="results">
   <div class="container-fluid my-5">
-
-    <!-- the search bar section -->
-    <div class="text-center mt-5 mb-4">
-
-      <!--section title with horizontal divider lines-->
-      <div class="d-flex align-items-center justify-content-center mb-3">
-        <div class="flex-grow-1 border-top"></div>
-        <h2 class="px-3 text-dark">Find Your Perfect Event</h2>
-        <div class="flex-grow-1 border-top"></div>
-      </div>
-
-      
-      <!-- search form: sends GET request to /home route with q parameter -->
-      <form method="GET" action="{{ url_for('events.home') }}" class="d-flex justify-content-center">
-        
-         <!--text input for search keyword-->
-        <input
-          type="text"
-          name="q"
-          placeholder="Search by feature (e.g. Heated, Indoor, Outdoor)"
-          value="{{ search_term }}"
-          class="form-control w-50"
-        >
-        <!--submit button-->
-        <button type="submit" class="btn btn-primary ms-2">Search</button>
-      </form>
-
-      <!--quick feature filter buttons (auto-fill search for convenience)-->
-      <div class="mt-3">
-        <a href="{{ url_for('events.home', q='Heated') }}" class="btn btn-outline-secondary btn-sm">Heated</a>
-        <a href="{{ url_for('events.home', q='Indoor') }}" class="btn btn-outline-secondary btn-sm">Indoor</a>
-        <a href="{{ url_for('events.home', q='Outdoor') }}" class="btn btn-outline-secondary btn-sm">Outdoor</a>
-        <a href="{{ url_for('events.home', q='Slide') }}" class="btn btn-outline-secondary btn-sm">Slide</a>
-        <a href="{{ url_for('events.home', q='Saltwater') }}" class="btn btn-outline-secondary btn-sm">Saltwater</a>
-        <a href="{{ url_for('events.home', q='Regular') }}" class="btn btn-outline-secondary btn-sm">Regular</a>
-      </div>
-    </div>
 
     <!--search results/all events-->
     <div class="row">
