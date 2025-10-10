@@ -211,13 +211,6 @@ def home():
     #render the home.html template with the filtered or full list of events
     return render_template('home.html', events=events, search_term=query)
 
-
-
-
-
-
-
-
 #NEW 03/10/25
 #Allows a logged-in user to book tickets for an event,
 #while enforcing important business rules:
