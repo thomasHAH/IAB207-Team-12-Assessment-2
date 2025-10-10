@@ -32,6 +32,14 @@ their own content.
 
 <body class="d-flex flex-column min-vh-100">
 
+<!--This is the Background video section-->
+
+  <!-- Background Video -->
+  <video class="bg-video" autoplay muted loop playsinline preload="auto">
+    <source src="{{ url_for('static', filename='images/PoolVideo.mp4') }}" type="video/mp4">
+  </video>
+
+
     <!--navbar - subject to many changes -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
         <div class="container">
@@ -88,6 +96,8 @@ their own content.
             {% endif %}
         {% endwith %}
     </div>
+
+
 
     <!--Dynamic Content Area -->
     <main class="flex-grow-1">

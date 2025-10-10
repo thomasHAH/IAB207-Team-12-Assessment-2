@@ -4,26 +4,58 @@
 
 /* -- hero banner -- */
 /* like the main image throughout the website */
-.hero-banner{
+
+/* CHANGING SO BANNER FITS WHOLE PAGE INSTEAD AND THEN ADDING WAVE EFFECT -- Plus  making it central */
+.hero-banner {
   position: relative;
-  margin-top: -17px; /* pulls hero up under the navbar */
-  /* Location is here and just a bunch of other stuff */
-  background: url('../images/pool-clear-image.jpg') center/cover no-repeat; 
-  min-height: 55vh;                 
+  margin-top: -17px;
+  height: 100vh;              /* banner height */
+  min-height: 400px;         /* fallback for small screens */
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
 }
-.hero-banner::before{
+
+/* dark tint for readability --- If you prefer it lighter you can delete this line (we can decide) */
+.hero-banner::before {
   content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--overlay);
-  z-index: 0;
-}
-.hero-banner .container{
-  position: relative;
+  position: absolute; inset: 0;
+  background: rgba(0,0,50,0.3);
   z-index: 1;
 }
+
+/* video background inside the hero only */
+.bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1; /* keeps it behind everything */
+}
+
+/* content sits above */
+.hero-banner .container {
+  position: relative;
+  z-index: 2;
+}
+
+/* light buttons on dark/blue background */
+.hero-banner .btn-outline-light { border-color:#fff; color:#fff; }
+.hero-banner .btn-outline-light:hover { background:#fff; color:#000; }
+
+/* make the search input slightly glassy - fun little optional addition?? you guys can remove if you dont like it */
+.hero-search .form-control {
+  background: rgba(255,255,255,0.9);
+  border: 1px solid rgba(255,255,255,0.7);
+}
+
+
+/* NEW AREA TO MAKE ANIMATION FOR WAVE EFFECT */
 
 /*Login and rest of the pages*/
 .hero-tall {
