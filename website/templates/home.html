@@ -48,13 +48,13 @@ and dynmacially lists upcoming events or search results from the database
           </form>
 
           <div class="mt-3">
-            <a href="{{ url_for('events.home', q='Heated') }}" class="btn btn-outline-light btn-sm">Heated</a>
-            <a href="{{ url_for('events.home', q='Indoor') }}" class="btn btn-outline-light btn-sm">Indoor</a>
-            <a href="{{ url_for('events.home', q='Outdoor') }}" class="btn btn-outline-light btn-sm">Outdoor</a>
-            <a href="{{ url_for('events.home', q='Slide') }}" class="btn btn-outline-light btn-sm">Slide</a>
-            <a href="{{ url_for('events.home', q='Saltwater') }}" class="btn btn-outline-light btn-sm">Saltwater</a>
-            <a href="{{ url_for('events.home', q='Regular') }}" class="btn btn-outline-light btn-sm">Regular</a>
-          </div>
+          <a href="{{ url_for('events.home', q='Heated') }}#results" class="btn btn-outline-light btn-sm">Heated</a>
+          <a href="{{ url_for('events.home', q='Indoor') }}#results" class="btn btn-outline-light btn-sm">Indoor</a>
+          <a href="{{ url_for('events.home', q='Outdoor') }}#results" class="btn btn-outline-light btn-sm">Outdoor</a>
+          <a href="{{ url_for('events.home', q='Slide') }}#results" class="btn btn-outline-light btn-sm">Slide</a>
+          <a href="{{ url_for('events.home', q='Saltwater') }}#results" class="btn btn-outline-light btn-sm">Saltwater</a>
+          <a href="{{ url_for('events.home', q='Regular') }}#results" class="btn btn-outline-light btn-sm">Regular</a>
+        </div>
         </div>
 
           </div>
@@ -64,7 +64,7 @@ and dynmacially lists upcoming events or search results from the database
 </header>
 
 <!--main content sectopm-->
-<main class="d-flex align-items-center">
+<main class="d-flex align-items-center" id="results">
   <div class="container-fluid my-5">
 
     <!--search results/all events-->
