@@ -82,48 +82,118 @@ and dynmacially lists upcoming events or search results from the database
         <div class="flex-grow-1 border-top"></div>
       </div>
 
-      <!--Event cards grid section-->
-      <div class="container my-5">
-        <div class="container justify-content-center align-items-center my-5">
-          <div class="row g-4">
-            <!-- individual event card -->
-            {% for event in events %}
-            <div class="col-md-4 col-sm-6">
-              <div class="card event-card h-100 overflow-hidden shadow-sml">
+      <!--Event cards grid section - UPDATED TO LOOK SIMILAR TO BOOK EVENTS-->
+          <div class="container my-5 home-events">
+          <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center">
 
-                <!--handle missing image -->
-                {% if event.image_file %}
-                <img src="{{ url_for('static', filename='uploads/' ~ event.image_file) }}" class="card-img-top" alt="{{ event.title }}">
-                {% else %}
-                <!--default image-->
-                <img src="{{ url_for('static', filename='uploads/default.jpg') }}" class="card-img-top" alt="{{ event.title }}">
-                {% endif %}
-
-                <!--Event content block-->
-                <div class="card-body">
-                  <h5 class="card-title">{{ event.title }}</h5>
-                  <p class="card-text">{{ event.description }}</p>
-                  <div class="row g-4">
-                    <!--Small event info (status + date) 
-                    COULD ADD MORE DATA HERE (idk if we just keep it simple)-->
-                    <p class="card-text col">Status: {{ event.status }}</p>
-                    <p class="card-text col">
-                      <!--removed time-->
-                      <i class="bi bi-calendar-fill">{{ event.date.strftime('%Y-%m-%d') }}</i>
-                    </p>
-                  </div>
-                  <!--Link to event details page-->
-                  <a href="{{ url_for('events.view_event', event_id=event.id) }}" class="btn btn-primary btn-shadow">Find Tickets</a>
+          {% for event in events %}
+          <div class="col">
+            <!-- Card container (dark, glassy) -->
+            <div class="card h-100 border-0 shadow-lg rounded-3 overflow-hidden bg-dark text-white {% if compact %}card-compact{% endif %} card-bob">
+              
+              <!-- IMAGE with DATE PILL overlay -->
+              <div class="position-relative">
+                <img
+                  class="card-img-top event-img"
+                  src="{% if event.image_file %}{{ url_for('static', filename='uploads/' ~ event.image_file) }}{% else %}{{ url_for('static', filename='img/placeholder-event.jpg') }}{% endif %}"
+                  alt="{{ event.title or 'Event image' }}"
+                >
+                <!-- Month + Day (e.g., OCT / 17) -->
+                <div class="date-pill">
+                  <span class="month">{{ event.date.strftime('%b') }}</span>
+                  <span class="day">{{ event.date.strftime('%d') }}</span>
                 </div>
               </div>
+
+              <!-- CARD BODY -->
+              <div class="card-body">
+                <!-- Title + Status badge -->
+                <div class="d-flex justify-content-between align-items-start mb-1">
+                  <h5 class="card-title mb-0">{{ event.title }}</h5>
+                  {% set s = (event.status or '').lower() %}
+                  <span class="badge
+                    {% if s == 'open' %}bg-success
+                    {% elif s in ['closed','cancelled','canceled'] %}bg-secondary
+                    {% elif s in ['full','sold out'] %}bg-danger
+                    {% else %}bg-info
+                    {% endif %}">
+                    {{ event.status or 'Status' }}
+                  </span>
+                </div>
+
+                <!-- Short description (muted, trimmed) -->
+                {% if event.description %}
+                  <p class="card-subtext">
+                    {{ event.description[:110] }}{% if event.description|length > 110 %}…{% endif %}
+                  </p>
+                {% endif %}
+
+                <!-- META GRID (icons + values) -->
+                <div class="meta-grid">
+                  <!-- Date -->
+                  <div class="meta-item">
+                    <div class="meta-label">
+                      <i class="bi bi-calendar-event"></i> Date
+                    </div>
+                    <div class="meta-value">{{ event.date.strftime('%Y-%m-%d') }}</div>
+                  </div>
+
+                  <!-- Location -->
+                  <div class="meta-item">
+                    <div class="meta-label">
+                      <i class="bi bi-geo-alt"></i> Location
+                    </div>
+                    <div class="meta-value">{{ event.location or 'TBA' }}</div>
+                  </div>
+
+                  <!-- Time -->
+                  <div class="meta-item">
+                    <div class="meta-label">
+                      <i class="bi bi-clock"></i> Time
+                    </div>
+                    <div class="meta-value">{{ event.time or 'TBA' }}</div>
+                  </div>
+
+                  <!-- Capacity -->
+                  <div class="meta-item">
+                    <div class="meta-label">
+                      <i class="bi bi-people"></i> Capacity
+                    </div>
+                    <div class="meta-value">{{ event.capacity }}</div>
+                  </div>
+                </div>
+
+                <!-- FEATURE CHIPS (split by comma) -->
+                {% if event.features %}
+                  {% set features = event.features.split(',') %}
+                  <div class="chips mt-2">
+                    {% for f in features %}
+                      {% set chip = f.strip() %}
+                      {% if chip %}
+                        <span class="chip">{{ chip }}</span>
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+
+              <!-- FOOTER: primary CTA for home = Find Tickets -->
+              <div class="card-footer bg-transparent border-0 pt-0">
+                <a href="{{ url_for('events.view_event', event_id=event.id) }}"
+                  class="stretched-link btn btn-primary w-100">
+                  Find Tickets
+                </a>
+              </div>
             </div>
-            {% else %}
-            <!--message displayed if no events match the search-->
-            <!--option for link to create their own-->
-            <h5 class="text-center">No matching events found</h5>
-            <p class="text-center">Try another feature or <a href="{{ url_for('events.create_event') }}">create your own!</a></p>
-            {% endfor %}
           </div>
+          {% else %}
+            <!-- No matches / empty state -->
+            <div class="col-12 text-center text-white">
+              <h5>No matching events found</h5>
+              <p>Try another feature or <a href="{{ url_for('events.create_event') }}" class="text-white fw-bold">create your own!</a></p>
+            </div>
+          {% endfor %}
+
         </div>
       </div>
     </div>
