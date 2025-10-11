@@ -5,6 +5,8 @@ from flask import Flask
 from flask_bootstrap import Bootstrap5
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_login import current_user
+
 
 db = SQLAlchemy()
 
@@ -60,4 +62,10 @@ def create_app():
     app.register_blueprint(events.events_bp)
     
     
+    #Fix issue of personalising the home screen
+    @app.context_processor
+    def inject_user():
+      if current_user.is_authenticated:
+          return dict(name=current_user.name, email=current_user.email)
+      return dict(name=None, email=None)
     return app

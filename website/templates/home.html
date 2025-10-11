@@ -23,6 +23,7 @@ and dynmacially lists upcoming events or search results from the database
   <video class="bg-video" autoplay muted loop playsinline preload="auto">
     <source src="{{ url_for('static', filename='images/PoolVideo.mp4') }}" type="video/mp4">
   </video>
+  
 
 
   <div class="container text-center">
@@ -47,14 +48,14 @@ and dynmacially lists upcoming events or search results from the database
             <button type="submit" class="btn btn-primary ms-2">Search</button>
           </form>
 
-          <div class="mt-3">
-          <a href="{{ url_for('events.home', q='Heated') }}#results" class="btn btn-outline-light btn-sm">Heated</a>
-          <a href="{{ url_for('events.home', q='Indoor') }}#results" class="btn btn-outline-light btn-sm">Indoor</a>
-          <a href="{{ url_for('events.home', q='Outdoor') }}#results" class="btn btn-outline-light btn-sm">Outdoor</a>
-          <a href="{{ url_for('events.home', q='Slide') }}#results" class="btn btn-outline-light btn-sm">Slide</a>
-          <a href="{{ url_for('events.home', q='Saltwater') }}#results" class="btn btn-outline-light btn-sm">Saltwater</a>
-          <a href="{{ url_for('events.home', q='Regular') }}#results" class="btn btn-outline-light btn-sm">Regular</a>
-        </div>
+          <div class="mt-3 quick-tags">
+              <a href="{{ url_for('events.home', q='Heated') }}#results" class="tag">Heated</a>
+              <a href="{{ url_for('events.home', q='Indoor') }}#results" class="tag">Indoor</a>
+              <a href="{{ url_for('events.home', q='Outdoor') }}#results" class="tag">Outdoor</a>
+              <a href="{{ url_for('events.home', q='Slide') }}#results" class="tag">Slide</a>
+              <a href="{{ url_for('events.home', q='Saltwater') }}#results" class="tag">Saltwater</a>
+              <a href="{{ url_for('events.home', q='Regular') }}#results" class="tag">Regular</a>
+            </div>
         </div>
 
           </div>
@@ -82,48 +83,84 @@ and dynmacially lists upcoming events or search results from the database
         <div class="flex-grow-1 border-top"></div>
       </div>
 
-      <!--Event cards grid section-->
-      <div class="container my-5">
-        <div class="container justify-content-center align-items-center my-5">
-          <div class="row g-4">
-            <!-- individual event card -->
-            {% for event in events %}
-            <div class="col-md-4 col-sm-6">
-              <div class="card event-card h-100 overflow-hidden shadow-sml">
+      <!--Event cards grid section - UPDATED TO LOOK SIMILAR TO BOOK EVENTS-->
+          <!-- Event cards grid -->
+            <section class="home-events container my-5">
+              <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
 
-                <!--handle missing image -->
-                {% if event.image_file %}
-                <img src="{{ url_for('static', filename='uploads/' ~ event.image_file) }}" class="card-img-top" alt="{{ event.title }}">
-                {% else %}
-                <!--default image-->
-                <img src="{{ url_for('static', filename='uploads/default.jpg') }}" class="card-img-top" alt="{{ event.title }}">
-                {% endif %}
+                {% for event in events %}
+                <div class="col d-flex">
+                  <div class="card flex-fill h-100 border-0 shadow-lg rounded-3 overflow-hidden bg-dark text-white card-hover">
+                    
+                    <!-- IMAGE -->
+                    <div class="position-relative">
+                      <img
+                        class="card-img-top event-img"
+                        src="{% if event.image_file %}{{ url_for('static', filename='uploads/' ~ event.image_file) }}{% else %}{{ url_for('static', filename='img/placeholder-event.jpg') }}{% endif %}"
+                        alt="{{ event.title or 'Event image' }}"
+                      >
+                      <div class="date-pill">
+                        <span class="month">{{ event.date.strftime('%b') }}</span>
+                        <span class="day">{{ event.date.strftime('%d') }}</span>
+                      </div>
+                    </div>
 
-                <!--Event content block-->
-                <div class="card-body">
-                  <h5 class="card-title">{{ event.title }}</h5>
-                  <p class="card-text">{{ event.description }}</p>
-                  <div class="row g-4">
-                    <!--Small event info (status + date) 
-                    COULD ADD MORE DATA HERE (idk if we just keep it simple)-->
-                    <p class="card-text col">Status: {{ event.status }}</p>
-                    <p class="card-text col">
-                      <!--removed time-->
-                      <i class="bi bi-calendar-fill">{{ event.date.strftime('%Y-%m-%d') }}</i>
-                    </p>
+                    <!-- BODY -->
+                    <div class="card-body pb-2">
+                      <div class="d-flex justify-content-between align-items-start mb-1">
+                        <h5 class="card-title mb-0">{{ event.title }}</h5>
+                        {% set s = (event.status or '').lower() %}
+                        <span class="badge
+                          {% if s == 'open' %}bg-success
+                          {% elif s in ['closed','cancelled','canceled'] %}bg-secondary
+                          {% elif s in ['full','sold out'] %}bg-danger
+                          {% else %}bg-info{% endif %}">
+                          {{ event.status or 'Status' }}
+                        </span>
+                      </div>
+
+                      {% if event.description %}
+                        <p class="card-subtext small mb-2">
+                          {{ event.description[:90] }}{% if event.description|length > 90 %}…{% endif %}
+                        </p>
+                      {% endif %}
+
+                      <div class="meta-grid small">
+                        <div class="meta-item">
+                          <div class="meta-label"><i class="bi bi-calendar-event"></i> Date</div>
+                          <div class="meta-value">{{ event.date.strftime('%Y-%m-%d') }}</div>
+                        </div>
+                        <div class="meta-item">
+                          <div class="meta-label"><i class="bi bi-geo-alt"></i> Location</div>
+                          <div class="meta-value">{{ event.location or 'TBA' }}</div>
+                        </div>
+                      </div>
+
+                      {% if event.features %}
+                        <div class="chips mt-2">
+                          {% for f in event.features.split(',') %}
+                            <span class="chip">{{ f.strip() }}</span>
+                          {% endfor %}
+                        </div>
+                      {% endif %}
+                    </div>
+
+                    <!-- FOOTER -->
+                    <div class="card-footer bg-transparent border-0 pt-0">
+                      <a href="{{ url_for('events.view_event', event_id=event.id) }}"
+                        class="btn btn-primary w-100">Find Tickets</a>
+                    </div>
                   </div>
-                  <!--Link to event details page-->
-                  <a href="{{ url_for('events.view_event', event_id=event.id) }}" class="btn btn-primary btn-shadow">Find Tickets</a>
                 </div>
+                {% else %}
+                  <div class="col-12 text-center text-white">
+                    <h5>No matching events found</h5>
+                    <p>Try another feature or <a href="{{ url_for('events.create_event') }}" class="text-white fw-bold">create your own!</a></p>
+                  </div>
+                {% endfor %}
               </div>
-            </div>
-            {% else %}
-            <!--message displayed if no events match the search-->
-            <!--option for link to create their own-->
-            <h5 class="text-center">No matching events found</h5>
-            <p class="text-center">Try another feature or <a href="{{ url_for('events.create_event') }}">create your own!</a></p>
-            {% endfor %}
-          </div>
+            </section>
+
         </div>
       </div>
     </div>

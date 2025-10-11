@@ -12,73 +12,140 @@
 - py-5 used for vertical spacing
 -->
 
-<header class="hero-banner d-flex align-items-center justify-content-center">
-  <div class="container">
-    <div class="row justify-content-center">
-      <!-- responsive column adaptable to other screen size-->
-      <div class="col-sm-10 col-md-8 col-lg-6">
 
-        <!-- glassy card wrapper (same style as login and other stuff) -->
-        <div class="card shadow-sm" style="color:white;" >
-          <div class="card-body p-4">
-            
-            <!--Page heading-->
-            <h2 class="h4 mb-4 text-center">Upcoming Events</h2>
 
-            <!--Check if there are any events in the list passed from flask -->
-            {% if events %}
-              <!--bootstrap list group to display events -->
-              <ul class="list-group">
-                <!--loop through each event object from database -->
-                {% for event in events %}
-                <a href="{{ url_for('events.view_event', event_id=event.id) }}" class="text-decoration-none text-reset">
-                  <li class="list-group-item bg-transparent text-white border-light">
-                    <!--event title - removed old link that was here-->
-                    <h5>{{ event.title}} </h5>
+<!-- Hero banner section: background and layout -->
+<main class="hero-banner d-flex align-items-center justify-content-center">
+  <div class="container py-5">
 
-                    <!--only show description if it exists-->
-                    {% if event.description %}
-                    <p class="mb-2">{{ event.description }}</p>
-                    {% endif %}
+    <!--page heading -->
+    <h2 class="text-center text-white mb-5">Upcoming Events</h2>
 
-                    <!--only show image if it has been uploaded - may need altering-->
-                    {% if event.image_file %}
-                    <img src="{{ url_for('static', filename='uploads/' ~ event.image_file) }}" 
-                    alt="{{ event.title }}" class="img-fluid mb-3">
-                    {% endif %}
+    <!-- If there are events, display them in a card grid -->
+    {% if events %}
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
 
-                    <!-- event details -->
-                    <p><strong>Date:</strong> {{ event.date.strftime('%Y-%m-%d') }}</p>
-                    <p><strong>Capacity:</strong> {{ event.capacity }}</p>
-                    <p><strong>Features:</strong> {{ event.features }}</p>
-                    <p><strong>Status: </strong> {{ event.status }}</p>
-                    
-                    <!-- changing it from id to name-->
-                    <p><strong>Created By:</strong>
-                      {% if event.creator %}
-                        {{ event.creator.name }}
-                      {% else %}
-                        Unknown
-                      {% endif %}
-                    </p>
-                  </li>
-                </a>
-                {% endfor %}
-              </ul>
-            {% else %}
-              <!-- message if no events and links to create event page will redirect user to login if they are not logged in -->
-              <div class="alert alert-info">
-                No events found. Be the first to <a href="{{ url_for('events.create_event') }}">create one</a>!
+        <!-- Loop through each event -->
+        {% for event in events %}
+        <div class="col">
+          <!-- Card container -->
+            <div class="card h-100 border-0 shadow-lg rounded-3 overflow-hidden bg-dark text-white card-hover">
+
+        
+            <!--  IMAGE + DATE PILL OVERLAY -->
+           
+            <div class="position-relative">
+              <img
+                class="card-img-top event-img"
+                src="{% if event.image_file %}{{ url_for('static', filename='uploads/' ~ event.image_file) }}{% else %}{{ url_for('static', filename='img/placeholder-event.jpg') }}{% endif %}"
+                alt="{{ event.title or 'Event image' }}"
+              >
+              <!--date pill (shows month + day on image corner) -->
+              <div class="date-pill">
+                <span class="month">{{ event.date.strftime('%b') }}</span>
+                <span class="day">{{ event.date.strftime('%d') }}</span>
               </div>
-            {% endif %}
+            </div>
 
-          </div>
-        </div>
+            
+            <!--  CARD BODY CONTENT -->
+            
+            <div class="card-body">
 
+              <!-- Title + status badge -->
+              <div class="d-flex justify-content-between align-items-start mb-1">
+                <h5 class="card-title mb-0">{{ event.title }}</h5>
+
+                <!-- Conditional color badge based on event status -->
+                {% set s = (event.status or '').lower() %}
+                <span class="badge 
+                  {% if s == 'open' %}bg-success
+                  {% elif s in ['closed','cancelled','canceled'] %}bg-secondary
+                  {% elif s in ['full','sold out'] %}bg-danger
+                  {% else %}bg-info
+                  {% endif %}">
+                  {{ event.status or 'Status' }}
+                </span>
+              </div>
+
+              <!--optional short description -->
+              {% if event.description %}
+                <p class="card-subtext">{{ event.description[:110] }}{% if event.description|length > 110 %}…{% endif %}</p>
+              {% endif %}
+
+           
+              <!--  META GRID (2x2 layout) -->
+             
+              <div class="meta-grid">
+                <!-- Date -->
+                <div class="meta-item">
+                  <div class="meta-label">
+                    <i class="bi bi-calendar-event"></i> Date
+                  </div>
+                  <div class="meta-value">{{ event.date.strftime('%Y-%m-%d') }}</div>
+                </div>
+
+                <!-- Location -->
+                <div class="meta-item">
+                  <div class="meta-label">
+                    <i class="bi bi-geo-alt"></i> Location
+                  </div>
+                  <div class="meta-value">{{ event.location or 'TBA' }}</div>
+                </div>
+
+                <!--removed time - not really needed and just goes to TBA as theres no input-->
+
+                <!-- Capacity -->
+                <div class="meta-item">
+                  <div class="meta-label">
+                    <i class="bi bi-people"></i> Capacity
+                  </div>
+                  <div class="meta-value">{{ event.capacity }}</div>
+                </div>
+              </div>
+
+              
+              <!--  FEATURE CHIPS -->
+             
+              {% if event.features %}
+                {% set features = event.features.split(',') %}
+                <div class="chips mt-2">
+                  {% for f in features %}
+                    {% set chip = f.strip() %}
+                    {% if chip %}
+                      <span class="chip">{{ chip }}</span>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              {% endif %}
+
+              <!-- Creator line (small, muted) -->
+              <div class="creator-line mt-2">by {{ event.creator.name if event.creator else 'Unknown' }}</div>
+            </div>
+
+    
+            <!--  FOOTER ( view details button) -->
+            
+            <div class="card-footer bg-transparent border-0 pt-0">
+              <a href="{{ url_for('events.view_event', event_id=event.id) }}" class="stretched-link btn btn-light w-100">
+                View details
+              </a>
+            </div>
+
+          </div> <!-- End of card -->
+        </div> <!-- End of column -->
+        {% endfor %}
+      </div> <!-- End of grid -->
+
+    {% else %}
+      <!-- Message if no events exist -->
+      <div class="alert alert-info text-center">
+        No events found. Be the first to <a href="{{ url_for('events.create_event') }}" class="text-white fw-bold">create one</a>!
       </div>
-    </div>
+    {% endif %}
   </div>
 </main>
+
 
 <!--end of content block-->
 {% endblock %}
