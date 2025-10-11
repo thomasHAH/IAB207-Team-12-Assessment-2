@@ -12,11 +12,13 @@
 - py-5 used for vertical spacing
 -->
 
+
+
 <!-- Hero banner section: background and layout -->
-<header class="hero-banner d-flex align-items-center justify-content-center">
+<main class="hero-banner d-flex align-items-center justify-content-center">
   <div class="container py-5">
 
-    <!-- Page heading -->
+    <!--page heading -->
     <h2 class="text-center text-white mb-5">Upcoming Events</h2>
 
     <!-- If there are events, display them in a card grid -->
@@ -38,7 +40,7 @@
                 src="{% if event.image_file %}{{ url_for('static', filename='uploads/' ~ event.image_file) }}{% else %}{{ url_for('static', filename='img/placeholder-event.jpg') }}{% endif %}"
                 alt="{{ event.title or 'Event image' }}"
               >
-              <!-- Date pill (shows month + day on image corner) -->
+              <!--date pill (shows month + day on image corner) -->
               <div class="date-pill">
                 <span class="month">{{ event.date.strftime('%b') }}</span>
                 <span class="day">{{ event.date.strftime('%d') }}</span>
@@ -66,7 +68,7 @@
                 </span>
               </div>
 
-              <!-- Optional short description -->
+              <!--optional short description -->
               {% if event.description %}
                 <p class="card-subtext">{{ event.description[:110] }}{% if event.description|length > 110 %}…{% endif %}</p>
               {% endif %}
@@ -91,13 +93,7 @@
                   <div class="meta-value">{{ event.location or 'TBA' }}</div>
                 </div>
 
-                <!-- Time -->
-                <div class="meta-item">
-                  <div class="meta-label">
-                    <i class="bi bi-clock"></i> Time
-                  </div>
-                  <div class="meta-value">{{ event.time or 'TBA' }}</div>
-                </div>
+                <!--removed time - not really needed and just goes to TBA as theres no input-->
 
                 <!-- Capacity -->
                 <div class="meta-item">
@@ -148,7 +144,7 @@
       </div>
     {% endif %}
   </div>
-</header>
+</main>
 
 
 <!--end of content block-->

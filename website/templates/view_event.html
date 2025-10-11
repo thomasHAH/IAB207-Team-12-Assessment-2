@@ -62,7 +62,7 @@ Event details page
             </div>
             {% endif %}
 
-            <!-- Fact grid (date, time, location, capacity, cost, created by) -->
+            <!--fact grid (date, time, location, capacity, cost, created by) -->
             <div class="card card--glass border-0 text-white mb-3">
               <div class="card-body">
                 <div class="meta-grid">
@@ -99,6 +99,13 @@ Event details page
                       {% if event.creator %}{{ event.creator.name }}{% else %}Unknown{% endif %}
                     </div>
                   </div>
+
+                  <div class="meta-item">
+                    <div class="meta-label"><i class="bi bi-journal-bookmark"></i> Status</div>
+                    <div class="meta-value">{{ event.status }}</div>
+                  </div>
+
+                  
                 </div>
 
                 {% if event.features %}
@@ -109,16 +116,18 @@ Event details page
                   </div>
                 {% endif %}
               </div>
+
+              
             </div>
 
-            <!-- Edit event (creator only) -->
+            <!--edit event (creator only) -->
             {% if current_user.is_authenticated and event.created_by == current_user.id %}
               <a href="{{ url_for('events.edit_event', event_id=event.id) }}" class="btn btn-light w-100 mb-3">
                 Edit Event
               </a>
             {% endif %}
 
-            <!-- Add a comment -->
+            <!--add a comments-->
             <div class="card card--glass border-0 text-white mb-3">
               <div class="card-body">
                 <h5 class="mb-3">Add a Comment</h5>
@@ -139,7 +148,7 @@ Event details page
               </div>
             </div>
 
-            <!-- Comments list -->
+            <!--comments list -->
             <div class="card card--glass border-0 text-white">
               <div class="card-body">
                 <h5 class="mb-3">Comments</h5>
@@ -199,10 +208,14 @@ Event details page
                     <div class="alert alert-warning small mb-0">
                       You created this event, so you can't book tickets for it.
                     </div>
-                  {% elif tickets_left <= 0 or event.computed_status in ['Sold Out','Inactive','Cancelled'] %}
+
+                  <!--nightmare fuel-->
+                  <!-- made this more simple -->
+                  {% elif event.status|lower != 'open' %}
                     <div class="alert alert-danger small mb-0">
                       This event is not available for booking.
                     </div>
+
                   {% else %}
                     <!-- Booking form-->
                     <form method="POST" action="{{ url_for('events.book_event', event_id=event.id) }}">

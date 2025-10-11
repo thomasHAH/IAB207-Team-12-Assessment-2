@@ -242,8 +242,9 @@ def book_event(event_id):
 
     #prevent booking if event is inactive/closed/cancelled
     #just not equal to open - this may cause an issue in the future! :0
+    #redundant i believe
     if event.status.lower() != "open":
-        flash(f"This event is {event.status}, so bookings are not allowed.", "danger")
+        flash(f"This event is currently {event.status} and cannot be booked.", "danger")
         return redirect(url_for('events.view_event', event_id=event.id))
 
     #always calculate tickets left before using it
@@ -253,6 +254,7 @@ def book_event(event_id):
 
     #prevent booking if sold out
     #less than or equal to 0
+    #pre sure this is redundant now
     if tickets_left <= 0:
         flash("This event is SOLD OUT. No more tickets available.", "danger")
         return redirect(url_for('events.view_event', event_id=event.id))
@@ -382,3 +384,5 @@ def my_bookings():
 
     #render the template and pass bookings
     return render_template('my_bookings.html', bookings=bookings)
+
+

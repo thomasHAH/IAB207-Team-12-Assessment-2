@@ -5,6 +5,7 @@
    a little more formal throughout!!!
 
 
+   Ty i had it as a mess before sry - Tom
 
 /* =============================================================================
    PoolBNB — Global Styles
@@ -48,6 +49,9 @@
   --card-glass:         var(--glass-bg);
 }
 
+
+
+
 /* == 02) BASE / TYPOGRAPHY ================================================== */
 * { box-sizing: border-box; }
 
@@ -56,7 +60,7 @@ body {
   color: var(--text);
 }
 
-h1, h2, h3, h4, h5, h6 { font-family: 'Poppins', sans-serif; }
+h1, h2, h3, h4, h5, h6 { font-family: 'Poppins', sans-serif; margin-top: 0 }
 .form-control, .form-select, .btn { font-family: inherit; }
 #searchInput::placeholder { font-family: inherit; }
 
@@ -68,21 +72,52 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Poppins', sans-serif; }
 .text-muted-white { color: var(--text-muted) !important; }
 
 /* == 03) LAYOUT HELPERS (Hero, Containers) ================================= */
-.hero-banner {
-  position: relative;
-  margin-top: -17px;
-  height: 100vh;
-  min-height: 400px;
-  display: flex; align-items: center; justify-content: center;
-  text-align: center;
-  overflow: hidden;
+/* Reset body margin */
+body {
+  margin: 0;
+  padding: 0;
 }
+
+/* Hero banner */
+.hero-banner {
+  position: relative;              /* needed for ::before overlay */
+  margin-top: -15px;                   /* removes browser's default spacing */
+  padding-top: 0px;                  /* ensures hero starts right under navbar */
+  min-height: 100vh;               /* full height; use 60vh if shorter */
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+}
+
+
+
+/*overlay tint */
 .hero-banner::before {
-  content: ''; position: absolute; inset: 0;
-  background: rgba(0,0,50,0.3);
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(1, 1, 65, 0.3);
   z-index: 1;
 }
-.hero-banner .container { position: relative; z-index: 2; }
+
+/*keep hero content above overlay */
+.hero-banner .container {
+  position: relative;
+  z-index: 2;
+}
+
+
+
+
+
+
+
+
+
+
 
 /* Background video pinned */
 .bg-video { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; }
