@@ -1,262 +1,184 @@
+/* ============================================================================
+   PoolBNB CSS
 
-/* This is the styling CSS I'm using throughout all the html files */
-/* tried to make it as easy as possible to utilise so im not constantly adding css to every single file (like i was before but then i changed my mind) */
+   Sorry guys a LOT of changes here, it was looking really rough so I've made it
+   a little more formal throughout!!!
 
-/* -- hero banner -- */
-/* like the main image throughout the website */
 
-/* CHANGING SO BANNER FITS WHOLE PAGE INSTEAD AND THEN ADDING WAVE EFFECT -- Plus  making it central */
+
+/* =============================================================================
+   PoolBNB — Global Styles
+   Structure:
+   01) Design Tokens (variables)
+   02) Base / Resets / Typography
+   03) Layout Helpers (hero, containers)
+   04) Generic Components (cards, buttons, chips, badges)
+   05) Event Cards + Grids (home + events listing)
+   06) View Event Page (image, meta grid, booking)
+   07) My Bookings Page
+   08) Forms (button-59, input-59)
+   09) Motion (lift hover, disable)
+   10) Responsive Rules
+   99) Local overrides (temporary fixes)
+   ========================================================================== */
+
+
+/* == 01) DESIGN TOKENS ====================================================== */
+:root {
+  /* Colors */
+  --text:               #ffffff;
+  --text-muted:         rgba(255,255,255,0.65);
+  --text-softer:        rgba(255,255,255,0.5);
+  --brand:              #06f;
+  --brand-contrast:     #8EE4FF;
+  --chip-bg:            rgba(255,255,255,0.15);
+  --chip-border:        rgba(255,255,255,0.25);
+  --glass-bg:           rgba(0, 0, 0, 0.55);
+  --glass-border:       rgba(255,255,255,0.6);
+
+  /* Shadows */
+  --shadow-lift:        0 0 15px rgba(255,255,255,0.15);
+  --shadow-deep:        0 12px 28px rgba(0,0,0,.28);
+
+  /* Radii / spacing */
+  --radius:             12px;
+  --radius-pill:        999px;
+
+  /* Card presets */
+  --card-glass:         var(--glass-bg);
+}
+
+/* == 02) BASE / TYPOGRAPHY ================================================== */
+* { box-sizing: border-box; }
+
+body {
+  font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--text);
+}
+
+h1, h2, h3, h4, h5, h6 { font-family: 'Poppins', sans-serif; }
+.form-control, .form-select, .btn { font-family: inherit; }
+#searchInput::placeholder { font-family: inherit; }
+
+/* Navbar */
+.navbar .nav-link { color: #000 !important; }
+.navbar .nav-link:hover { color: #333 !important; font-weight: 500; }
+
+/* Utility text colors */
+.text-muted-white { color: var(--text-muted) !important; }
+
+/* == 03) LAYOUT HELPERS (Hero, Containers) ================================= */
 .hero-banner {
   position: relative;
   margin-top: -17px;
-  height: 100vh;              /* banner height */
-  min-height: 400px;         /* fallback for small screens */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  height: 100vh;
+  min-height: 400px;
+  display: flex; align-items: center; justify-content: center;
   text-align: center;
   overflow: hidden;
 }
-
-/* dark tint for readability --- If you prefer it lighter you can delete this line (we can decide) */
 .hero-banner::before {
-  content: '';
-  position: absolute; inset: 0;
+  content: ''; position: absolute; inset: 0;
   background: rgba(0,0,50,0.3);
   z-index: 1;
 }
+.hero-banner .container { position: relative; z-index: 2; }
 
-/* video background inside the hero only */
-.bg-video {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -1; /* keeps it behind everything */
-}
+/* Background video pinned */
+.bg-video { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; }
 
-/* content sits above */
-.hero-banner .container {
-  position: relative;
-  z-index: 2;
-}
+/* Height helpers */
+.hero-tall  { height: 90vh; }
+.hero-tall2 { height: auto; } /* allow page to grow */
 
-/* light buttons on dark/blue background */
-.hero-banner .btn-outline-light { border-color:#fff; color:#fff; }
-.hero-banner .btn-outline-light:hover { background:#fff; color:#000; }
-
-/* make the search input slightly glassy - fun little optional addition?? you guys can remove if you dont like it */
+/* Search on hero */
 .hero-search .form-control {
   background: rgba(255,255,255,0.9);
   border: 1px solid rgba(255,255,255,0.7);
 }
 
-
-/* NEW AREA TO MAKE ANIMATION FOR WAVE EFFECT */
-
-/*Login and rest of the pages*/
-.hero-tall {
-    height: 90vh;
-}
-
-/*This is for showing events and stuff - needed so screen grows*/
-.hero-tall2 {
-    height: 90vh;
-    height: auto;
-}
-
-/* Glassy card over photo (used on login etc.) and now more stuff uses it!*/
-.hero-banner .card{
-  background: var(--card-glass);
-
-  /* sort of like liquid glass!*/
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(2px);
-  border: 1px solid rgba(255,255,255,0.6);
-}
-
-/* Force navbar links to black */
-.navbar .nav-link {
-    color: black !important;
-}
-
-/* Optional: make them bold */
-.navbar .nav-link:hover {
-    color: #333 !important; /* slightly darker on hover */
-    font-weight: 500;
-}
-
-
-/* ensure form controls follow the body font in all browsers -> pre sure this is redundent */
-.form-control, .form-select, .btn { font-family: inherit; }
-
-/* placeholder text too (some browsers style it differently) */
-#searchInput::placeholder { font-family: inherit; }
-
-/* From Google fonts - test */
-h1, h2, h3, h4, h5, h6 {
-font-family: 'Poppins', sans-serif;
-}
-
-/* set Poppins as the base font */
-body { font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
-    
-
-/* Example responsive height - need to test*/ 
-@media (max-width: 992px){ .hero-banner{ min-height: 40vh; } }
-@media (max-width: 576px){ .hero-banner{ min-height: 35vh; } }
-
-/* redundant */
-.login-page .hero-banner{ min-height: 60vh; } 
-
-/* CSS, this button was designed by another person and is referenced in my Report! Very thankful for the free button design!!*/ 
-.button-59 {
-  align-items: center;
-  background-color: #fff;
-  border: 2px solid #000;
-  box-sizing: border-box;
-  color: #000;
-  cursor: pointer;
-  display: inline-flex;
-  fill: #000;
-  font-family: Inter,;
-  font-size: 16px;
-  font-weight: 600;
-  height: 48px;
+/* --- FEATURE TAG BUTTONS These are the homepage icons! --- */
+.quick-tags {
+  display: flex;
   justify-content: center;
-  letter-spacing: -.8px;
-  line-height: 24px;
-  min-width: 140px;
-  outline: 0;
-  padding: 0 17px;
-  text-align: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.quick-tags .tag {
+  background: rgba(255, 255, 255, 0.1); /* keep center clean */
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
   text-decoration: none;
-  transition: all .3s;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+  box-shadow:
+    0 0 0px rgba(0, 0, 0, 0),           
+    0 0 6px rgba(0, 200, 255, 0.5),     /* soft halo */
+    0 0 12px rgba(0, 200, 255, 0.3),    /* subtle outer glow */
+    0 0 18px rgba(0, 200, 255, 0.2);    /* ambient glow */
 }
 
-.button-59:focus {
-  color: #171e29;
+.quick-tags .tag:hover {
+  background: rgba(255, 255, 255, 0.12); /* still glassy center */
+  border-color: rgba(255, 255, 255, 0.9);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 10px rgba(0, 200, 255, 0.8),
+    0 0 18px rgba(0, 220, 255, 0.6),
+    0 0 25px rgba(0, 240, 255, 0.5);
 }
 
-.button-59:hover {
-  border-color: #06f;
-  color: #06f;
-  fill: #06f;
+.quick-tags .tag:active {
+  transform: scale(0.97);
+  background: rgba(0, 120, 255, 0.5);
 }
 
-.button-59:active {
-  border-color: #06f;
-  color: #06f;
-  fill: #06f;
-}
-
-@media (min-width: 768px) {
-  .button-59 {
-    min-width: 170px;
+/* Responsive size adjustments */
+@media (max-width: 576px) {
+  .quick-tags .tag {
+    font-size: 0.8rem;
+    padding: 5px 10px;
   }
 }
 
-
-
-/* Custom CSS for a form input inspired by button-59*/
-.input-59 {
-  /* Common styling with the button */
-  background-color: #fff;
-  border: 2px solid #000;
-  color: #000;
-  
-  /* This line blow is so glitchy all the time */
-  font-family: Inter, ;
-  font-size: 16px;
-  font-weight: 600;
-  height: 48px;
-  letter-spacing: -.8px;
-  outline: 0;
-  transition: all .3s;
-  box-sizing: border-box;
-
-  /* Specific styling for an input field*/
-  width: 100%;
-  padding: 12px 17px;
-  line-height: 24px;
-}
-
-/* It looked weird when it was grey ish */
-.input-59::placeholder {
-  color: black;
-}
-
-/* Added this for the event card just to give it some life */
-.event-card {
-    width: 20rem;
-    border-radius: 20px;
-    /* border-color: #D33F49; */
-    /* color: #0275ca; */
-}
-
-.event-card:hover {
-    transform: scale(1.025);
-    box-shadow: 0px 8px 20px rgba(0,0,0,0.2);
-}
-
-/* ----------------------------------------------------------------------------- */
-/* NEW EVENT GRID + CARD STYLING (theres a lot so please try not to change */
-/* ------------------------------------------------------------------------------*/
-
-/* Makes event images a consistent height and keeps proportions nice */
-.event-img {
-  height: 220px;
-  object-fit: cover; /* crops without distortion */
-}
-
-/* Cards inside hero-banner get a frosted glass look over the pool background */
-.hero-banner .card {
+/* == 04) GENERIC COMPONENTS (Cards, Chips, Badges, Date-pill) ============== */
+.card--glass {
+  background: var(--card-glass);
   backdrop-filter: blur(8px);
-  background: rgba(0, 0, 0, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  -webkit-backdrop-filter: blur(2px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
 }
 
-/* Subtle hover effect to make cards pop */
-.hero-banner .card:hover {
+/* “Lift” hover (used on listing cards, not on detail pages) */
+.card-hover {
+  transition: transform .2s ease-in-out, box-shadow .2s ease-in-out;
+}
+.card-hover:hover {
   transform: translateY(-4px);
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+  box-shadow: var(--shadow-lift);
 }
 
-/* Adjust status badge size inside event cards */
-.hero-banner .badge {
-  font-size: 0.75rem;
-  text-transform: capitalize;
+/* Chips */
+.chips { display:flex; flex-wrap:wrap; gap:.4rem .5rem; }
+.chip{
+  display:inline-flex; align-items:center; gap:.35rem;
+  padding:.22rem .55rem; font-size:.78rem; font-weight:600;
+  border-radius: var(--radius-pill);
+  background: var(--chip-bg);
+  border:1px solid var(--chip-border);
+  color:#fff; backdrop-filter: blur(3px);
 }
 
-/* Ensures text is legible on dark background */
-.hero-banner .card-title,
-.hero-banner .card-text,
-.hero-banner .list-unstyled {
-  color: white;
-}
-
-/* Make the "View details" button stand out */
-.hero-banner .card-footer .btn {
-  font-weight: 600;
-  border-radius: 0;
-  transition: background 0.2s ease-in-out;
-}
-
-.hero-banner .card-footer .btn:hover {
-  background: #06f;
-  color: #fff;
-}
-
-/* ENHANCED EVENT CARD LAYOUT    */
-
-/* --- Date pill overlay --- */
+/* “Pill” date overlay on images */
 .date-pill{
   position:absolute; top:12px; left:12px;
   display:flex; flex-direction:column; align-items:center;
@@ -269,203 +191,164 @@ body { font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "He
 .date-pill .month{ font-size:.7rem; letter-spacing:.6px; text-transform:uppercase; opacity:.95; }
 .date-pill .day{ font-size:1.25rem; font-weight:700; }
 
-/* --- Subtitle under event title --- */
-.card-subtext{
-  font-size:.92rem;
-  color: rgba(255,255,255,.78);
-  margin-top:.15rem; margin-bottom:.75rem;
-}
-
-/* --- Meta grid (date, location, etc.) --- */
+/* Small label + value blocks (meta grid) */
 .meta-grid{
-  display:grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  display:grid; grid-template-columns: repeat(2, minmax(0, 1fr));
   gap:.75rem .9rem;
   background: rgba(255,255,255,0.06);
   border: 1px solid rgba(255,255,255,0.1);
-  padding:.75rem .9rem; border-radius:12px;
+  padding:.75rem .9rem; border-radius: var(--radius);
 }
 .meta-item{ min-width:0; }
 .meta-label{
   font-size:.72rem; letter-spacing:.4px; text-transform:uppercase;
-  color: rgba(255,255,255,.65);
-  margin-bottom: .15rem;
+  color: var(--text-muted); margin-bottom: .15rem;
 }
-
+.meta-label i { margin-right: 6px; font-size: .85rem; vertical-align: middle; color: rgba(255,255,255,0.8); }
 .meta-value {
-  font-size: .98rem;
-  font-weight: 600;
-  color: #fff;
-  white-space: normal; /* allow wrapping for long text */
-  overflow: visible;
-  text-overflow: unset;
-  word-break: break-word; /* ensures it wraps nicely on small screens */
+  font-size: .98rem; font-weight: 600; color: #fff;
+  white-space: normal; overflow: visible; text-overflow: unset; word-break: break-word;
 }
 
-/* --- Meta icon tweaks --- */
-.meta-label i {
-  margin-right: 6px;
-  font-size: 0.85rem;
-  vertical-align: middle;
-  color: rgba(255, 255, 255, 0.8);
-  transition: color 0.2s ease;
-}
+/* Subtext lines */
+.card-subtext{ font-size:.92rem; color: rgba(255,255,255,.78); margin:.15rem 0 .75rem; }
 
-/* When hovering over the card, brighten the icons slightly */
-.card:hover .meta-label i {
-  color: #00b4db;
-}
+/* == 05) EVENT CARDS + GRIDS (Home + Listing) ============================== */
+.event-img { height: 220px; object-fit: cover; }
 
-/* --- Feature chips --- */
-.chips{ display:flex; flex-wrap:wrap; gap:.4rem .5rem; }
-.chip{
-  display:inline-block; padding:.25rem .6rem; font-size:.78rem; font-weight:600;
-  border-radius:999px;
-  background: rgba(255,255,255,0.15);
-  border:1px solid rgba(255,255,255,0.25);
-  color:#fff; backdrop-filter: blur(3px);
-}
+/* Cards inside hero banners (used on events pages) */
+.hero-banner .card { background: var(--card-glass); border: 1px solid var(--glass-border); }
+.hero-banner .badge { font-size:.75rem; text-transform:capitalize; }
+.hero-banner .card-title, .hero-banner .card-text, .hero-banner .list-unstyled { color:#fff; }
+.hero-banner .card-footer .btn { font-weight: 600; border-radius: 0; transition: background .2s; }
+.hero-banner .card-footer .btn:hover { background: var(--brand); color:#fff; }
 
-/* --- Creator line --- */
-.creator-line{
-  font-size:.8rem; color: rgba(255,255,255,.7);
-}
+/* Home grid sizing + same hover as events */
+.home-events .card { max-width: 350px; margin-inline: auto; }
+.home-events .row { justify-content: center; gap: 1.5rem; }
+.home-events .card-body { padding: 1rem 1.2rem; }
+.home-events .card { transition: transform .2s, box-shadow .2s; }
+.home-events .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
 
-
-/* ----------------------------------------*/
-/* HOME PAGE EVENT CARD SIZING & LAYOUT */
-/* ---------------------------------------- */
-
-/* Constrain card width so they don’t stretch too wide */
-.home-events .card {
-  max-width: 350px; /* Adjust this to control how wide they can get */
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Make sure cards stay nicely spaced */
+/* --- HOME EVENTS GRID LAYOUT FIX --- */
 .home-events .row {
   justify-content: center;
-  gap: 1.5rem;
+  gap: 1rem;                /* tighter spacing between cards */
+  row-gap: 2rem;            /* slightly more vertical space */
 }
 
-/* Optional: tighter layout for home page cards */
-.home-events .card-body {
-  padding: 1rem 1.2rem;
+.home-events .col {
+  display: flex;
+  justify-content: center;
 }
 
-/* Button style refinement */
-.home-events .card-footer .btn {
-  font-weight: 600;
-  border-radius: 6px;
-  transition: all 0.2s ease;
-}
-
-.home-events .card-footer .btn:hover {
-  transform: translateY(-2px);
-}
-
-/* HOME – same hover as Events */
 .home-events .card {
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-}
-.home-events .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
-}
-
-
-/* -------------------------------------------------------*/
-/* MY BOOKINGS — CARD PRESENTATION --- to show bookings in */
-/* ----------------------------------------------------- */
-
-/* Keep grid centered and constrain widths so cards aren't huge */
-.bookings-grid .card {
-  max-width: 380px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Booking thumbnail: uniform height, cover crop */
-.booking-thumb {
   width: 100%;
-  height: 180px;
-  object-fit: cover;
+  max-width: 340px;         /* clean consistent width */
+  margin: 0 auto;
 }
 
-/* Receipt panel (clean rows with labels/values) */
+/* == 06) VIEW EVENT PAGE ==================================================== */
+/* Hero image */
+.event-hero-img { width: 100%; height: 360px; object-fit: cover; }
+@media (min-width:1200px){ .event-hero-img { height: 420px; } }
+
+/* Event title to look prettier */
+.event-title {
+  font-size: 2.5rem;    
+  font-weight: 350;
+  letter-spacing: 1.5px;
+  color: #fff;
+  margin-bottom: 0.75rem;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3); /* optional soft glow */
+}
+
+/* Right column “sticky” booking panel on large screens */
+.event-sticky { position: sticky; top: 24px; }
+
+/* Booking summary lines */
+.booking-summary li { line-height: 1.2; }
+
+/* Long description: left aligned + respect line breaks; heading can stay centered */
+.event-description {
+  text-align: left !important;      /* ensure left text */
+  white-space: pre-line;            
+  line-height: 1.65;
+  letter-spacing: 0.15px;
+  color: rgba(255,255,255,0.92);
+  margin: 0;
+  max-width: 65ch;                  
+  text-wrap: pretty;
+  word-break: break-word;
+}
+
+/* Optional bigger section heading (use in template if wanted) */
+.about-heading { font-size: 1.8rem; font-weight: 700; text-align: center; margin-bottom: 1rem; }
+
+/* == 07) MY BOOKINGS PAGE =================================================== */
+.bookings-grid .card { max-width: 380px; margin-inline: auto; }
+.booking-thumb { width: 100%; height: 180px; object-fit: cover; }
 .booking-receipt {
   background: rgba(255,255,255,0.06);
   border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 12px;
-  padding: .75rem .9rem;
-  margin-top: .5rem;
+  border-radius: var(--radius);
+  padding: .75rem .9rem; margin-top: .5rem;
 }
 .booking-receipt .receipt-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: .75rem;
-  padding: .2rem 0;
-  border-bottom: 1px dashed rgba(255,255,255,0.12);
+  display:flex; align-items:center; justify-content:space-between;
+  gap:.75rem; padding:.2rem 0; border-bottom:1px dashed rgba(255,255,255,0.12);
 }
-.booking-receipt .receipt-row:last-child {
-  border-bottom: none;
-}
-.booking-receipt .label {
-  font-size: .82rem;
-  color: rgba(255,255,255,0.75);
-  display: inline-flex;
-  align-items: center;
-  gap: .35rem;
-}
-.booking-receipt .value {
-  font-weight: 600;
-  font-size: .95rem;
-  color: #fff;
-}
-.booking-receipt .value.price {
-  color: #8EE4FF; /* nicer focus color for totals */
-}
+.booking-receipt .receipt-row:last-child { border-bottom:none; }
+.booking-receipt .label { font-size:.82rem; color: var(--text-muted); display:inline-flex; align-items:center; gap:.35rem; }
+.booking-receipt .value { font-weight:600; font-size:.95rem; color:#fff; }
+.booking-receipt .value.price { color: var(--brand-contrast); }
 
-/* Chips reused from events, but tighten for bookings */
-.chips { display:flex; flex-wrap:wrap; gap:.4rem .5rem; }
-.chip{
-  display:inline-flex; align-items:center; gap:.35rem;
-  padding:.22rem .55rem; font-size:.78rem; font-weight:600;
-  border-radius:999px;
-  background: rgba(255,255,255,0.15);
-  border:1px solid rgba(255,255,255,0.25);
-  color:#fff; backdrop-filter: blur(3px);
-}
+/* Same hover as events for the individual booking cards */
+.bookings-grid .card { transition: transform .2s, box-shadow .2s; }
+.bookings-grid .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
 
-/* MY BOOKINGS – same hover as Events */
-.bookings-grid .card {
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+/* == 08) FORMS / BUTTONS ==================================================== */
+/* Fancy button */
+.button-59 {
+  align-items:center; background:#fff; border:2px solid #000; color:#000;
+  cursor:pointer; display:inline-flex; fill:#000; font-family: Inter, system-ui, sans-serif;
+  font-size:16px; font-weight:600; height:48px; justify-content:center;
+  letter-spacing:-.8px; line-height:24px; min-width:140px; outline:0; padding:0 17px;
+  text-align:center; text-decoration:none; transition: all .3s; user-select:none;
 }
-.bookings-grid .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
-}
+.button-59:hover, .button-59:active { border-color: var(--brand); color: var(--brand); fill: var(--brand); }
+@media (min-width:768px){ .button-59{ min-width:170px; } }
 
-/* The outer "shell" card should NEVER move */
-.shell-card,
-.shell-card:hover {
-  transform: none !important;
-  box-shadow: inherit !important;
-  animation: none !important;
+/* Input styled to match button-59 */
+.input-59 {
+  background:#fff; border:2px solid #000; color:#000;
+  font-family: Inter, system-ui, sans-serif; font-size:16px; font-weight:600;
+  height:48px; letter-spacing:-.8px; outline:0; transition: all .3s; width:100%;
+  padding:12px 17px; line-height:24px;
 }
+.input-59::placeholder { color:#000; }
 
-/* One-off hover lift for selected cards (already on your booking cards) */
-.card-lift { 
-  will-change: transform; 
-  transition: transform .18s ease, box-shadow .18s ease; 
-}
-.card-lift:hover { 
-  transform: translateY(-6px); 
-  box-shadow: 0 12px 28px rgba(0,0,0,.28); 
-}
-@media (prefers-reduced-motion: reduce){
-  .card-lift:hover { transform: translateY(-3px); }
-}
+/* == 09) MOTION CONTROLS ==================================================== */
+/* Never move the “shell” cards (outer wrappers) */
+.shell-card, .shell-card:hover { transform:none !important; box-shadow:inherit !important; animation:none !important; }
 
+/* Lift-only utility (use on cards to raise slightly) */
+.card-lift { will-change: transform; transition: transform .18s, box-shadow .18s; }
+.card-lift:hover { transform: translateY(-6px); box-shadow: var(--shadow-deep); }
+@media (prefers-reduced-motion: reduce){ .card-lift:hover { transform: translateY(-3px); } }
+
+/* Freeze everything inside a section: put .no-motion on the page wrapper */
+.no-motion .card, .no-motion .card:hover { transform:none !important; box-shadow:inherit !important; animation:none !important; transition:none !important; }
+
+/* == 10) RESPONSIVE RULES =================================================== */
+@media (max-width: 992px){ .hero-banner{ min-height: 40vh; } }
+@media (max-width: 576px){ .hero-banner{ min-height: 35vh; } }
+
+/* == 99) LOCAL OVERRIDES / TEMP PATCHES ==================================== */
+/* Confirmation “tick” circle */
+.confirm-badge {
+  width: 42px; height: 42px; border-radius: var(--radius-pill);
+  display: inline-flex; align-items:center; justify-content:center;
+  background: rgba(0,0,0,.4); border:1px solid rgba(255,255,255,.25);
+}
+.confirm-badge i { font-size: 1.25rem; color: var(--brand-contrast); }

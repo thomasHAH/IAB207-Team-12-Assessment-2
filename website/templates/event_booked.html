@@ -11,53 +11,155 @@ from flask ('booking', 'event', 'current_user') to render the dynamic conetnet.
 {% block content %} <!-- start inserting content into the "content" block defined in base.html-->
 
 <!--main container for the booking confirmation-->
-<main class="d-flex align-items-center justify-content-center py-5 hero-banner hero-tall2">
+<main class="d-flex align-items-center justify-content-center py-5 hero-banner hero-tall2 no-motion">
   <div class="container">
-    <div class="card shadow-sm" style="color:white;"> <!--styled bootstrap card-->
-      <div class="card-body p-4 text-center"> <!--card content is centred-->
+    <!-- Outer shell card (kept still with .shell-card) -->
+    <div class="card card--glass shell-card shadow-sm text-white border-0 overflow-hidden">
+      <div class="card-body p-4 p-lg-5">
 
-        <!--confirmation heading-->
-        <h2>Booking Confirmed</h2>
-        <!--display the user's name dynamically using current_user, (i think this is working)-->
-        <p>Thank you {{ current_user.name }}! You have successfully booked your tickets.</p>
+        <!-- Header: confirmation line + friendly subline -->
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <div class="confirm-badge flex-shrink-0">
+            <i class="bi bi-check2-circle"></i>
+          </div>
+          <div>
+            <h1 class="h4 mb-1">Booking Confirmed</h1>
+            <p class="mb-0 text-white-50">Thank you {{ current_user.name }} — your tickets are secured.</p>
+          </div>
+        </div>
 
-        <!-- Booking summary-->
-        <!--these details come from the Booking model instance created in book_event route -->
-        <p><strong>Order ID:</strong> {{ booking.id }}</p> <!-- unique booking id from db-->
-        <p><strong>Tickets Booked:</strong> {{ booking.quantity }}</p> <!--number of tickets purchased-->
-        <p><strong>Total Price:</strong> ${{ "%.2f"|format(booking.price) }}</p> <!-- price formatted to 2 decimals-->
-        <p><strong>Booking Date:</strong> {{ booking.date.strftime('%Y-%m-%d') }}</p> <!-- date booking was created-->
+        <!-- Subtle divider -->
+        <hr class="border-light border-opacity-25">
 
-       
-        <hr> <!--divider line -->
+        <!-- Two column content -->
+        <div class="row g-4">
+          <!-- LEFT: Event preview -->
+          <div class="col-lg-8">
+            <!-- Event title + tiny subtitle -->
+            <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-2">
+              <div>
+                <h2 class="h5 mb-0">{{ event.title }}</h2>
+                {% if event.description %}
+                  <p class="card-subtext mb-0">{{ event.description[:140] }}{% if event.description|length > 140 %}…{% endif %}</p>
+                {% endif %}
+              </div>
+            </div>
 
-        <!-- Event details -->
-        <!-- Displaying info about the event the user just booked -->
-        <h4>Event Details</h4>
-        <h5>{{ event.title }}</h5> <!--event title-->
-        <p>{{ event.description }}</p> <!-- event description -->
-        <p><strong>Date:</strong> {{ event.date.strftime('%Y-%m-%d') }}</p> <!-- removed time and now just date-->
-        <p><strong>Location:</strong> {{ event.location }}</p> <!-- event location-->
-        <p><strong>Features:</strong> {{ event.features }}</p> <!-- features-->
+            <!-- Hero image with date pill -->
+            <div class="position-relative rounded-3 overflow-hidden mb-3">
+              <img
+                class="event-hero-img"
+                src="{% if event.image_file %}{{ url_for('static', filename='uploads/' ~ event.image_file) }}{% else %}{{ url_for('static', filename='img/placeholder-event.jpg') }}{% endif %}"
+                alt="{{ event.title }}"
+              >
+              <div class="date-pill">
+                <span class="month">{{ event.date.strftime('%b') }}</span>
+                <span class="day">{{ event.date.strftime('%d') }}</span>
+              </div>
+            </div>
 
-        <!-- show event image -->
-        <!-- if the event creator uploaded an image, display it-->
-        {% if event.image_file %}
-          <img src="{{ url_for('static', filename='uploads/' ~ event.image_file) }}" 
-               alt="{{ event.title }}" class="img-fluid mb-3">
-        {% else %}
-          <!-- else fall back to a default placeholder image -->
-          <img src="{{ url_for('static', filename='uploads/default.jpg') }}" 
-               class="card-img-top" alt="{{ event.title }}">
-        {% endif %}
+            <!-- Event facts (reuses meta-grid) -->
+            <div class="card card--glass border-0 text-white mb-3">
+              <div class="card-body">
+                <div class="meta-grid">
+                  <div class="meta-item">
+                    <div class="meta-label"><i class="bi bi-calendar-event"></i> Date</div>
+                    <div class="meta-value">{{ event.date.strftime('%Y-%m-%d') }}</div>
+                  </div>
+                  {% if event.time %}
+                  <div class="meta-item">
+                    <div class="meta-label"><i class="bi bi-clock"></i> Time</div>
+                    <div class="meta-value">{{ event.time.strftime('%H:%M') }}</div>
+                  </div>
+                  {% endif %}
+                  <div class="meta-item">
+                    <div class="meta-label"><i class="bi bi-geo-alt"></i> Location</div>
+                    <div class="meta-value">{{ event.location }}</div>
+                  </div>
+                  <div class="meta-item">
+                    <div class="meta-label"><i class="bi bi-people"></i> Capacity</div>
+                    <div class="meta-value">{{ event.capacity }}</div>
+                  </div>
+                  <div class="meta-item">
+                    <div class="meta-label"><i class="bi bi-cash-coin"></i> Price</div>
+                    <div class="meta-value">${{ '%.2f'|format(event.cost) }}</div>
+                  </div>
+                  <div class="meta-item">
+                    <div class="meta-label"><i class="bi bi-person-badge"></i> Host</div>
+                    <div class="meta-value">
+                      {% if event.creator %}{{ event.creator.name }}{% else %}Unknown{% endif %}
+                    </div>
+                  </div>
+                </div>
 
-        <hr> <!--divider line -->
+                {% if event.features %}
+                  <div class="chips mt-3">
+                    {% for f in event.features.split(',') %}
+                      <span class="chip"><i class="bi bi-stars"></i> {{ f.strip() }}</span>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
 
+            <!-- Full description -->
+            {% if event.description %}
+            <div class="card card--glass border-0 text-white">
+              <div class="card-body">
+                <h5 class="mb-2">About this event</h5>
+                <p class="mb-0">{{ event.description }}</p>
+              </div>
+            </div>
+            {% endif %}
+          </div>
 
-        <!-- navigation: back to events list-->
-        <!--button takes the user back to the events listing page -->
-        <a href="{{ url_for('events.list_events') }}" class="btn btn-primary">Back to Events</a>
-        
+          <!-- RIGHT: Booking receipt (we can change how this looks when we put a counter in) -->
+          <div class="col-lg-4">
+            <div class="card card--glass border-0 text-white event-sticky">
+              <div class="card-body">
+                <h5 class="mb-3">Your Receipt</h5>
+                <ul class="list-unstyled small booking-summary">
+                  <li class="d-flex justify-content-between">
+                    <span class="text-white-50">Order ID</span>
+                    <strong>#{{ booking.id }}</strong>
+                  </li>
+                  <li class="d-flex justify-content-between">
+                    <span class="text-white-50">Booked on</span>
+                    <strong>{{ booking.date.strftime('%Y-%m-%d') }}</strong>
+                  </li>
+                  <li class="d-flex justify-content-between">
+                    <span class="text-white-50">Tickets</span>
+                    <strong>{{ booking.quantity }}</strong>
+                  </li>
+                  <li class="d-flex justify-content-between">
+                    <span class="text-white-50">Price per ticket</span>
+                    <strong>${{ '%.2f'|format(event.cost) }}</strong>
+                  </li>
+                  <li class="d-flex justify-content-between border-top pt-2 mt-2">
+                    <span class="text-white-50">Total paid</span>
+                    <strong>${{ '%.2f'|format(booking.price) }}</strong>
+                  </li>
+                </ul>
+
+                <!-- Actions -->
+                <div class="d-grid gap-2">
+                  <a class="btn btn-light" href="{{ url_for('events.view_event', event_id=event.id) }}">
+                    View Event Page
+                  </a>
+                  <a class="btn btn-outline-light" href="{{ url_for('events.list_events') }}">
+                    Back to Events
+                  </a>
+                </div>
+
+                <!-- Optional helper -->
+                <p class="small text-white-50 mt-3 mb-0">
+                  A copy of this receipt has been saved in your account under <em>My Bookings</em>.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div><!-- /row -->
+
       </div>
     </div>
   </div>
