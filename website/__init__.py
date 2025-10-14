@@ -1,7 +1,7 @@
 #commented
 
 # import flask - from 'package' import 'Class'
-from flask import Flask 
+from flask import Flask, render_template
 from flask_bootstrap import Bootstrap5
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
@@ -10,11 +10,13 @@ from flask_login import current_user
 
 db = SQLAlchemy()
 
+# This has been moved outside the create app function allowing the error handling to access it
+app = Flask(__name__)  # this is the name of the module/package that is calling this app
+
+
 # create a function that creates a web application
 # a web server will run this web application
 def create_app():
-  
-    app = Flask(__name__)  # this is the name of the module/package that is calling this app
     # Should be set to false in a production environment
     app.debug = True
     app.secret_key = 'somesecretkey'
@@ -69,3 +71,11 @@ def create_app():
           return dict(name=current_user.name, email=current_user.email)
       return dict(name=None, email=None)
     return app
+
+
+# This will handle rendering the error.html page
+#This will only occur when any error happens by switching the 404 to the Exceptino
+@app.errorhandler(Exception) 
+# inbuilt function which takes error as parameter 
+def not_found(e): 
+  return render_template("error.html")
