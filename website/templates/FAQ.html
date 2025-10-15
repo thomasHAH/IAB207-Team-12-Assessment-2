@@ -4,12 +4,46 @@
 
 {% block content %}
 
-<main class="hero-banner d-flex align-items-center justify-content-center">
+<main class="hero-banner d-flex">
     <div class="container py-5">
 
     <!--page heading -->
-        <h2 class="text-center text-white mb-5">FAQ</h2>
-        
+        <h2 class="text-center text-white mb-5">FAQ - Frequently Asked Questions</h2>
+        <div class="row align-text-start bg-dark opacity-75 p-4 rounded">
+            <h6 class="text-white"><strong>What is PoolBNB?</strong></h6>
+            <p class="text-white">
+                PoolBNB is an online platorm that connects people through events.
+                <br> Whether you're looking to host an event or attend one, PoolBNB makes it easy to find and connect with others who share your interests.
+            </p>
+            <h6 class="text-white"><strong>Is there an age requirement to use PoolBNB?</strong></h6>
+            <p class="text-white">
+                Yes, you must be at least 18 years old to use PoolBNB.
+            </p>
+            <h6 class="text-white"><strong>How do I create an account on PoolBNB?</strong></h6>
+            <p class="text-white">
+                To create an account on PoolBNB, simply click on the "Register" button on the homepage and fill out the registration form with your details.
+                <br> Once you've submitted the form, you will be able to log in and start using the platform.
+            </p>
+            <h6 class="text-white"><strong>How do I create an event on PoolBNB?</strong></h6>
+            <p class="text-white">
+                To create an event on PoolBNB, log in to your account and click on the "Create Event" button.
+                <br> Fill out the event details, including the date, time, location, and description, and submit the form.
+                <br> Once you've submitted the form, the event will be listed on the platform for others to view and book.
+            </p>
+            <h6 class="text-white"><strong>How do I view my bookings on PoolBNB?</strong></h6>
+            <p class="text-white">
+                To view your bookings on PoolBNB, log in to your account and click on the "My Bookings" page.
+                <br> This will show you a list of your upcoming and past bookings, along with the details of each event.
+            </p>
+
+            <h6 class="text-white"><strong>Not finding the answer your looking for?</strong></h6>
+            <p class="text-white">
+                Feel free to reach out to us via our
+                <a href="{{ url_for('events.contact') }}" class="link-light">Contact Page</a> 
+                and we will get back to you as soon as possible!
+            </p>
+
+            <h7 class="text-white"></h7>
 
     </div>
 </main>
