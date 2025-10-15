@@ -112,55 +112,37 @@ their own content.
         <div class="containter-fluid py-3"></div>
         
         <div class="container-fluid text-center">
-            <div class="row gy-5">
+            <div class="row">                
+                <!-- Social Media Links-->
+                <div class="d-flex justify-content-center">
+                    <i class="bi bi-facebook me-3"></i>
+                    <i class="bi bi-instagram me-3"></i>
+                    <i class="bi bi-twitter me-3"></i>
+                    <i class="bi bi-youtube"></i>
+                </div>
 
-                <!-- for spacing -->
-                <div class="col"></div>
+                <h7 class="text-center">FIND US @ PoolBNB ON ALL SOCIAL MEDIA PLATFORMS</h7>
 
                 <!-- Support Links-->
-                <div class="col">
-                    <h6 class="text-decoration-underline">Support</h6>  
-                    <div class="row g-1 text-center">
+                <div class="row">
+                    <div class="col g-0 text-center">
                         <h7>
                             <a href="{{ url_for('events.contact') }}">Contact Us</a>
                         </h7>
                     </div>
-                    <div class="row g-1 text-center">
+                    <div class="col g-0 text-center">
                         <h7>
                             <a href="{{ url_for('events.FAQ') }}">FAQ</a>
                         </h7>
                     </div>
-                </div>
-
-                <!-- LOGO in middle of footer -->
-                <div class="col align-items-center">
-                    <div class="row g-1"> </div>
-                    <div class="row g-1"> <img src="../static/images/Logo.png" class="img-fluid" alt="Logo"> </div>    
-                    <div class="row g-1"> </div>                
-                </div>
-
-                <!-- Quick Links-->
-                <div class="col">
-                    <h6 class="text-decoration-underline">Quick Links</h6>
-                    <div class="row g-1 text-center">
+                    <div class="col g-0 text-center">
                         <h7>
-                            <a href="{{ url_for('main.index') }}">Home</a>
-                        </h7>
-                    </div>
-                        <h7>
-                            <a href="{{ url_for('events.list_events') }}">Events</a>
-                        </h7>
-                    <div class="row g-1 text-center">
-                        <h7>
-                            <a href="http://127.0.0.1:5000/login">Log In</a>
+                            <a href="{{ url_for('events.TnC') }}">Terms and Conditions</a>
                         </h7>
                     </div>
                 </div>
 
-                <!-- for spacing -->
-                <div class="col"></div>
 
-                <h7 class="text-center">FIND US @ PoolBNB ON ALL SOCIAL MEDIA PLATFORMS </h7>
 
             </div>
         <!-- for spacing -->

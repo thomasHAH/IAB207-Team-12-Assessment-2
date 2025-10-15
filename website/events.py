@@ -394,3 +394,8 @@ def FAQ():
 @events_bp.route('/contact')
 def contact():
     return render_template('contact.html')
+
+# T & C HTML PAGE
+@events_bp.route('/TnC')
+def TnC():
+    return render_template('TnC.html')
