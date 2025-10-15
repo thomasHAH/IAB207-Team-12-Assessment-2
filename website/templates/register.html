@@ -55,8 +55,8 @@
               
               <!-- Contact Number input field-->
               <div class="mb-3">
-                {{ form.email.label(class="form-label") }}
-                {{ form.email(class="input-59") }}
+                {{ form.contact_number.label(class="form-label") }}
+                {{ form.contact_number(class="input-59") }}
                 {% for error in form.contact_number.errors %}
                   <div class="text-danger small">{{ error }}</div>
                 {% endfor %}
@@ -64,8 +64,8 @@
 
               <!-- Street Address input field-->
               <div class="mb-3">
-                {{ form.email.label(class="form-label") }}
-                {{ form.email(class="input-59") }}
+                {{ form.street_address.label(class="form-label") }}
+                {{ form.street_address(class="input-59") }}
                 {% for error in form.street_address.errors %}
                   <div class="text-danger small">{{ error }}</div>
                 {% endfor %}
