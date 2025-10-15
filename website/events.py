@@ -105,7 +105,7 @@ def view_event(event_id):
     #grabs this from the forms.py
     form = CommentForm()
     
-    booking_form = BookingForm()  #This gave me a nightmarew
+    booking_form = BookingForm()  #This gave me a nightmare
 
     #calculate tickets left for display
     #I reckon this is a nice touch
@@ -385,4 +385,12 @@ def my_bookings():
     #render the template and pass bookings
     return render_template('my_bookings.html', bookings=bookings)
 
+# FAQ HTML PAGE
+@events_bp.route('/FAQ')
+def FAQ():
+    return render_template('FAQ.html')
 
+# CONTACT HTML PAGE
+@events_bp.route('/contact')
+def contact():
+    return render_template('contact.html')

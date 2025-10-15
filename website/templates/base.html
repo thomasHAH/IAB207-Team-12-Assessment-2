@@ -122,12 +122,12 @@ their own content.
                     <h6 class="text-decoration-underline">Support</h6>  
                     <div class="row g-1 text-center">
                         <h7>
-                            <a href="http://127.0.0.1:5000/contact">Contact Us</a>
+                            <a href="{{ url_for('events.contact') }}">Contact Us</a>
                         </h7>
                     </div>
                     <div class="row g-1 text-center">
                         <h7>
-                            <a href="http://127.0.0.1:5000/FAQ">FAQ</a>
+                            <a href="{{ url_for('events.FAQ') }}">FAQ</a>
                         </h7>
                     </div>
                 </div>
@@ -144,11 +144,11 @@ their own content.
                     <h6 class="text-decoration-underline">Quick Links</h6>
                     <div class="row g-1 text-center">
                         <h7>
-                            <a href="http://127.0.0.1:5000/home">Home</a>
+                            <a href="{{ url_for('main.index') }}">Home</a>
                         </h7>
                     </div>
                         <h7>
-                            <a href="http://127.0.0.1:5000/list">Events</a>
+                            <a href="{{ url_for('events.list_events') }}">Events</a>
                         </h7>
                     <div class="row g-1 text-center">
                         <h7>
@@ -166,7 +166,7 @@ their own content.
         <!-- for spacing -->
         <div class="containter-fluid py-3"></div> 
 
-        <p class="bg-primary text-center text-white mt-auto">© 2025 PooLBNB Event Management. All rights reserved.</p>
+        <p class="bg-primary text-center text-white mt-auto">© 2025 PooLBNB. All rights reserved.</p>
         
 
 
