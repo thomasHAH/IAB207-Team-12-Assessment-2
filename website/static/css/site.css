@@ -20,6 +20,8 @@
    08) Forms (button-59, input-59)
    09) Motion (lift hover, disable)
    10) Responsive Rules
+   11) Contact us Page
+   12) Terms and Page
    99) Local overrides (temporary fixes)
    ========================================================================== */
 
@@ -109,16 +111,6 @@ body {
   z-index: 2;
 }
 
-
-
-
-
-
-
-
-
-
-
 /* Background video pinned */
 .bg-video { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; }
 
@@ -183,6 +175,8 @@ body {
     padding: 5px 10px;
   }
 }
+
+
 
 /* == 04) GENERIC COMPONENTS (Cards, Chips, Badges, Date-pill) ============== */
 .card--glass {
@@ -264,6 +258,18 @@ body {
 .home-events .card-body { padding: 1rem 1.2rem; }
 .home-events .card { transition: transform .2s, box-shadow .2s; }
 .home-events .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
+
+/* Change icon color on hover to match brand blue */
+.home-events .card:hover .meta-label i,
+.hero-banner .card:hover .meta-label i {
+  color: var(--brand); /* Uses your existing blue (#06f) */
+}
+
+/* Optional: for inline SVG icons too */
+.home-events .card:hover .meta-label svg,
+.hero-banner .card:hover .meta-label svg {
+  fill: var(--brand);
+}
 
 /* --- HOME EVENTS GRID LAYOUT FIX --- */
 .home-events .row {
@@ -378,6 +384,98 @@ body {
 /* == 10) RESPONSIVE RULES =================================================== */
 @media (max-width: 992px){ .hero-banner{ min-height: 40vh; } }
 @media (max-width: 576px){ .hero-banner{ min-height: 35vh; } }
+
+/* == 11) CONTACT US PAGE ==================================================== */
+.py-6 { padding-top: 4rem; padding-bottom: 4rem; }
+
+/* Glass look */
+.glass-card {
+  background: rgba(20,24,28,0.45);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 16px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.25);
+  color: #fff;
+}
+
+/* Portrait map container: keeps the iframe tall and elegant */
+.map-portrait {
+  aspect-ratio: 4 / 5;         /* portrait */
+  min-height: 420px;           /* ensures presence on shorter screens */
+}
+.map-portrait iframe { display: block; }
+
+/* Contact list */
+.contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: .75rem;
+  padding: 1rem 0;
+  border-top: 1px solid rgba(255,255,255,0.12);
+}
+.contact-item:first-child { border-top: 0; }
+.contact-item i {
+  font-size: 1.15rem;
+  opacity: .85;
+  margin-top: .15rem;
+}
+.label {
+  text-transform: uppercase;
+  font-size: .8rem;
+  letter-spacing: .04em;
+  opacity: .7;
+  margin-bottom: .25rem;
+}
+
+/* Links + socials */
+.link-soft { color: rgba(255,255,255,0.9); text-decoration: none; transition: color .2s ease; }
+.link-soft:hover, .social-link:hover { color: #0dcaf0; }
+.social-link { color: rgba(255,255,255,0.85); font-size: 1.1rem; margin-right: .65rem; transition: color .2s, transform .2s; }
+.social-link:hover { transform: scale(1.12); }
+
+.border-top-weak { border-top: 1px solid rgba(255,255,255,0.12); }
+
+/* Responsive tweaks */
+@media (max-width: 991.98px) {
+  .map-portrait { aspect-ratio: 16 / 10; } /* a bit wider on mobile so it doesn't get too tall */
+}
+
+/* == 12) Terms and Conditions PAGE =========================================================== */
+
+<style>
+  .py-6{padding-top:4rem;padding-bottom:4rem}
+
+  .tc-glass{
+    background:rgba(20,24,28,.45);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:16px;
+    box-shadow:0 6px 24px rgba(0,0,0,.25);
+    color:#fff;
+  }
+  .tc-section+.tc-section{margin-top:1.5rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,.12)}
+  .opacity-90{opacity:.9}
+  .link-soft{color:rgba(255,255,255,.9);text-decoration:none}
+  .link-soft:hover{color:#0dcaf0}
+
+  .toc{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);
+       border-radius:12px;padding:1rem}
+  .toc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.5rem}
+  .toc a{color:rgba(255,255,255,.9);text-decoration:none;font-size:.95rem}
+  .toc a:hover{color:#0dcaf0}
+
+  .alert-soft{background:rgba(13,202,240,.12);border:1px solid rgba(13,202,240,.35);
+              border-radius:10px;padding:.75rem 1rem}
+
+  /* Headings */
+  .tc-section h2{font-size:1.15rem;margin-bottom:.5rem}
+
+  @media (max-width: 991.98px){
+    .tc-section h2{font-size:1.05rem}
+  }
+</style>
 
 /* == 99) LOCAL OVERRIDES / TEMP PATCHES ==================================== */
 /* Confirmation “tick” circle */

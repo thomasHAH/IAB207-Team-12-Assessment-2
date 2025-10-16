@@ -106,59 +106,32 @@ their own content.
         {% endblock %}
     </main>
 
-    <!--footer -->
-    <footer class="bg-white text-center text-black mt-auto">
-        <!-- for spacing -->
-        <div class="containter-fluid py-3"></div>
-        
-        <div class="container-fluid text-center">
-            <div class="row">                
-                <!-- Social Media Links-->
-                <div class="d-flex justify-content-center">
-                    <button class="btn btn-primary btn-lg rounded-circle me-3 bg-primary" role="button">
-                        <i class="bi bi-facebook"></i>
-                    </button>
-                    <button class="btn btn-primary btn-lg rounded-circle me-3 bg-primary" role="button">
-                        <i class="bi bi-instagram"></i>
-                    </button>
-                    <button class="btn btn-primary btn-lg rounded-circle me-3 bg-primary" role="button">
-                        <i class="bi bi-twitter"></i>
-                    </button>
-                    
-                    <button class="btn btn-primary btn-lg rounded-circle me-3 bg-primary" role="button">
-                        <i class="bi bi-youtube"></i>
-                    </button>
+<footer class="footer mt-auto py-4 text-center bg-light border-top">
+  <div class="container">
+    <!-- Social icons -->
+    <div class="mb-3">
+      <a href="#" class="text-primary fs-4 me-3"><i class="bi bi-facebook"></i></a>
+      <a href="#" class="text-primary fs-4 me-3"><i class="bi bi-instagram"></i></a>
+      <a href="#" class="text-primary fs-4 me-3"><i class="bi bi-twitter-x"></i></a>
+      <a href="#" class="text-primary fs-4"><i class="bi bi-youtube"></i></a>
+    </div>
 
-                </div>
+    <!-- Links -->
+    <div class="small text-muted mb-2">
+      <a href="{{ url_for('events.contact') }}" class="text-decoration-none text-secondary mx-2">Contact</a> |
+      <a href="{{ url_for('events.FAQ') }}" class="text-decoration-none text-secondary mx-2">FAQ</a> |
+      <a href="{{ url_for('events.TnC') }}" class="text-decoration-none text-secondary mx-2">Terms</a>
+    </div>
 
-                <h7 class="text-center">FIND US @ PoolBNB ON ALL SOCIAL MEDIA PLATFORMS</h7>
-
-                <!-- Support Links-->
-                <div class="row">
-                    <div class="col g-0 text-center">
-                        <h7>
-                            <a href="{{ url_for('events.contact') }}">Contact Us</a>
-                        </h7>
-                    </div>
-                    <div class="col g-0 text-center">
-                        <h7>
-                            <a href="{{ url_for('events.FAQ') }}">FAQ</a>
-                        </h7>
-                    </div>
-                    <div class="col g-0 text-center">
-                        <h7>
-                            <a href="{{ url_for('events.TnC') }}">Terms and Conditions</a>
-                        </h7>
-                    </div>
-                </div>
+    <!-- Copyright -->
+    <div class="small text-muted">
+      © 2025 <span class="fw-semibold text-primary">PoolBNB</span>. All rights reserved.
+    </div>
+  </div>
+</footer>
 
 
 
-            </div>
-        <!-- for spacing -->
-        <div class="containter-fluid py-3"></div> 
-
-        <p class="bg-primary text-center text-white mt-auto">© 2025 PooLBNB. All rights reserved.</p>
         
 
 

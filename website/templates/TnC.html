@@ -5,13 +5,187 @@
 {% block content %}
 
 <main class="hero-banner d-flex">
-    <div class="container py-5">
+  <section class="container py-6">
 
-    <!--page heading -->
-        <h2 class="text-center text-white mb-5">Terms and Conditions</h2>
-        
+    <!-- Heading & meta -->
+    <header class="text-center text-white mb-4">
+      <h1 class="h1 mb-2">Terms & Conditions</h1>
+      <p class="small opacity-90 m-0">
+        Last updated: 12 Oct 2025 • Version 1.0
+      </p>
+    </header>
 
+    <!-- Glass wrapper -->
+    <div class="tc-glass p-4 p-md-5">
+
+      <!-- Notice -->
+      <div class="alert-soft mb-4">
+        These Terms govern your use of PoolBNB. By accessing or using the platform, you agree to them.
+        If you don’t agree, please do not use PoolBNB.
+        For questions, <a href="{{ url_for('events.contact') }}">contact us</a>.
+      </div>
+
+      <!-- Table of contents -->
+      <nav class="toc mb-4">
+        <strong class="d-block mb-2">Contents</strong>
+        <div class="toc-grid">
+          <a href="#defs">1. Definitions</a>
+          <a href="#eligibility">2. Eligibility & Accounts</a>
+          <a href="#platform-role">3. Platform Role</a>
+          <a href="#listings">4. Listings (Hosts)</a>
+          <a href="#bookings">5. Bookings (Guests)</a>
+          <a href="#fees">6. Pricing, Fees & Payouts</a>
+          <a href="#cancel">7. Cancellations & Refunds</a>
+          <a href="#conduct">8. Conduct, Safety & House Rules</a>
+          <a href="#damage">9. Damage, Bonds & Claims</a>
+          <a href="#weather">10. Weather Policy</a>
+          <a href="#content">11. Content & IP</a>
+          <a href="#privacy">12. Privacy & Communications</a>
+          <a href="#thirdparty">13. Third-Party Services</a>
+          <a href="#liability">14. Disclaimers & Liability</a>
+          <a href="#indemnity">15. Indemnity</a>
+          <a href="#termination">16. Suspension & Termination</a>
+          <a href="#changes">17. Changes to Terms</a>
+          <a href="#law">18. Governing Law</a>
+          <a href="#contact">19. Contact</a>
+        </div>
+      </nav>
+
+      <!-- Sections -->
+      <section id="defs" class="tc-section">
+        <h2>1. Definitions</h2>
+        <p><strong>“PoolBNB”</strong>, <strong>“we”</strong>, <strong>“us”</strong>, <strong>“our”</strong> means the PoolBNB platform and operator. <strong>“Host”</strong> means a user who creates an event listing. <strong>“Guest”</strong> means a user who books an event. <strong>“Listing”</strong> means any published event on the platform.</p>
+      </section>
+
+      <section id="eligibility" class="tc-section">
+        <h2>2. Eligibility & Accounts</h2>
+        <ul>
+          <li>You must be at least 18 years old and legally able to enter contracts.</li>
+          <li>You’re responsible for the accuracy and security of your account information.</li>
+          <li>PoolBNB may require identity verification where appropriate.</li>
+        </ul>
+      </section>
+
+      <section id="platform-role" class="tc-section">
+        <h2>3. Platform Role</h2>
+        <p>PoolBNB is an online venue that enables Hosts and Guests to connect. We are <em>not</em> a party to agreements between users, and we do not control, supervise, or guarantee Listings, premises, amenities, or guest conduct.</p>
+      </section>
+
+      <section id="listings" class="tc-section">
+        <h2>4. Listings (Hosts)</h2>
+        <ul>
+          <li>Hosts must provide accurate details: location, capacity, amenities (e.g., heated/indoor), accessibility, and house rules.</li>
+          <li>Hosts are responsible for compliance with laws, permits, insurance, noise and pool-safety regulations.</li>
+          <li>Hosts must ensure the area is safe, maintained, and fit for the event time booked.</li>
+        </ul>
+      </section>
+
+      <section id="bookings" class="tc-section">
+        <h2>5. Bookings (Guests)</h2>
+        <ul>
+          <li>By booking, Guests agree to the Listing details and house rules.</li>
+          <li>Guests must supervise minors and comply with local pool-safety and no-glass policies.</li>
+          <li>Only the number of attendees specified in the booking may attend unless the Host approves changes in writing via the platform.</li>
+        </ul>
+      </section>
+
+      <section id="fees" class="tc-section">
+        <h2>6. Pricing, Fees & Payouts</h2>
+        <ul>
+          <li>Hosts set a price per event. PoolBNB may charge guest service fees and host service fees shown at checkout.</li>
+          <li>Payments are processed securely through our payment partner. Host payouts are typically released <em>within 3–5 business days</em> after the event start, subject to fraud checks and holds.</li>
+          <li>Taxes: Hosts are responsible for determining and remitting any applicable taxes.</li>
+        </ul>
+      </section>
+
+      <section id="cancel" class="tc-section">
+        <h2>7. Cancellations & Refunds</h2>
+        <ul>
+          <li>Each Listing displays its cancellation window (e.g., full refund up to 72 hours before start; otherwise non-refundable). If none is set, the default policy applies: <em>full refund up to 48 hours before event start</em>.</li>
+          <li>If a Host cancels, Guests receive a full refund.</li>
+          <li>Refunds are issued to the original payment method. Processing times depend on the payment provider.</li>
+        </ul>
+      </section>
+
+      <section id="conduct" class="tc-section">
+        <h2>8. Conduct, Safety & House Rules</h2>
+        <ul>
+          <li>Follow all house rules: capacity limits, noise curfews, alcohol policy, and strict <strong>no glass near the pool</strong>.</li>
+          <li>Illegal activity, harassment, property damage, and unsafe behavior are prohibited and may result in removal or account suspension.</li>
+          <li>Guests participate at their own risk. Hosts must provide clear safety guidance (e.g., no diving in shallow areas).</li>
+        </ul>
+      </section>
+
+      <section id="damage" class="tc-section">
+        <h2>9. Damage, Bonds & Claims</h2>
+        <ul>
+          <li>Guests are responsible for damage they cause. Hosts may require a bond/security deposit stated in the Listing.</li>
+          <li>Damage claims should be submitted via PoolBNB support within <em>48 hours</em> of the event end with evidence (photos, receipts).</li>
+        </ul>
+      </section>
+
+      <section id="weather" class="tc-section">
+        <h2>10. Weather Policy</h2>
+        <ul>
+          <li>Hosts should include a wet-weather plan (covered area or reschedule option). </li>
+          <li>If severe weather makes the event unsafe and no alternative is possible, Guests are entitled to a full refund.</li>
+        </ul>
+      </section>
+
+      <section id="content" class="tc-section">
+        <h2>11. Content & IP</h2>
+        <p>You retain ownership of any content you upload. You grant PoolBNB a non-exclusive, worldwide, royalty-free license to host, store, display, and distribute such content solely for operating and promoting the platform. Do not upload content you don’t have rights to, or that is unlawful or infringing.</p>
+      </section>
+
+      <section id="privacy" class="tc-section">
+        <h2>12. Privacy & Communications</h2>
+        <p>Your use is subject to our Privacy Notice (coming soon). We may send transactional emails/SMS related to bookings and support. You can manage marketing preferences in your account.</p>
+      </section>
+
+      <section id="thirdparty" class="tc-section">
+        <h2>13. Third-Party Services</h2>
+        <p>Payments and map services are provided by third parties and subject to their terms. PoolBNB isn’t responsible for third-party outages or errors.</p>
+      </section>
+
+      <section id="liability" class="tc-section">
+        <h2>14. Disclaimers & Liability</h2>
+        <p>To the extent permitted by law, PoolBNB provides the platform “as is” and disclaims warranties of merchantability, fitness for purpose, and non-infringement. Our aggregate liability to you for any claim arising out of or relating to these Terms or the platform is limited to the greater of <em>AUD $100</em> or the fees you paid to PoolBNB in the past 12 months.</p>
+      </section>
+
+      <section id="indemnity" class="tc-section">
+        <h2>15. Indemnity</h2>
+        <p>You agree to indemnify and hold harmless PoolBNB from claims, losses, damages, and expenses (including reasonable legal fees) arising from your breach of these Terms or violation of law or third-party rights.</p>
+      </section>
+
+      <section id="termination" class="tc-section">
+        <h2>16. Suspension & Termination</h2>
+        <p>We may suspend or terminate access for suspected fraud, safety risks, or repeated rule violations. You may close your account at any time; certain sections survive termination.</p>
+      </section>
+
+      <section id="changes" class="tc-section">
+        <h2>17. Changes to Terms</h2>
+        <p>We may update these Terms from time to time. Material changes will be notified via the platform or email. Continued use after the effective date constitutes acceptance.</p>
+      </section>
+
+      <section id="law" class="tc-section">
+        <h2>18. Governing Law</h2>
+        <p>These Terms are governed by the laws of Queensland, Australia. The parties submit to the non-exclusive jurisdiction of the courts of Queensland.</p>
+      </section>
+
+      <section id="contact" class="tc-section">
+        <h2>19. Contact</h2>
+        <address class="mb-0">
+          PoolBNB Support • QUT Gardens Point, Brisbane City QLD 4000, Australia<br>
+          <a href="mailto:support@poolbnb.com" class="link-soft">support@poolbnb.com</a> • <a href="{{ url_for('events.contact') }}" class="link-soft">Contact page</a>
+        </address>
+      </section>
+
+      <div class="text-end mt-3">
+        <a href="#" class="link-soft small">Back to top ↑</a>
+      </div>
     </div>
+  </section>
 </main>
+
 
 {% endblock %}
