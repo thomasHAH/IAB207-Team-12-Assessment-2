@@ -7,10 +7,10 @@ import logging
 
 db = SQLAlchemy()
 
-def create_app():
-    # Instantiate the app inside the factory (recommended)
-    app = Flask(__name__)
+# Instantiate the app outside according to the tutorial that recommends this for error handling
+app = Flask(__name__)
 
+def create_app():
     # Configuration (recommend moving to environment/config file for production)
     app.debug = os.environ.get('FLASK_DEBUG', '1') == '1'
     app.secret_key = os.environ.get('SECRET_KEY', 'somesecretkey')  # replace in prod
@@ -74,3 +74,14 @@ def create_app():
         app.logger.addHandler(handler)
 
     return app
+
+
+# This will be called if an error is faced 
+@app.errorhandler(404)
+def not_found_404(e):
+    return render_template("error.html", code=404, message=str(e)), 404
+
+@app.errorhandler(500)
+def internal_error(e):
+    app.logger.error("Internal server error", exc_info=e)
+    return render_template("error.html", code=500, message=str(e)), 500
