@@ -58,13 +58,14 @@
 
                 <!-- Conditional color badge based on event status -->
                 {% set s = (event.status or '').lower() %}
-                <span class="badge 
+                <span class="badge align-self-start
                   {% if s == 'open' %}bg-success
-                  {% elif s in ['closed','cancelled','canceled'] %}bg-secondary
-                  {% elif s in ['full','sold out'] %}bg-danger
-                  {% else %}bg-info
-                  {% endif %}">
-                  {{ event.status or 'Status' }}
+                  {% elif s == 'inactive' %}bg-secondary
+                  {% elif s == 'closed' %}bg-secondary
+                  {% elif s in ['cancelled','canceled'] %}bg-dark
+                  {% elif s in ['sold out','full'] %}bg-danger
+                  {% else %}bg-info{% endif %}">
+                  {{ event.status or ''}}
                 </span>
               </div>
 

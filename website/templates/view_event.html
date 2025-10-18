@@ -21,16 +21,17 @@ Event details page
               <h1 class="event-title mb-1">{{ event.title }}</h1>
               {# no description here #}
             </div>
-
+  
             {# automatic server-side status badge #}
-            {% set s = (event.computed_status or '').lower() %}
+            {% set s = (event.status or '').lower() %}
             <span class="badge align-self-start
               {% if s == 'open' %}bg-success
-              {% elif s == 'sold out' %}bg-danger
               {% elif s == 'inactive' %}bg-secondary
+              {% elif s == 'closed' %}bg-secondary
               {% elif s in ['cancelled','canceled'] %}bg-dark
+              {% elif s in ['sold out','full'] %}bg-danger
               {% else %}bg-info{% endif %}">
-              {{ event.computed_status }}
+              {{ event.status or '' }}
             </span>
           </div>
 
@@ -132,16 +133,16 @@ Event details page
               <div class="card-body">
                 <h5 class="mb-3">Add a Comment</h5>
                 {% if current_user.is_authenticated %}
-                  <form method="POST">
-                    {{ form.hidden_tag() }}
+                <form method="POST">
+                    {{ comment_form.hidden_tag() }}
                     <div class="mb-3">
-                      {{ form.text(label=False, class="form-control", placeholder="Write a comment") }}
-                      {% for error in form.text.errors %}
+                        {{ comment_form.text(label=False, class="form-control", placeholder="Write a comment") }}
+                        {% for error in comment_form.text.errors %}
                         <div class="text-danger small">{{ error }}</div>
-                      {% endfor %}
+                        {% endfor %}
                     </div>
-                    {{ form.submit(class="btn btn-primary") }}
-                  </form>
+                    {{ comment_form.submit(class="btn btn-primary") }}
+                </form>
                 {% else %}
                   <p class="mb-0"><a href="{{ url_for('auth.login') }}">Log in</a> to write a comment.</p>
                 {% endif %}

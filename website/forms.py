@@ -51,8 +51,10 @@ class EventForm(FlaskForm):
     capacity = IntegerField('Capacity of Event', validators=[NumberRange(min=1, message="Capacity must be positive")], default=1)
     #Features stored similar to the event status as a selected field that way there is multiple options
     features = SelectField('Pool Feature', choices=[('heated', 'Heated'), ('indoor', 'Indoor'), ('slide', 'Slide'), ('saltwater', 'Saltwater'), ('outdoor', 'Outdoor'), ('regular', 'Regular')], validators=[DataRequired()], default='regular')
+    
     #Status of the event (NOTE should be Open, Inactive, Closed, Cancelled)
-    status = SelectField('Event Status', choices=[('open', 'Open'), ('inactive', 'Inactive'), ('closed', 'Closed'), ('cancelled', 'Cancelled')], validators=[DataRequired()], default='open')
+    # status = SelectField('Event Status', choices=[('open', 'Open'), ('inactive', 'Inactive'), ('closed', 'Closed'), ('cancelled', 'Cancelled')], validators=[DataRequired()], default='open')
+
     #Date of the event (required, must match the format given) - could make this easier
     date = DateField('Date', format='%Y-%m-%d', validators=[DataRequired()])
     
@@ -60,7 +62,9 @@ class EventForm(FlaskForm):
     image = FileField('Event Image', validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'Images only!')])
     #SUBMIT BUTTON
     submit = SubmitField('Create Event')
-    
+
+class CancelForm(FlaskForm):
+    cancel_button = SubmitField('Cancel Event')
     
 #Adding comments to events - NEW
 #Form class for creating and submitting comments
