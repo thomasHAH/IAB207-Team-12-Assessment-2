@@ -12,42 +12,54 @@ The main purpose is to display a hero banner with the welcome message, personali
 It provides a search bar and quick feature filters
 and dynmacially lists upcoming events or search results from the database
 
-  - Receives event data and an optional search term from events.py -> home() route.
-  - When users type a feature (e.g. indoor) or click a quick filter, flask passes it as ?q=indoor.
-  - The page then displays only matching events, or all upcoming events if no search term exists.
+So the flask logic behind this:
+ - receives event data and optional search_term from events.py
+ - so the query parameter filters results by event featrure
+ - if no query is provided then we just show all upcoming events and stuff
 -->
 
-<!-- Hero section WAVE BANNER -->
+<!--hero section-->
+<!-- so this header is containing the looping background video and greeting message
+ so only when user is authenticated the greeting is personalised-->
 
 <header class="hero-banner">
-  <video class="bg-video" autoplay muted loop playsinline preload="auto">
-    <source src="{{ url_for('static', filename='images/PoolVideo.mp4') }}" type="video/mp4">
-  </video>
+  <!--removed background video as it had been defined in the base.html!-->
+  
   
 
-
+  <!-- the centred hero content container -->
   <div class="container text-center">
 
 
         <!--personalised greeting for logged-in users-->
         {% if email %}
+        <!-- if email for logged in users -->
         <h1 class="display-4 fw-bold text-white">Welcome back, {{ name }}!</h1>
-        <p class="lead text-white-50">Glad to see you again — check out the latest events!</p>
+        <p class="lead text-white-50">Glad to see you again, come check out the latest events!</p>
         <!--else its just a generic hero text for visitors not logged in-->
         {% else %}
+
+        <!--shown to users who aren't logged in-->
         <h1 class="display-4 fw-bold text-white">Welcome to PoolBNB</h1>
         <p class="lead text-white-50">Discover, book, and share amazing poolside events.</p>
         {% endif %}
 
         <!--new area to have the search bar on HERO banner and all other details on top of the wave image!-->
         
-                  <div class="mt-4 hero-search">
+        <!-- search bar plus quick filter tags-->
+        <div class="mt-4 hero-search">
+          <!--search form which sends GET request to home route with ?q=term-->
           <form method="GET" action="{{ url_for('events.home') }}" class="d-flex justify-content-center">
-            <input type="text" name="q" placeholder="Search by feature (e.g. Heated, Indoor, Outdoor)"
-                   value="{{ search_term }}" class="form-control w-50">
+            <input 
+              type="text" 
+              name="q" 
+              placeholder="Search by feature (e.g. Heated, Indoor, Outdoor)"
+              value="{{ search_term }}" class="form-control w-50">
             <button type="submit" class="btn btn-primary ms-2">Search</button>
           </form>
 
+          <!-- quick feateure tags for autofill search query-->
+           <!--got the styling from css-->
           <div class="mt-3 quick-tags">
               <a href="{{ url_for('events.home', q='Heated') }}#results" class="tag">Heated</a>
               <a href="{{ url_for('events.home', q='Indoor') }}#results" class="tag">Indoor</a>
@@ -65,40 +77,48 @@ and dynmacially lists upcoming events or search results from the database
 </header>
 
 <!--main content sectopm-->
-<main class="d-flex align-items-center" id="results">
+<!--this gonna display either upcoming events or search results-->
+<!--had to tweak the hero-banner2 to fit in with this, there was probs a better way to do this-->
+<main class="hero-banner2" id="results">
   <div class="container-fluid my-5">
 
     <!--search results/all events-->
     <div class="row">
-      <!--section heading: adjusts dynamically depending on whether a search term exists-->
+      <!--section heading which adjusts dynamically depending on whether a search term exists-->
       <div class="d-flex align-items-center justify-content-center mt-5 mb-4">
         <div class="flex-grow-1 border-top"></div>
         {% if search_term %}
         <!--display current search term if a user searched-->
-        <h2 class="px-3 text-dark">Showing results for "{{ search_term }}"</h2>
+        <h2 class="px-3 text-light">Showing results for "{{ search_term }}"</h2>
         {% else %}
         <!--default title for homepage when no search applied-->
-        <h2 class="px-3 text-dark">Upcoming Events</h2>
+        <h2 class="px-3 text-light">Upcoming Events</h2>
         {% endif %}
         <div class="flex-grow-1 border-top"></div>
       </div>
 
+      <!--so each event card is dynamically generated using flask-->
       <!--Event cards grid section - UPDATED TO LOOK SIMILAR TO BOOK EVENTS-->
           <!-- Event cards grid -->
             <section class="home-events container my-5">
               <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
 
+                <!--loop through events provided by Flask-->
                 {% for event in events %}
                 <div class="col d-flex">
                   <div class="card flex-fill h-100 border-0 shadow-lg rounded-3 overflow-hidden bg-dark text-white card-hover">
                     
                     <!-- IMAGE -->
+                     <!-- event image with date overlay-->
                     <div class="position-relative">
+                      <!--removed redundant code here, we didn't need default image as its already set up-->
                       <img
-                        class="card-img-top event-img"
-                        src="{% if event.image_file %}{{ url_for('static', filename='uploads/' ~ event.image_file) }}{% else %}{{ url_for('static', filename='img/placeholder-event.jpg') }}{% endif %}"
-                        alt="{{ event.title or 'Event image' }}"
+                          class="card-img-top event-img"
+                          src="{{ url_for('static', filename='uploads/' ~ event.image_file) }}"
                       >
+
+                      <!--date overlay-->
+                      <!--style curated from css (class)-->
                       <div class="date-pill">
                         <span class="month">{{ event.date.strftime('%b') }}</span>
                         <span class="day">{{ event.date.strftime('%d') }}</span>
@@ -107,8 +127,13 @@ and dynmacially lists upcoming events or search results from the database
 
                     <!-- BODY -->
                     <div class="card-body pb-2">
+                      <!-- event title as well as status badge --> 
                       <div class="d-flex justify-content-between align-items-start mb-1">
                         <h5 class="card-title mb-0">{{ event.title }}</h5>
+                        
+                        <!--determine badge colour dynamically-->
+                        <!-- all determined from event.status -->
+                         <!-- using bootsrap background colour to indicate liek good/bad-->
                         {% set s = (event.status or '').lower() %}
                         <span class="badge
                           {% if s == 'open' %}bg-success
@@ -119,12 +144,18 @@ and dynmacially lists upcoming events or search results from the database
                         </span>
                       </div>
 
+                      <!--shortened event description to make it look professional and aligned-->
                       {% if event.description %}
                         <p class="card-subtext small mb-2">
-                          {{ event.description[:90] }}{% if event.description|length > 90 %}…{% endif %}
+                          <!-- so basically we are only going to display the first 90 characters-->
+                           <!-- we wanna check the og length is greater than 90 and if its more than we add the dots-->
+                          {{ event.description[:90] }}{% if event.description|length > 90 %}...{% endif %}
                         </p>
                       {% endif %}
 
+                      <!--meta information grid-->
+                      <!-- we wanted to make the cards contain the vital information-->
+                      <!-- got the symbols as well nice touch-->
                       <div class="meta-grid small">
                         <div class="meta-item">
                           <div class="meta-label"><i class="bi bi-calendar-event"></i> Date</div>
@@ -132,20 +163,22 @@ and dynmacially lists upcoming events or search results from the database
                         </div>
                         <div class="meta-item">
                           <div class="meta-label"><i class="bi bi-geo-alt"></i> Location</div>
-                          <div class="meta-value">{{ event.location or 'TBA' }}</div>
+                          <div class="meta-value">{{ event.location }}</div>
                         </div>
                       </div>
 
-                      {% if event.features %}
-                        <div class="chips mt-2">
-                          {% for f in event.features.split(',') %}
-                            <span class="chip">{{ f.strip() }}</span>
-                          {% endfor %}
-                        </div>
-                      {% endif %}
+                      <!-- scan for features -->
+                       <!-- user can only choose one feature (should probs allow them to choose more)-->
+                       <!-- can update this later if we choose to have the user select multiple features but i reckon we keep it simple for now--> 
+                       {% if event.features %}
+                          <div class="chips mt-2">
+                            <span class="chip">{{ event.features }}</span>
+                          </div>
+                        {% endif %}
                     </div>
 
-                    <!-- FOOTER -->
+                  <!-- so this is the footer of the card -->
+                   <!-- will take users to the event they click on-->
                     <div class="card-footer bg-transparent border-0 pt-0">
                       <a href="{{ url_for('events.view_event', event_id=event.id) }}"
                         class="btn btn-primary w-100">Find Tickets</a>
@@ -153,6 +186,8 @@ and dynmacially lists upcoming events or search results from the database
                   </div>
                 </div>
                 {% else %}
+                <!-- no results fallback-->
+                 <!-- gives option to create an event and takes users to create event-->
                   <div class="col-12 text-center text-white">
                     <h5>No matching events found</h5>
                     <p>Try another feature or <a href="{{ url_for('events.create_event') }}" class="text-white fw-bold">create your own!</a></p>

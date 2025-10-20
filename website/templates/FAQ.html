@@ -4,195 +4,130 @@
 
 {% block content %}
 
+<!--FAQ page-->
+<!--Pretty much this page is just providing a simple, static layout
+    - its gonna be using bootstrap classes for layout and design as well as
+      inheriting a bunch of global styling like nav bar and stuff from the base.html
+    - and also gonna be using stuff from css
+-->
+
+<!-- so this is like the magnum opus, its our hero banner
+     which is pool waves with tinted overlay and is concistent
+     with the rest of the pages-->
 <main class="hero-banner d-flex">
   <section class="container py-6">
-    <!-- Heading -->
+  <!-- This is the page header -->
     <div class="text-center text-white mb-4">
-      <h1 class="h3 mb-2">FAQ – Frequently Asked Questions</h1>
-      <p class="opacity-90 m-0">Everything you need to know about hosting and booking on PoolBNB.</p>
+      <h1 class="h3 mb-2">FAQ = Frequently Asked Questions</h1>
+      <p class="opacity-90 m-0">
+        Everything you need to know about hosting and booking on PoolBNB!
+      </p>
     </div>
 
-    <!-- FAQ glass wrapper -->
-    <div class="glass-card p-4 p-md-5">
-      <!-- Optional quick links -->
-      <div class="d-flex flex-wrap gap-2 mb-4">
-        <a href="#acc-booking" class="btn btn-outline-light btn-sm rounded-pill">Booking</a>
-        <a href="#acc-payments" class="btn btn-outline-light btn-sm rounded-pill">Payments</a>
-        <a href="#acc-hosts" class="btn btn-outline-light btn-sm rounded-pill">For Hosts</a>
-        <a href="#acc-safety" class="btn btn-outline-light btn-sm rounded-pill">Safety</a>
-        <a href="#acc-policies" class="btn btn-outline-light btn-sm rounded-pill">Policies</a>
-      </div>
-
+  <!-- main faq content (gonna be in two columns)-->
+   <!--glass-card design from css-->
+    <div class="glass-card p-4 p-md-5 text-white">
+      <!-- column 1 -->
       <div class="row g-4">
-        <!-- Column 1 -->
         <div class="col-12 col-lg-6">
-          <div class="accordion accordion-flush" id="acc-booking">
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="q1-h">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q1" aria-expanded="false" aria-controls="q1">
-                  What is PoolBNB?
-                </button>
-              </h2>
-              <div id="q1" class="accordion-collapse collapse" aria-labelledby="q1-h" data-bs-parent="#acc-booking">
-                <div class="accordion-body">
-                  PoolBNB is a platform that connects hosts and guests through private pool-side events and experiences. Create an event, invite people, or discover unique gatherings near you.
-                </div>
-              </div>
-            </div>
+          <!-- So, each question is using a h4 heading followed by a <p> answer
+               just keeping it simple. -->
+          <h4>What is PoolBNB?</h4>
+          <p>
+            PoolBNB is a platform that connects hosts and guests through private
+            pool-side events and experiences. Create an event, invite people, or
+            discover unique gatherings near you.
+          </p>
 
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="q2-h">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q2">
-                  Who can use PoolBNB?
-                </button>
-              </h2>
-              <div id="q2" class="accordion-collapse collapse" aria-labelledby="q2-h" data-bs-parent="#acc-booking">
-                <div class="accordion-body">
-                  You must be 18+ to host or book. Some events may require government-ID verification if requested by the host.
-                </div>
-              </div>
-            </div>
+          <!-- this is all just a bunch of filler, but we have tried to make it look as professional as possible-->
+          <h4>Who can use PoolBNB?</h4>
+          <p>
+            You must be 18 years or older to host or book. Some events may
+            require verification if requested by the host.
+          </p>
 
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="q3-h">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q3">
-                  How do I create an account?
-                </button>
-              </h2>
-              <div id="q3" class="accordion-collapse collapse" aria-labelledby="q3-h" data-bs-parent="#acc-booking">
-                <div class="accordion-body">
-                  Click <em>Register</em> and complete the form. You can then log in, create events, and book experiences immediately.
-                </div>
-              </div>
-            </div>
+          <h4>How do I create an account?</h4>
+          <p>
+            Click <em>Register</em> and complete the form. You can then log in,
+            create events, and book experiences immediately.
+          </p>
 
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="q4-h">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q4">
-                  How do I create an event?
-                </button>
-              </h2>
-              <div id="q4" class="accordion-collapse collapse" aria-labelledby="q4-h" data-bs-parent="#acc-booking">
-                <div class="accordion-body">
-                  Go to <em>Create Event</em>, add title, date/time, capacity, price , amenities (e.g., heated, indoor), and house rules. Publish to make it discoverable.
-                </div>
-              </div>
-            </div>
+          <h4>How do I create an event?</h4>
+          <p>
+            Go to <em>Create Event</em>, add title, date, capacity, price,
+            amenities (e.g., heated or indoor), and house rules. Publish to make
+            it discoverable.
+          </p>
 
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="q5-h">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q5">
-                  Can I reschedule or cancel my booking?
-                </button>
-              </h2>
-              <div id="q5" class="accordion-collapse collapse" aria-labelledby="q5-h" data-bs-parent="#acc-booking">
-                <div class="accordion-body">
-                  Yes—availability depends on the host’s policy. You can request a date change in <em>My Bookings</em>. Cancellations follow the event’s listed cancellation window.
-                </div>
-              </div>
-            </div>
-          </div>
+          <h4>Can I reschedule or cancel my booking?</h4>
+          <p>
+            Yes, availability depends on the host's policy. You can request a
+            date change in <em>My Bookings</em>. Cancellations follow the event's
+            listed cancellation window.
+          </p>
         </div>
 
-        <!-- Column 2 -->
+        <!-- column 2 -->
         <div class="col-12 col-lg-6">
-          <div class="accordion accordion-flush" id="acc-payments">
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="q6-h">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q6">
-                  How do payments work?
-                </button>
-              </h2>
-              <div id="q6" class="accordion-collapse collapse" aria-labelledby="q6-h" data-bs-parent="#acc-payments">
-                <div class="accordion-body">
-                  Guests pay securely at checkout. Funds are held until the event start, then released to the host (minus platform fees) within 3–5 business days.
-                </div>
-              </div>
-            </div>
+          <h4>How do payments work?</h4>
+          <p>
+            Guests pay securely at checkout. Funds are held until the event
+            start, then released to the host (minus platform fees) within 3-5
+            business days.
+          </p>
 
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="q7-h">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q7">
-                  What is the refund policy?
-                </button>
-              </h2>
-              <div id="q7" class="accordion-collapse collapse" aria-labelledby="q7-h" data-bs-parent="#acc-payments">
-                <div class="accordion-body">
-                  Refunds follow the host’s cancellation policy. If an event is cancelled by the host or due to verified severe weather, guests receive a full refund.
-                </div>
-              </div>
-            </div>
+          <h4>What is the refund policy?</h4>
+          <p>
+            Refunds follow the host's cancellation policy. If an event is
+            cancelled by the host or due to verified severe weather, guests
+            receive a full refund.
+          </p>
 
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="q8-h">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q8">
-                  Safety & house rules
-                </button>
-              </h2>
-              <div id="q8" class="accordion-collapse collapse" aria-labelledby="q8-h" data-bs-parent="#acc-payments">
-                <div class="accordion-body">
-                  Each event lists rules (capacity limits, alcohol policy, noise curfew, no-glass near pool, etc.). By booking you agree to follow them. Hosts may remove guests who break rules.
-                </div>
-              </div>
-            </div>
+          <h4>Safety and House Rules</h4>
+          <p>
+            Each event lists its own rules (capacity limits, alcohol policy,
+            noise curfew, no-glass near pool, etc.). By booking, you agree to
+            follow them. Hosts may remove guests who break rules.
+          </p>
 
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="q9-h">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q9">
-                  Weather & contingency
-                </button>
-              </h2>
-              <div id="q9" class="accordion-collapse collapse" aria-labelledby="q9-h" data-bs-parent="#acc-payments">
-                <div class="accordion-body">
-                  Hosts can specify a wet-weather plan (reschedule or covered area). If severe weather makes the event unsafe and no alternative is possible, bookings are refunded.
-                </div>
-              </div>
-            </div>
+          <h4>Weather</h4>
+          <p>
+            Hosts can specify a wet-weather plan (reschedule or covered area).
+            If severe weather makes the event unsafe and no alternative is
+            possible, bookings are refunded.
+          </p>
 
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="q10-h">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q10">
-                  Damage & liability
-                </button>
-              </h2>
-              <div id="q10" class="accordion-collapse collapse" aria-labelledby="q10-h" data-bs-parent="#acc-payments">
-                <div class="accordion-body">
-                  Guests are responsible for any damage they cause. Hosts should disclose any security deposit or bond in the listing. For incidents, contact support immediately.
-                </div>
-              </div>
-            </div>
-          </div>
+          <h4>Damage and Liability</h4>
+          <p>
+            Guests are responsible for any damage they cause. Hosts should
+            disclose any security deposit or bond in the listing. For incidents,
+            contact support immediately.
+          </p>
         </div>
       </div>
 
-      <!-- “Still need help?” -->
-      <div class="mt-4 pt-3 border-top-weak d-flex flex-wrap align-items-center gap-2">
-        <span class="opacity-90">Can’t find what you’re looking for?</span>
-        <a href="{{ url_for('events.contact') }}" class="btn btn-outline-light btn-sm rounded-pill">Contact support</a>
-        <a href="{{ url_for('events.TnC') }}" class="btn btn-outline-light btn-sm rounded-pill">Terms & Conditions</a>
+    <!-- footer section for this page -->
+     <!-- so pretty much just a bunch of buttons linking to our other pages-->
+      <div
+        class="mt-4 pt-3 border-top-weak d-flex flex-wrap align-items-center gap-2"
+      >
+        <span class="opacity-90">Can't find what you're looking for?</span>
+        <!-- contact support button -> once again we r trying to make it look professional-->
+        <a
+          href="{{ url_for('events.contact') }}"
+          class="btn btn-outline-light btn-sm rounded-pill"
+          >Contact support</a
+        >
+        <!--we also have a button that takes the use to tnc-->
+        <a
+          href="{{ url_for('events.TnC') }}"
+          class="btn btn-outline-light btn-sm rounded-pill"
+          >Terms and Conditions</a
+        >
       </div>
     </div>
   </section>
-
-  <!-- Optional JSON-LD for SEO -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {"@type":"Question","name":"What is PoolBNB?","acceptedAnswer":{"@type":"Answer","text":"PoolBNB connects hosts and guests through private pool-side events and experiences."}},
-      {"@type":"Question","name":"Who can use PoolBNB?","acceptedAnswer":{"@type":"Answer","text":"Users must be 18+; some events may require ID verification."}},
-      {"@type":"Question","name":"How do I create an account?","acceptedAnswer":{"@type":"Answer","text":"Register, log in, then create events or book experiences."}},
-      {"@type":"Question","name":"How do I create an event?","acceptedAnswer":{"@type":"Answer","text":"Use Create Event to add details, amenities and rules, then publish."}},
-      {"@type":"Question","name":"Can I reschedule or cancel my booking?","acceptedAnswer":{"@type":"Answer","text":"Yes; it follows the host’s policy. Request changes in My Bookings."}},
-      {"@type":"Question","name":"How do payments work?","acceptedAnswer":{"@type":"Answer","text":"Guests pay securely; funds release to host after event minus fees."}},
-      {"@type":"Question","name":"What is the refund policy?","acceptedAnswer":{"@type":"Answer","text":"Refunds follow host policy; full refunds for host cancellations or verified severe weather."}},
-      {"@type":"Question","name":"Safety & house rules","acceptedAnswer":{"@type":"Answer","text":"Listings include rules (capacity, alcohol, noise, no glass). Guests must comply."}},
-      {"@type":"Question","name":"Weather & contingency","acceptedAnswer":{"@type":"Answer","text":"Hosts can reschedule or provide covered areas; unsafe severe weather triggers refunds."}},
-      {"@type":"Question","name":"Damage & liability","acceptedAnswer":{"@type":"Answer","text":"Guests are liable for damages; hosts may require a bond; contact support for incidents."}}
-    ]
-  }
-  </script>
 </main>
 
+<!--all done-->
 {% endblock %}

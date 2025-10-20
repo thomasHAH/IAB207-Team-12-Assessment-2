@@ -7,8 +7,8 @@ main_bp = Blueprint('main', __name__)
 
 @main_bp.route('/')
 def index():
-    # Regardless of the logged in status, pass the events through to the index
-    events = Event.query.order_by(Event.date.asc()).limit(5).all() # This will get the newest five events
+    #Regardless of the logged in status, pass the events through to the index
+    events = Event.query.order_by(Event.date.asc()).limit(5).all() #This will get the newest five events
 
     # Check if an email is stored in session (set in auth.py after login)
     if 'email' in session:

@@ -28,7 +28,7 @@
 
 /* == 01) DESIGN TOKENS ====================================================== */
 :root {
-  /* Colors */
+  /* Colours */
   --text:               #ffffff;
   --text-muted:         rgba(255,255,255,0.65);
   --text-softer:        rgba(255,255,255,0.5);
@@ -83,7 +83,7 @@ body {
 /* Hero banner */
 .hero-banner {
   position: relative;              /* needed for ::before overlay */
-  margin-top: -15px;                   /* removes browser's default spacing */
+  margin-top: -17px;                   /* removes browser's default spacing */
   padding-top: 0px;                  /* ensures hero starts right under navbar */
   min-height: 100vh;               /* full height; use 60vh if shorter */
   overflow: visible;
@@ -95,6 +95,20 @@ body {
 }
 
 
+/* don't delete - i need this for the home page upcoming events*/
+.hero-banner2 {
+  position: relative;              
+  margin-top: 0px;                   
+  padding-top: 0px;                  
+  min-height: 100vh;               
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+}
+
 
 /*overlay tint */
 .hero-banner::before {
@@ -105,8 +119,19 @@ body {
   z-index: 1;
 }
 
+/* don't delete - i need this for the home page upcoming events*/
+.hero-banner2::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(1, 1, 65, 0.3);
+  z-index: 1;
+}
+
 /*keep hero content above overlay */
-.hero-banner .container {
+.hero-banner .container,
+.hero-banner2 .container,
+.hero-banner2 h2 {
   position: relative;
   z-index: 2;
 }
@@ -443,7 +468,7 @@ body {
 
 /* == 12) Terms and Conditions PAGE =========================================================== */
 
-<style>
+
   .py-6{padding-top:4rem;padding-bottom:4rem}
 
   .tc-glass{
@@ -475,7 +500,7 @@ body {
   @media (max-width: 991.98px){
     .tc-section h2{font-size:1.05rem}
   }
-</style>
+
 
 /* == 99) LOCAL OVERRIDES / TEMP PATCHES ==================================== */
 /* Confirmation “tick” circle */

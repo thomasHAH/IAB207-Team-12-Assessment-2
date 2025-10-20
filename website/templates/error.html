@@ -1,18 +1,52 @@
+<!--
+ 
+error.html
+  - this template displays user-friendly error messages for common HTTP errors
+  - right now we are using just 404 and 500 (which encapsulates loads of errors)
+
+  How it works
+  - Flask’s @app.errorhandler() function passes two variables:
+        {{ code }} -> the http status code (e.g. in our case == 404, 500)
+        {{ message }} -> a short description of what went wrong. Like page not found
+  - The page provides a clear message and then return home button
+
+  it extends base.html so that the same navigation bar, styles, and layout
+  are used consistently across the entire site.
+
+  Need to get overlay tho
+  -->
 {% extends "base.html" %}
 {% block title %}Error - PoolBNB{% endblock %}
 
-
 {% block content %}
 
-<div class="container">
-    <div class="row">
-        <div class="col-6">
-            <h1><i class="bi bi-exclamation-triangle-fill"></i> Error: {{code}}</h1>
-            <p>Something went wrong! More info:</p>
-            <p>{{message}}</p>
-            <a href="{{ url_for('main.index') }}" class="btn btn-primary mt-3">Return Home</a>
-        </div>
+<header class="hero-banner">
+  <!--center content both vertically and horizontally within the hero-->
+  <div class="container text-center position-relative z-2">
+
+    <!--the overlay tint is handled by CSS (.hero-banner::before)
+    which pretty much darkens the background behind this content -->
+    <!--wanna keep the same style throughout-->
+
+    <!--styling for the card-->
+    <!--using element card-glass from the css-->
+    <div class="card card--glass border-0 text-white mx-auto" style="max-width: 600px;">
+      <div class="card-body p-4">
+
+        <!--large error icon and dynamic error code -->
+        <h1 class="mb-3">
+          <i class="bi bi-exclamation-triangle-fill"></i> Error {{ code }}
+        </h1>
+
+        <!--brief message and optional detailed message -> short message -->
+        <p class="lead">Something went wrong!</p>
+        <p>{{ message }}</p>
+
+        <!--button takes user back to homepage-->
+        <a href="{{ url_for('events.home') }}" class="btn btn-primary mt-3">Return Home</a>
+      </div>
     </div>
-</div>
+  </div>
+</header>
 
 {% endblock %}
