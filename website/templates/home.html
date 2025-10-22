@@ -22,7 +22,8 @@ So the flask logic behind this:
 <!-- so this header is containing the looping background video and greeting message
  so only when user is authenticated the greeting is personalised-->
 
-<header class="hero-banner">
+<!-- using hero-banner3 to tweak some sizing adjustments-->
+<header class="hero-banner3">
   <!--removed background video as it had been defined in the base.html!-->
   
   
@@ -140,7 +141,7 @@ So the flask logic behind this:
                           {% elif s in ['closed','cancelled','canceled'] %}bg-secondary
                           {% elif s in ['full','sold out'] %}bg-danger
                           {% else %}bg-info{% endif %}">
-                          {{ event.status or 'Status' }}
+                          {{ event.status }}
                         </span>
                       </div>
 

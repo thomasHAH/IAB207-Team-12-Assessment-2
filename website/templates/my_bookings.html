@@ -2,50 +2,71 @@
 {% block content %}
 
 <!-- 
-main hero section for the user's booking history page.
-Uses Bootstrap flexbox utilities to center the card vertically and horisontally.
-`hero-banner hero-tall2` provides consistent background styling across the site.
+My bookings page
+
+This will display all of a user's past and current bookings
+all displated in a responsive card grid layout
+it's inheriting base.html so like the rest with navbar, footer etc
 -->
-<main class="d-flex align-items-center justify-content-center py-5 hero-banner hero-tall2" style="min-height: 100vh;">
+
+<!-- removed herotall2 as its not needed anymore -->
+ <!-- herobanner right now is just providing that tint overlay -->
+<main class="d-flex align-items-center justify-content-center py-5 hero-banner" style="min-height: 100vh;">
   <div class="container">
     
     <!--card container for displaying bookings -->
     <!-- may edit this later-->
-    <!-- 'shadow-sm' adds subtle depth, and white text ensures readability over dark backgrounds -->
+    <!--Shadow-sm adds subtle depth, and white text ensures readability over dark backgrounds -->
     <div class="card shadow-sm shell-card" style="color:white;">
       <div class="card-body p-4">
         
         <!--page title -->
+        <!-- centred at the top of the page-->
         <h2 class="text-center mb-4">My Bookings</h2>
 
+        <!-- if user has bookings we will display them as cards-->
           {% if bookings %}
-            <!-- Grid wrapper: 1 col on mobile, 2 on md, 3 on lg -->
+            <!-- Grid wrapper -> 1 col on mobile, 2 on md, 3 on lg -->
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 bookings-grid">
 
+              <!--display each bookings-->
+              <!-- each card will show all the necessary details-->
+               <!-- got glass-card style from css to keep everything consistent-->
               {% for booking in bookings %}
               <div class="col">
-                <!-- Single booking card -->
+                <!-- single booking card -->
                 <div class="card booking-card card--glass card-lift h-100 border-0 rounded-3 overflow-hidden text-white">
 
-
-                  <!-- Thumbnail + date pill (reuses your event styles) -->
+                  <!-- event image and date pill-->
+                   <!-- so we are using thumbail and overlay date pill will show month plus the day-->
+                  <!-- this is similar style exactly pretty much to the card display on home.html and the rest that are using this-->
                   <div class="position-relative">
                     <img
-                      class="booking-thumb"
-                      src="{% if booking.event.image_file %}{{ url_for('static', filename='uploads/' ~ booking.event.image_file) }}{% else %}{{ url_for('static', filename='img/placeholder-event.jpg') }}{% endif %}"
-                      alt="{{ booking.event.title }}"
+                      class="card-img-top event-img"
+                      src="{{ url_for('static', filename='uploads/' ~ booking.event.image_file) }}"
                     >
+                    <!--date pill overlay thats in the corner-->
+                    <!-- same as home.html-->
+                     <!-- ONLY CHANGE: so now we are iterating over a list of bookingobjects instead of 
+                      iterating over a list of event objects-->
+                      <!--i believe this good practice to grab the actual events in the bookings-->
                     <div class="date-pill">
                       <span class="month">{{ booking.event.date.strftime('%b') }}</span>
                       <span class="day">{{ booking.event.date.strftime('%d') }}</span>
                     </div>
                   </div>
 
-                  <!-- Card body -->
+                  <!--card body content-->
+                  <!-- so we got title, status badge, description and detailed receipt panel-->
                   <div class="card-body">
-                    <!-- Title + small status badge (event status) -->
+                    <!-- this is our event title with the status badge -->
                     <div class="d-flex justify-content-between align-items-start">
                       <h5 class="card-title mb-1">{{ booking.event.title }}</h5>
+                      <!-- iterating over booking (event) objects now instead of just events-->
+                      <!--SAME SETUP AS HOME.HTML pre much-->
+                      <!--determine badge colour dynamically-->
+                      <!-- all determined from event.status -->
+                      <!-- using bootsrap background colour to indicate liek good/bad-->
                       {% set s = (booking.event.status or '').lower() %}
                       <span class="badge
                         {% if s == 'open' %}bg-success
@@ -53,21 +74,26 @@ Uses Bootstrap flexbox utilities to center the card vertically and horisontally.
                         {% elif s in ['full','sold out'] %}bg-danger
                         {% else %}bg-info
                         {% endif %}">
-                        {{ booking.event.status or 'Status' }}
+                        {{ booking.event.status}}
                       </span>
                     </div>
 
-                    <!-- Short muted subtitle/description -->
+                    <!-- short muted subtitle/description -->
+                     <!-- this is using the same logic as lot of other html pages-->
                     {% if booking.event.description %}
                       <p class="card-subtext">
+                        <!-- keeping it to 90 characters on this page-->
                         {{ booking.event.description[:90] }}{% if booking.event.description|length > 90 %}…{% endif %}
                       </p>
                     {% endif %}
 
-                    <!-- Compact "receipt" panel with icons -->
+                    <!-- receipt details -->
+                     <!--this is compact info panel showing a number of details-->
                     <div class="booking-receipt">
                       <div class="receipt-row">
+                        <!--using common symbols from bs library-->
                         <span class="label"><i class="bi bi-calendar-event"></i> Date</span>
+                        <!--removed time-->
                         <span class="value">{{ booking.event.date.strftime('%Y-%m-%d') }}</span>
                       </div>
                       <div class="receipt-row">
@@ -76,34 +102,40 @@ Uses Bootstrap flexbox utilities to center the card vertically and horisontally.
                       </div>
                       <div class="receipt-row">
                         <span class="label"><i class="bi bi-cash-coin"></i> Total</span>
+                        <!--price variable is formatted using Jinja's %.2f to ensure two decimal places for currency
+                           prefixed with a dollar sign-->
                         <span class="value price">${{ "%.2f"|format(booking.price) }}</span>
                       </div>
                       <div class="receipt-row">
                         <span class="label"><i class="bi bi-clock-history"></i> Booked</span>
+                        <!--don't need event for this-->
                         <span class="value">{{ booking.date.strftime('%Y-%m-%d') }}</span>
                       </div>
                     </div>
 
-                    <!-- Optional chips for quick context -->
+                    <!-- chips for quick context -->
                     <div class="chips mt-2">
+                      <!--location chip with symbol-->
                       {% if booking.event.location %}<span class="chip"><i class="bi bi-geo-alt"></i> {{ booking.event.location }}</span>{% endif %}
+                      <!-- cap of event plus symbol-->
                       <span class="chip"><i class="bi bi-people"></i> cap {{ booking.event.capacity }}</span>
-                      {% if booking.event.features %}<span class="chip"><i class="bi bi-stars"></i> {{ booking.event.features.split(',')[0].strip() }}</span>{% endif %}
+                      <!-- used this logic in other html-->
+                       <!-- shows the feature with the event -->
+                      {% if booking.event.features %}
+                        <div class="chips mt-2">
+                          <span class="chip">{{ booking.event.features }}</span>
+                        </div>
+                      {% endif %}
                     </div>
                   </div>
 
-                  <!-- Footer actions -->
+                  <!-- footer section -->
+                   <!-- provides a link to view the related event-->
                   <div class="card-footer bg-transparent border-0 pt-0 d-flex gap-2">
                     <a href="{{ url_for('events.view_event', event_id=booking.event.id) }}" class="btn btn-light w-100">
                       View Event
                     </a>
-                    {# If you implement cancellations, show this conditionally:
-                    <form method="POST" action="{{ url_for('events.cancel_booking', booking_id=booking.id) }}" class="w-100">
-                      <button class="btn btn-outline-danger w-100" onclick="return confirm('Cancel this booking?')">
-                        Cancel
-                      </button>
-                    </form>
-                    #}
+                    <!-- should provide a cancellation button in future-->
                   </div>
 
                 </div>
@@ -111,14 +143,15 @@ Uses Bootstrap flexbox utilities to center the card vertically and horisontally.
               {% endfor %}
             </div>
           {% else %}
-            <!-- Empty state -->
+            <!-- else if no bookings have been made-->
             <div class="text-center mt-3">
-              <p class="lead">You haven’t made any bookings yet.</p>
+              <p class="lead">You haven't made any bookings yet.</p>
+              <!--links to event page-->
               <a href="{{ url_for('events.list_events') }}" class="btn btn-primary mt-2">Browse Events</a>
             </div>
           {% endif %}
 
-          <!-- Back button -->
+          <!-- simple button that will take users back to the events page -->
           <div class="text-center mt-4">
             <a href="{{ url_for('events.list_events') }}" class="btn btn-secondary">Back to Events</a>
           </div>
@@ -128,4 +161,5 @@ Uses Bootstrap flexbox utilities to center the card vertically and horisontally.
   </div>   
 </main>        
 
+<!--ending -->
 {% endblock %}

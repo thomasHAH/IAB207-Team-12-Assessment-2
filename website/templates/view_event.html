@@ -6,24 +6,37 @@
 
 <!--
 Event details page
-- Uses hero-banner so the pool video stays in the background
-- Inside, uses two columns: left = details + image, right = booking panel
+This template was designed to shopw the full details for the specific event the user 
+clicks on.
+- Left side is going to be: image, description, metadata, features and whatnot
+- right side: is essentially the booking summary and form stuff
+
+Like all the other templates we are inherit like navbar, footer and etc 
 -->
-<main class="d-flex align-items-center justify-content-center py-5 hero-banner hero-tall2 no-motion">
+
+<!--removed no-motion its redundant and doesn't do anything here-->
+<!-- hero-banner provides the tint overlay -> should have set this up in base.html-->
+<!-- removed herotall2 as its also redundant and not needed-->
+<main class="d-flex align-items-center justify-content-center py-5 hero-banner">
   <div class="container">
-    <!-- Outer glass shell (kept still via .shell-card + .no-motion) -->
+    <!--outercard wrapper with glass effect container holding all event content -->
+    <!-- this has styling from the css file -->
     <div class="card card--glass shadow-sm shell-card text-white border-0 overflow-hidden">
       <div class="card-body p-4 p-lg-5">
 
-        {# ===================== Header: title + tiny subtitle + computed status ===================== #}
+          <!-- header section with status badge -> common throughout all our html pages-->
+           <!-- this will display event title on the left and the dynamic status bade on the right-->
           <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-3">
             <div>
               <h1 class="event-title mb-1">{{ event.title }}</h1>
-              {# no description here #}
+               <!-- event title-->
             </div>
   
-            {# automatic server-side status badge #}
-            {% set s = (event.status or '').lower() %}
+            <!-- we have used this ruthlessly throughout all our other docs-->
+            <!--determine badge colour dynamically-->
+            <!-- all determined from event.status -->
+            <!-- using bootsrap background colour to indicate liek good/bad-->
+            {% set s = (event.status).lower() %}
             <span class="badge align-self-start
               {% if s == 'open' %}bg-success
               {% elif s == 'inactive' %}bg-secondary
@@ -31,118 +44,146 @@ Event details page
               {% elif s in ['cancelled','canceled'] %}bg-dark
               {% elif s in ['sold out','full'] %}bg-danger
               {% else %}bg-info{% endif %}">
-              {{ event.status or '' }}
+              {{ event.status }}
             </span>
           </div>
 
-        {# ===================== Two-column layout ===================== #}
+          <!-- main two-column layout <- trying to make it like a checkout design -->
+          <!-- left column has details like image, desc metadata and whatnot-->
+         <!--right will have booking panel section-->
         <div class="row g-4">
-          <!-- LEFT: image, full description, facts, features, edit button, comments -->
+          <!-- LEFT -->
           <div class="col-lg-8">
 
-            <!-- Hero image + date pill -->
+            <!-- made the positing on image a little better -->
             <div class="position-relative rounded-3 overflow-hidden mb-3">
+            <!--same code as previous html pretty much templates-->
+            <!-- event image with date overlay-->
+              <!--removed redundant code here, we didn't need default image as its already set up-->
+              <!-- styled in css doc -->
               <img
                 class="event-hero-img"
-                src="{% if event.image_file %}{{ url_for('static', filename='uploads/' ~ event.image_file) }}{% else %}{{ url_for('static', filename='img/placeholder-event.jpg') }}{% endif %}"
-                alt="{{ event.title }}"
+                src="{{ url_for('static', filename='uploads/' ~ event.image_file) }}"
               >
+              <!--date overlay-->
+              <!--style curated from css (class)-->
               <div class="date-pill">
                 <span class="month">{{ event.date.strftime('%b') }}</span>
                 <span class="day">{{ event.date.strftime('%d') }}</span>
               </div>
             </div>
 
+            
+
             <!-- Full description sits directly under the image -->
+             <!-- no need for character limiting like the previous templates-->
             {% if event.description %}
             <div class="card card--glass border-0 text-white mb-3">
               <div class="card-body">
                 <h5 class="mb-3 fw-bold text-center text-white">About this event</h5>
+                <!-- css styling-->
                 <p class="event-description mb-0">{{ event.description }}</p>
               </div>
             </div>
             {% endif %}
 
-            <!--fact grid (date, time, location, capacity, cost, created by) -->
+            <!--fact grid-->
+            <!-- this grid will b used to dsipaly all key details -->
+             <!-- so like data, time, location and alos using meta-grid for consistent alignment-->
             <div class="card card--glass border-0 text-white mb-3">
               <div class="card-body">
                 <div class="meta-grid">
                   <div class="meta-item">
-                    <div class="meta-label"><i class="bi bi-calendar-event"></i> Date</div>
+                    <!-- using bs symbols-->
+                    <div class="meta-label"><i class="bi bi-calendar-event"></i> Date </div>
+                     <!-- removed time-->
                     <div class="meta-value">{{ event.date.strftime('%Y-%m-%d') }}</div>
                   </div>
-
-                  {% if event.time %}
+                  <!-- removed event time code as its just gonna mess things up i reckon and its too much detail-->
+                  
+                  <!--alot of this is reused code from other html templates-->
                   <div class="meta-item">
-                    <div class="meta-label"><i class="bi bi-clock"></i> Time</div>
-                    <div class="meta-value">{{ event.time.strftime('%H:%M') }}</div>
-                  </div>
-                  {% endif %}
-
-                  <div class="meta-item">
+                    <!-- using boostrap symbols-->
                     <div class="meta-label"><i class="bi bi-geo-alt"></i> Location</div>
                     <div class="meta-value">{{ event.location }}</div>
                   </div>
 
+                  <!-- using boostrap symbols-->
                   <div class="meta-item">
                     <div class="meta-label"><i class="bi bi-people"></i> Capacity</div>
                     <div class="meta-value">{{ event.capacity }}</div>
                   </div>
 
+                  <!-- pretty much same logic in booking_events-->
+                   <!--price variable is formatted using Jinja's %.2f to ensure two decimal places for currency
+                           prefixed with a dollar sign-->
                   <div class="meta-item">
                     <div class="meta-label"><i class="bi bi-cash-coin"></i> Cost</div>
                     <div class="meta-value">${{ '%.2f'|format(event.cost) }}</div>
                   </div>
 
+                  <!-- displays event creator name else unknown-->
+                   <!-- its mando tho for users to input their name so this is redundant-->
+                    <!-- removed redundant code as event.creator.name is mandatory regardless-->
                   <div class="meta-item">
                     <div class="meta-label"><i class="bi bi-person-badge"></i> Created by</div>
                     <div class="meta-value">
-                      {% if event.creator %}{{ event.creator.name }}{% else %}Unknown{% endif %}
+                      {{ event.creator.name }}
                     </div>
                   </div>
 
+                  <!-- displays status-->
+                   <!-- using boostrap symbols-->
                   <div class="meta-item">
                     <div class="meta-label"><i class="bi bi-journal-bookmark"></i> Status</div>
                     <div class="meta-value">{{ event.status }}</div>
                   </div>
-
-                  
                 </div>
 
-                {% if event.features %}
-                  <div class="chips mt-3">
-                    {% for f in event.features.split(',') %}
-                      <span class="chip"><i class="bi bi-stars"></i> {{ f.strip() }}</span>
-                    {% endfor %}
-                  </div>
-                {% endif %}
-              </div>
-
-              
+              <!--FEATURE CHIP-->
+              <!-- same exact setup as home.html-->
+              <!-- removed allocating for multiple, just need one-->
+              {% if event.features %}
+                <div class="chips mt-2">
+                  <span class="chip">{{ event.features }}</span>
+                </div>
+              {% endif %}
             </div>
 
             <!--edit event (creator only) -->
+            <!-- this is only visible to the creator of the event-->
+             <!-- note sure if we need the two statements but it works! -->
             {% if current_user.is_authenticated and event.created_by == current_user.id %}
+            <!-- takes owner of event to edit page-->
               <a href="{{ url_for('events.edit_event', event_id=event.id) }}" class="btn btn-light w-100 mb-3">
                 Edit Event
               </a>
             {% endif %}
 
             <!--add a comments-->
+            <!-- lets only logged in users submit a comment via post function-->
+             <!--so anon users are only going to see a logn prompt-->
             <div class="card card--glass border-0 text-white mb-3">
               <div class="card-body">
                 <h5 class="mb-3">Add a Comment</h5>
+                <!--user has to be authenticated aka logged in-->
                 {% if current_user.is_authenticated %}
                 <form method="POST">
+                    <!--csrf token (just cause)-->
                     {{ comment_form.hidden_tag() }}
                     <div class="mb-3">
+                      <!-- placeholder text in form-->
                         {{ comment_form.text(label=False, class="form-control", placeholder="Write a comment") }}
+                        <!-- error indication-->
+                         <!--validation error messages-->
                         {% for error in comment_form.text.errors %}
                         <div class="text-danger small">{{ error }}</div>
                         {% endfor %}
+                        <!--submit with button-->
                     </div>
                     {{ comment_form.submit(class="btn btn-primary") }}
                 </form>
+                <!--if users aren't logged them, instruct them to and show link to login page-->
                 {% else %}
                   <p class="mb-0"><a href="{{ url_for('auth.login') }}">Log in</a> to write a comment.</p>
                 {% endif %}
@@ -150,17 +191,26 @@ Event details page
             </div>
 
             <!--comments list -->
+            <!-- this will display all submitted comments with autor and date-->
+             <!-- otherwise be the first to comment message pops up-->
+              <!--css styling-->
             <div class="card card--glass border-0 text-white">
               <div class="card-body">
                 <h5 class="mb-3">Comments</h5>
+                <!--if there are comments-->
                 {% if comments %}
                   <ul class="list-unstyled mb-0">
+                    <!-- so we are looping through each individual comment object-->
+                    <!-- go through all the comments-->
                     {% for comment in comments %}
                       <li class="mb-2">
+                        <!-- card for a single comment all glass style from css-->
                         <div class="card card--glass border-0 text-white">
                           <div class="card-body py-3 px-3">
+                            <!--display main body/text of comment-->
                             <p class="mb-1">{{ comment.text }}</p>
                             <small class="text-white-50">
+                              <!-- comment metdata like name and formatted date-->
                               By {{ comment.author.name }} on {{ comment.date_created.strftime('%Y-%m-%d') }}
                             </small>
                           </div>
@@ -169,42 +219,65 @@ Event details page
                     {% endfor %}
                   </ul>
                 {% else %}
+                <!--fallback, displayed if comments is emtpy-->
                   <p class="mb-0">No comments yet. Be the first to comment!</p>
                 {% endif %}
               </div>
             </div>
           </div>
+        </div>
 
-          <!-- RIGHT: booking (server-rendered summary) -->
-          <div class="col-lg-4">
+        <!--This will be displayed as the right column -->
+        <!-- we are displaying ticket bookings options and total summary-->
+         <!-- this is also including authentication and availability logic-->
+        <!-- we present it as sticky/fixed-->
+        <div class="col-lg-4">
             <div class="card card--glass border-0 text-white event-sticky">
               <div class="card-body">
                 <h5 class="mb-3">Book Tickets</h5>
 
-                {# Resolve the current quantity (server-side) #}
+                <!-- so we set q to the current form quantity data, defaulting to 1 for calculation-->
+                <!-- so we determine the default quantity for pre-filling the form-->
+                 <!-- to clarify this in the most simple way is that it sets q to quantity 
+                  which is the user'es entered ticket amount but otherwise if the user  -->
+
+                  {# 
+                    Without this line, q (ticket quantity) would be None on initial page load, 
+                    causing a typeError when multiplying q * event.cost in the template. 
+                    This sets q=1 by default to keep the calculations safe.
+
+                    It's important to understand this. It's like the coconut in TF2.
+                  #}
+
                 {% set q = booking_form.quantity.data if booking_form.quantity.data else 1 %}
 
-                <!-- Mini-checkout summary-->
+                <!-- mini-checkout summary-->
                 <ul class="list-unstyled mb-3 small booking-summary">
+                  <!-- so we are displaying event price per ticket, formatted to two decimal places-->
                   <li class="d-flex justify-content-between">
                     <span class="text-white-50">Price per ticket</span>
                     <strong>${{ '%.2f'|format(event.cost) }}</strong>
                   </li>
+                  <!--so here we get the total number of tickets remaining for the event-->
                   <li class="d-flex justify-content-between">
                     <span class="text-white-50">Tickets remaining</span>
                     <strong>{{ tickets_left }}</strong>
                   </li>
+                  <!--we r displaying the current selected quantity from the form data-->
                   <li class="d-flex justify-content-between">
-                    <span class="text-white-50">You’re booking</span>
+                    <span class="text-white-50">You're booking</span>
                     <strong>{{ q }} ticket(s)</strong>
                   </li>
+                  <!-- we then estimate the total cost (quantity times price) and the format it as currency-->
                   <li class="d-flex justify-content-between border-top pt-2 mt-2">
                     <span class="text-white-50">Estimated total</span>
                     <strong>${{ '%.2f'|format(q * event.cost) }}</strong>
                   </li>
                 </ul>
 
+                <!-- we start conditional block to check if user is logged in-->
                 {% if current_user.is_authenticated %}
+                <!-- prevent user from booking their own event-->
                   {% if event.created_by == current_user.id %}
                     <div class="alert alert-warning small mb-0">
                       You created this event, so you can't book tickets for it.
@@ -212,6 +285,7 @@ Event details page
 
                   <!--nightmare fuel-->
                   <!-- made this more simple -->
+                   <!-- prevent booking if event status is not open-->
                   {% elif event.status|lower != 'open' %}
                     <div class="alert alert-danger small mb-0">
                       This event is not available for booking.
@@ -219,13 +293,18 @@ Event details page
 
                   {% else %}
                     <!-- Booking form-->
+                     <!-- this booking form is only displayed when the previous checks have passed-->
+                     <!-- will take users to event booked page when submit button click-->
                     <form method="POST" action="{{ url_for('events.book_event', event_id=event.id) }}">
+                      <!--renders hidden fields like the csrf token for security-->
                       {{ booking_form.hidden_tag() }}
 
-                      <!-- ARIA label and max clamp to remaining tickets -->
+                      <!--quantity input field: clamped between 1 and the available tickets left -->
+                      <!-- removed min 1 as there's already validation for form-label-->
                       <label class="form-label" for="qtyInput">Quantity of tickets for this event</label>
-                      {{ booking_form.quantity(class="form-control text-center", id="qtyInput", min="1", max=tickets_left) }}
+                      {{ booking_form.quantity(class="form-control text-center", id="qtyInput", max=tickets_left) }}
 
+                      <!--submit button to book-->
                       <button class="btn btn-primary w-100 mt-3" type="submit">Book Now</button>
 
                       <!-- subtotal refreshes after submit -->
@@ -235,16 +314,17 @@ Event details page
                     </form>
                   {% endif %}
                 {% else %}
+                    <!--fallback to prompt user to log in if not authenticated-->
                   <p class="mb-0"><a href="{{ url_for('auth.login') }}">Log in</a> to book tickets.</p>
                 {% endif %}
               </div>
             </div>
           </div>
-        </div><!-- /row -->
+        </div>
 
       </div>
     </div>
   </div>
 </main>
-
+<!--ending-->
 {% endblock %}

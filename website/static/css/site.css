@@ -94,6 +94,20 @@ body {
   background-position: center;
 }
 
+/* To make the home screen a bit smaller*/
+.hero-banner3 {
+  position: relative;              
+  margin-top: -17px;                   
+  padding-top: 0px;                  
+  min-height: 84vh;               
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+}
+
 
 /* don't delete - i need this for the home page upcoming events*/
 .hero-banner2 {
@@ -128,8 +142,18 @@ body {
   z-index: 1;
 }
 
+/* don't delete - i need this for the home page sizing*/
+.hero-banner3::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(1, 1, 65, 0.3);
+  z-index: 1;
+}
+
 /*keep hero content above overlay */
 .hero-banner .container,
+.hero-banner3 .container, 
 .hero-banner2 .container,
 .hero-banner2 h2 {
   position: relative;

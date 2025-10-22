@@ -12,35 +12,53 @@
 - py-5 used for vertical spacing
 -->
 
+<!-- Events List Page Template -->
+<!-- So this page displays all the upcoming events in the grid layout - same as upcoming events in home.html-->
+ <!-- have noticed one issue: is that this version shows all of the events regardless if they have passed, like old data-->
+  <!-- should look into this-->
+<!--
+So basically it receives a list of events from events.py
+ - if the event exists we display events (Cards)
+ - if no events just send link to create an event  
+-->
 
 
-<!-- Hero banner section: background and layout -->
+
+<!--hero banner from the css -->
+<!-- we need consistant styling throughout-->
+ <!-- we could have just added this to the base as well - not just the video-->
+  <!-- little bit redundant-->
 <main class="hero-banner d-flex align-items-center justify-content-center">
   <div class="container py-5">
 
     <!--page heading -->
     <h2 class="text-center text-white mb-5">Upcoming Events</h2>
 
-    <!-- If there are events, display them in a card grid -->
+    <!-- featuref there are events, display them in a card grid -->\
+     <!-- each event is represented as a styled card-->
+      <!--else statement indicates user can create their own event if none are there-->
     {% if events %}
+      <!-- responsive grid layouit design-->
       <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
 
-        <!-- Loop through each event -->
+        <!--loop through all the events passed from flask -->
         {% for event in events %}
         <div class="col">
-          <!-- Card container -->
+
+          <!--card container -->
+          <!-- each card representing one event and we use dark theme and hover effects for styling-->
             <div class="card h-100 border-0 shadow-lg rounded-3 overflow-hidden bg-dark text-white card-hover">
 
         
             <!--  IMAGE + DATE PILL OVERLAY -->
-           
+            <!-- this is similar style exactly pretty much to the card display on home.html-->
             <div class="position-relative">
               <img
                 class="card-img-top event-img"
-                src="{% if event.image_file %}{{ url_for('static', filename='uploads/' ~ event.image_file) }}{% else %}{{ url_for('static', filename='img/placeholder-event.jpg') }}{% endif %}"
-                alt="{{ event.title or 'Event image' }}"
+                src="{{ url_for('static', filename='uploads/' ~ event.image_file) }}"
               >
-              <!--date pill (shows month + day on image corner) -->
+              <!--date pill overlay thats in the corner-->
+              <!-- same as home.html-->
               <div class="date-pill">
                 <span class="month">{{ event.date.strftime('%b') }}</span>
                 <span class="day">{{ event.date.strftime('%d') }}</span>
@@ -49,14 +67,17 @@
 
             
             <!--  CARD BODY CONTENT -->
-            
+            <!-- this will contain title, status, description and other important metadata-->
             <div class="card-body">
 
-              <!-- Title + status badge -->
+              <!--title and status badge-->
               <div class="d-flex justify-content-between align-items-start mb-1">
                 <h5 class="card-title mb-0">{{ event.title }}</h5>
 
-                <!-- Conditional color badge based on event status -->
+                <!--SAME SETUP AS HOME.HTML-->
+                 <!--determine badge colour dynamically-->
+                 <!-- all determined from event.status -->
+                 <!-- using bootsrap background colour to indicate liek good/bad-->
                 {% set s = (event.status or '').lower() %}
                 <span class="badge align-self-start
                   {% if s == 'open' %}bg-success
@@ -65,40 +86,48 @@
                   {% elif s in ['cancelled','canceled'] %}bg-dark
                   {% elif s in ['sold out','full'] %}bg-danger
                   {% else %}bg-info{% endif %}">
-                  {{ event.status or ''}}
+                  {{ event.status }}
                 </span>
               </div>
 
               <!--optional short description -->
+              <!-- similiar to the home.html except 110 characters this time cause we have one page dedicated to this -->
               {% if event.description %}
                 <p class="card-subtext">{{ event.description[:110] }}{% if event.description|length > 110 %}…{% endif %}</p>
               {% endif %}
 
            
-              <!--  META GRID (2x2 layout) -->
-             
+              <!--META GRID (2x2 layout) -->
+              <!--so this focuses on a list of key details at the bottom of card-->
+              <!-- so we got data, location and capacity to inform users!-->
               <div class="meta-grid">
-                <!-- Date -->
+                <!-- date -->
                 <div class="meta-item">
                   <div class="meta-label">
+                    <!-- got calender symbol-->
                     <i class="bi bi-calendar-event"></i> Date
                   </div>
+                  <!--removed time cause i didn't wanna deal with it-->
                   <div class="meta-value">{{ event.date.strftime('%Y-%m-%d') }}</div>
                 </div>
 
-                <!-- Location -->
+                <!--location -->
                 <div class="meta-item">
                   <div class="meta-label">
+                    <!--location symbol-->
                     <i class="bi bi-geo-alt"></i> Location
                   </div>
-                  <div class="meta-value">{{ event.location or 'TBA' }}</div>
+                  <!--pretty much same setup as home.html-->
+                  <div class="meta-value">{{ event.location }}</div>
                 </div>
 
                 <!--removed time - not really needed and just goes to TBA as theres no input-->
 
-                <!-- Capacity -->
+                <!--capacity -->
+                <!-- this is the only thing that isn't on the home.html page-->
                 <div class="meta-item">
                   <div class="meta-label">
+                    <!-- symbool from bs-->
                     <i class="bi bi-people"></i> Capacity
                   </div>
                   <div class="meta-value">{{ event.capacity }}</div>
@@ -108,38 +137,37 @@
               
               <!--  FEATURE CHIPS -->
              
+              <!-- same exact setup as home.html-->
+              <!-- removed allocating for multiple, just need one-->
               {% if event.features %}
-                {% set features = event.features.split(',') %}
-                <div class="chips mt-2">
-                  {% for f in features %}
-                    {% set chip = f.strip() %}
-                    {% if chip %}
-                      <span class="chip">{{ chip }}</span>
-                    {% endif %}
-                  {% endfor %}
-                </div>
+                  <div class="chips mt-2">
+                    <span class="chip">{{ event.features }}</span>
+                  </div>
               {% endif %}
+              
 
-              <!-- Creator line (small, muted) -->
+              <!--creator line reference -->
               <div class="creator-line mt-2">by {{ event.creator.name if event.creator else 'Unknown' }}</div>
             </div>
 
     
             <!--  FOOTER ( view details button) -->
-            
+            <!-- link to full event details page-->
+             <!--stretched link makes the whole card clickable-->
             <div class="card-footer bg-transparent border-0 pt-0">
               <a href="{{ url_for('events.view_event', event_id=event.id) }}" class="stretched-link btn btn-light w-100">
                 View details
               </a>
             </div>
 
-          </div> <!-- End of card -->
-        </div> <!-- End of column -->
+          </div> <!-- end of card -->
+        </div> <!-- end of column -->
         {% endfor %}
-      </div> <!-- End of grid -->
+      </div> <!-- end of grid -->
 
     {% else %}
-      <!-- Message if no events exist -->
+      <!-- displays an alert box if no events exist in the database.
+       get the user to create the first event! -->
       <div class="alert alert-info text-center">
         No events found. Be the first to <a href="{{ url_for('events.create_event') }}" class="text-white fw-bold">create one</a>!
       </div>
@@ -148,5 +176,5 @@
 </main>
 
 
-<!--end of content block-->
+<!--ending-->
 {% endblock %}

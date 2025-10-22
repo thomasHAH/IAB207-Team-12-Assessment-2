@@ -47,9 +47,16 @@ def create_event():
         print(form.errors)
     return render_template('create_event.html', form=form)
 
+
 @events_bp.route('/list')
 def list_events():
-    events = Event.query.order_by(Event.date.asc()).all()
+    # Only show events whose date is today or in the future
+    events = (
+        Event.query
+        .filter(Event.date >= datetime.now())  # exclude past events
+        .order_by(Event.date.asc())            # sort upcoming events by soonest first
+        .all()
+    )
     return render_template('list_events.html', events=events)
 
 @events_bp.route('/<int:event_id>', methods=['GET', 'POST'])
@@ -207,7 +214,7 @@ def edit_event(event_id):
         return redirect(url_for('events.view_event', event_id=event.id))
 
     form = EventForm()
-    cancel_form = CancelForm()  # <-- add this
+    cancel_form = CancelForm()  
 
     if request.method == 'GET':
         form.title.data = event.title

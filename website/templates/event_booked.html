@@ -1,23 +1,29 @@
 <!--commented-->
-
-<!--
-This template is shown after a user successfully books tickets for an event. It displays
-a booking confirmation with order details (ID, quantity, price, date), along with associated event'same
-details (title, description, date, location, features and image). The template uses variables passed in
-from flask ('booking', 'event', 'current_user') to render the dynamic conetnet. 
+<!--booking confirmation screen-->
+<!-- So this template is taked with displaying the booking confirm screen after a user books an event-->
+<!-- so it displays all the booking details like ID, quantity, total price and event info
+ 
+variables used: are booking details from the database, event related event data and the current user
+so the user who made the booking and is logged in
+rehash of alot of other html code used throughout the assessment.
 -->
 
-{% extends "base.html" %} <!--inherit the base layout-->
-{% block content %} <!-- start inserting content into the "content" block defined in base.html-->
+{% extends "base.html" %} <!--inherit the base layout so like navbars and whatnot-->
+{% block content %} <!-- start inserting content into the content block defined in base.html-->
 
 <!--main container for the booking confirmation-->
-<main class="d-flex align-items-center justify-content-center py-5 hero-banner hero-tall2 no-motion">
+<!-- centres card vertically and horizontally-->
+ <!-- still using the hero-banner as main design not needed but we need the tint-->
+<!-- removed herotall2 and no-motion as not needed anymore-->
+<main class="d-flex align-items-center justify-content-center py-5 hero-banner">
   <div class="container">
-    <!-- Outer shell card (kept still with .shell-card) -->
+    <!-- outer glass style shell for booking confirmation-->
+     <!-- has all the styles from our css file-->
     <div class="card card--glass shell-card shadow-sm text-white border-0 overflow-hidden">
       <div class="card-body p-4 p-lg-5">
 
-        <!-- Header: confirmation line + friendly subline -->
+        <!-- header message with booking confirmation and symbol from bs -->
+         <!-- sends thank you message as well-->
         <div class="d-flex align-items-center gap-3 mb-3">
           <div class="confirm-badge flex-shrink-0">
             <i class="bi bi-check2-circle"></i>
@@ -28,105 +34,139 @@ from flask ('booking', 'event', 'current_user') to render the dynamic conetnet.
           </div>
         </div>
 
-        <!-- Subtle divider -->
+        <!-- divider line -->
+         <!-- styling purposes and very subtle-->
         <hr class="border-light border-opacity-25">
 
-        <!-- Two column content -->
+        <!-- similar to alot of our other pages like view_events-->
+         <!-- we are spliting into two left and right sections-->
+          <!--so event details and preview is left and right is booking receipt summary--> 
         <div class="row g-4">
-          <!-- LEFT: Event preview -->
+          <!-- focusing on left column first -->
           <div class="col-lg-8">
-            <!-- Event title + tiny subtitle -->
+            <!--Event title -->
+            <!-- removed redundant event desc-->
             <div class="d-flex align-items-start justify-content-between flex-wrap gap-2 mb-2">
               <div>
                 <h2 class="h5 mb-0">{{ event.title }}</h2>
-                {% if event.description %}
-                  <p class="card-subtext mb-0">{{ event.description[:140] }}{% if event.description|length > 140 %}…{% endif %}</p>
-                {% endif %}
               </div>
             </div>
 
-            <!-- Hero image with date pill -->
+            <!--  IMAGE + DATE PILL OVERLAY -->
+            <!-- this is similar style exactly pretty much to the card display on home.html-->
             <div class="position-relative rounded-3 overflow-hidden mb-3">
               <img
                 class="event-hero-img"
-                src="{% if event.image_file %}{{ url_for('static', filename='uploads/' ~ event.image_file) }}{% else %}{{ url_for('static', filename='img/placeholder-event.jpg') }}{% endif %}"
-                alt="{{ event.title }}"
+                src="{{ url_for('static', filename='uploads/' ~ event.image_file) }}"
               >
+              <!--date pill overlay thats in the corner-->
+              <!-- same as home.html-->
               <div class="date-pill">
                 <span class="month">{{ event.date.strftime('%b') }}</span>
                 <span class="day">{{ event.date.strftime('%d') }}</span>
               </div>
             </div>
 
-            <!-- Event facts (reuses meta-grid) -->
+
+            <!-- SAME CODE EXACTLY AS MY_BOOKINGS-->
+              <!-- Full description sits directly under the image -->
+             <!-- no need for character limiting like the previous templates-->
+            {% if event.description %}
+            <div class="card card--glass border-0 text-white mb-3">
+              <div class="card-body">
+                <h5 class="mb-3 fw-bold text-center text-white">About this event</h5>
+                <!-- css styling-->
+                <p class="event-description mb-0">{{ event.description }}</p>
+              </div>
+            </div>
+            {% endif %}
+
+            <!--fact grid-->
+            <!-- this grid will b used to dsipaly all key details -->
+             <!-- so like data, time, location and alos using meta-grid for consistent alignment-->
             <div class="card card--glass border-0 text-white mb-3">
               <div class="card-body">
                 <div class="meta-grid">
                   <div class="meta-item">
-                    <div class="meta-label"><i class="bi bi-calendar-event"></i> Date</div>
+                    <!-- using bs symbols-->
+                    <div class="meta-label"><i class="bi bi-calendar-event"></i> Date </div>
+                     <!-- removed time-->
                     <div class="meta-value">{{ event.date.strftime('%Y-%m-%d') }}</div>
                   </div>
-                  {% if event.time %}
+                  <!-- removed event time code as its just gonna mess things up i reckon and its too much detail-->
+                  
+                  <!--alot of this is reused code from other html templates-->
                   <div class="meta-item">
-                    <div class="meta-label"><i class="bi bi-clock"></i> Time</div>
-                    <div class="meta-value">{{ event.time.strftime('%H:%M') }}</div>
-                  </div>
-                  {% endif %}
-                  <div class="meta-item">
+                    <!-- using boostrap symbols-->
                     <div class="meta-label"><i class="bi bi-geo-alt"></i> Location</div>
                     <div class="meta-value">{{ event.location }}</div>
                   </div>
+
+                  <!-- using boostrap symbols-->
                   <div class="meta-item">
                     <div class="meta-label"><i class="bi bi-people"></i> Capacity</div>
                     <div class="meta-value">{{ event.capacity }}</div>
                   </div>
+
+                  <!-- pretty much same logic in booking_events-->
+                   <!--price variable is formatted using Jinja's %.2f to ensure two decimal places for currency
+                           prefixed with a dollar sign-->
                   <div class="meta-item">
-                    <div class="meta-label"><i class="bi bi-cash-coin"></i> Price</div>
+                    <div class="meta-label"><i class="bi bi-cash-coin"></i> Cost</div>
                     <div class="meta-value">${{ '%.2f'|format(event.cost) }}</div>
                   </div>
+
+                  <!-- displays event creator name else unknown-->
+                   <!-- its mando tho for users to input their name so this is redundant-->
+                    <!-- removed redundant code as event.creator.name is mandatory regardless-->
                   <div class="meta-item">
-                    <div class="meta-label"><i class="bi bi-person-badge"></i> Host</div>
+                    <div class="meta-label"><i class="bi bi-person-badge"></i> Created by</div>
                     <div class="meta-value">
-                      {% if event.creator %}{{ event.creator.name }}{% else %}Unknown{% endif %}
+                      {{ event.creator.name }}
                     </div>
+                  </div>
+
+                  <!-- displays status-->
+                   <!-- using boostrap symbols-->
+                  <div class="meta-item">
+                    <div class="meta-label"><i class="bi bi-journal-bookmark"></i> Status</div>
+                    <div class="meta-value">{{ event.status }}</div>
                   </div>
                 </div>
 
-                {% if event.features %}
-                  <div class="chips mt-3">
-                    {% for f in event.features.split(',') %}
-                      <span class="chip"><i class="bi bi-stars"></i> {{ f.strip() }}</span>
-                    {% endfor %}
-                  </div>
-                {% endif %}
-              </div>
+              <!--FEATURE CHIP-->
+              <!-- same exact setup as home.html-->
+              <!-- removed allocating for multiple, just need one-->
+              {% if event.features %}
+                <div class="chips mt-2">
+                  <span class="chip">{{ event.features }}</span>
+                </div>
+              {% endif %}
             </div>
-
-            <!-- Full description -->
-            {% if event.description %}
-            <div class="card card--glass border-0 text-white">
-              <div class="card-body">
-                <h5 class="mb-2">About this event</h5>
-                <p class="mb-0">{{ event.description }}</p>
-              </div>
-            </div>
-            {% endif %}
           </div>
-
-          <!-- RIGHT: Booking receipt (we can change how this looks when/if we put a counter in) -->
+        </div>
+          
+          <!-- now we are focusing on the right column booking receipt-->
+           <!-- pretty much same code used in my_bookings as well-->
           <div class="col-lg-4">
+            <!--booking receipt summary-->
             <div class="card card--glass border-0 text-white event-sticky">
               <div class="card-body">
                 <h5 class="mb-3">Your Receipt</h5>
+                <!--display booking info (dynamic data)-->
                 <ul class="list-unstyled small booking-summary">
+                  <!--display unique order id for booking order, incrementing-->
                   <li class="d-flex justify-content-between">
                     <span class="text-white-50">Order ID</span>
                     <strong>#{{ booking.id }}</strong>
                   </li>
+                  <!--display the date the booking was created and purchased-->
                   <li class="d-flex justify-content-between">
                     <span class="text-white-50">Booked on</span>
+                    <!--removed time-->
                     <strong>{{ booking.date.strftime('%Y-%m-%d') }}</strong>
                   </li>
+                  <!--display the quantity of tickets that had been booked-->
                   <li class="d-flex justify-content-between">
                     <span class="text-white-50">Tickets</span>
                     <strong>{{ booking.quantity }}</strong>
@@ -135,13 +175,15 @@ from flask ('booking', 'event', 'current_user') to render the dynamic conetnet.
                     <span class="text-white-50">Price per ticket</span>
                     <strong>${{ '%.2f'|format(event.cost) }}</strong>
                   </li>
+                  <!--display the total amount paid for this booking (formatted as currency)-->
                   <li class="d-flex justify-content-between border-top pt-2 mt-2">
                     <span class="text-white-50">Total paid</span>
                     <strong>${{ '%.2f'|format(booking.price) }}</strong>
                   </li>
                 </ul>
 
-                <!-- Actions -->
+                <!-- actions -->
+                 <!--these r just buttons used for navigating back or viewing events-->
                 <div class="d-grid gap-2">
                   <a class="btn btn-light" href="{{ url_for('events.view_event', event_id=event.id) }}">
                     View Event Page
@@ -151,18 +193,18 @@ from flask ('booking', 'event', 'current_user') to render the dynamic conetnet.
                   </a>
                 </div>
 
-                <!-- Optional helper -->
+                <!-- just an info note to look professional -->
                 <p class="small text-white-50 mt-3 mb-0">
                   A copy of this receipt has been saved in your account under <em>My Bookings</em>.
                 </p>
               </div>
             </div>
           </div>
-        </div><!-- /row -->
+        </div>
 
       </div>
     </div>
   </div>
 </main>
-
+<!--ending!!-->
 {% endblock %}
